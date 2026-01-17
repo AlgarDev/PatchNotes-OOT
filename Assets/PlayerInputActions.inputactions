@@ -61,10 +61,19 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Open bag",
+                    "name": "Open Inventory",
                     "type": "Button",
                     "id": "1d9f72d0-0e8f-42d5-b9b7-e33e916a8f69",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "54e51bc2-2673-4dd9-9c4a-952c037c10e0",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -349,11 +358,11 @@
                 {
                     "name": "",
                     "id": "fa3e1ea8-8af0-4bfa-8fc7-c25b0421d260",
-                    "path": "<Keyboard>/b",
+                    "path": "<Keyboard>/i",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Open bag",
+                    "action": "Open Inventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -364,7 +373,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Open bag",
+                    "action": "Open Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fa0d4a04-f671-45d5-96b2-5a97eb447bb2",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fd80d1e8-3239-49d3-97b6-8527a4fadfc8",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

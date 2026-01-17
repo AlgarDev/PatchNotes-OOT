@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,24 +6,30 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    [SerializeField]
-    private float countdownTime = 60f;
-    private float currentTime;
-    private bool timerRunning = true;
-    [SerializeField]
-    private TextMeshProUGUI timeDisplay;
-    [SerializeField]
-    public static bool isGameRunning = true;
 
+    [Header("State Control")]
+    [SerializeField]
+    public static bool isGameRunning = false;
     private PlayerInputActions inputActions;
+    public bool canPause = true;
     [SerializeField]
     private UnityEvent pauseGame;
     [SerializeField]
     private UnityEvent unPauseGame;
     private bool isPaused = false;
-    public bool canPause = true;
     [SerializeField]
     private UnityEvent gameOver;
+
+    [Header("Timer")]
+    [SerializeField]
+    private bool hasTimer = false;
+    [SerializeField]
+    private float countdownTime = 60f;
+    private float currentTime;
+    private bool timerRunning = false;
+    [SerializeField]
+    private TextMeshProUGUI timeDisplay;
+
 
     private void Awake()
     {
@@ -39,6 +44,7 @@ public class GameManager : MonoBehaviour
         inputActions = new PlayerInputActions();
         inputActions.Player.Enable();
         inputActions.Player.Pause.performed += _ => PauseGame();
+        isGameRunning = true;
     }
     private void Start()
     {
@@ -48,20 +54,25 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (!timerRunning) return;
+        if (!timerRunning || !hasTimer) return;
 
         currentTime -= Time.deltaTime;
 
-        int minutes = Mathf.FloorToInt(currentTime / 60);
-        int seconds = Mathf.FloorToInt(currentTime % 60);
-        timeDisplay.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-
+        if (timeDisplay)
+        {
+            int minutes = Mathf.FloorToInt(currentTime / 60);
+            int seconds = Mathf.FloorToInt(currentTime % 60);
+            timeDisplay.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        }
+        else
+            Debug.LogWarning("No Timer assigned!");
 
         if (currentTime <= 0f)
         {
             currentTime = 0f;
             GameOver();
         }
+
 
 
     }
@@ -133,5 +144,5 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
-    
+
 }

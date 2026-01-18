@@ -5,11 +5,6 @@ using UnityEngine;
 public class ThirdPersonController : MonoBehaviour
 {
     public static ThirdPersonController Instance;
-    [Header("Perspective")]
-    private Vector3 thirdPersonOriginalLocalPos;
-    private Vector3 firstPersonOriginalLocalPos;
-    private Camera firstPersonCam;
-    private Camera thirdPersonCam;
 
     [SerializeField] public Transform cameraTransform;
 
@@ -17,15 +12,9 @@ public class ThirdPersonController : MonoBehaviour
     [SerializeField] private bool canMove = true;
     [SerializeField] private bool canLook = true;
     [SerializeField] private bool canJump = false;
-    [SerializeField] private bool canCrouch = false;
-    [SerializeField] private bool canRun = false;
-    [SerializeField] private bool canHeadbob = false;
-    [SerializeField] private bool canChangePerspective = true;
 
     [field: Header("Movement")]
     [field: SerializeField] public float topWalkSpeed { private set; get; } = 2f;
-    [SerializeField] private float topRunSpeed = 4f;
-    [SerializeField] private float topCrouchSpeed = 1f;
     [field: SerializeField] public float SmoothTime { private set; get; } = 0.1f;
 
     [Header("Acceleration & Turning")]
@@ -36,7 +25,6 @@ public class ThirdPersonController : MonoBehaviour
     [SerializeField] private float meshTiltAmount = 15f; // Max tilt angle in degrees
     [SerializeField] private float meshTiltSpeed = 5f; // How fast mesh tilts
 
-    private float turnSmoothVelocity;
     private float currentSpeed = 0f;
     private float meshTiltVelocity = 0f;
     private float currentMeshTilt = 0f;
@@ -50,12 +38,6 @@ public class ThirdPersonController : MonoBehaviour
     private bool isJumping;
     private float jumpTimer;
 
-    [Header("Crouch")]
-    [SerializeField] private float standingHeight = 2f;
-    [SerializeField] private float crouchingHeight = 1f;
-    [SerializeField] private float crouchTransitionSpeed = 10f;
-    [SerializeField] private LayerMask blockingLayers;
-
     [Header("Input Recording/Clones")]
     [SerializeField] private bool isPlayerControlled = true;
     private PlayerInputFrame currentInput;
@@ -66,16 +48,6 @@ public class ThirdPersonController : MonoBehaviour
 
     private CharacterController controller;
     private Vector3 velocity;
-    private Vector3 currentDirection;
-    private Vector3 smoothVelocity;
-    private float cameraPitch = 0f;
-
-    private float bobTimer = 0f;
-    private Vector3 originalCamLocalPos;
-    private float targetCameraHeight;
-    private float currentCameraHeight;
-    private bool isCrouching = false;
-
 
     private void Awake()
     {
@@ -98,10 +70,6 @@ public class ThirdPersonController : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
-
-        currentTargetHeight = standingHeight;
-        controller.height = standingHeight;
-        isCrouching = false;
 
         currentGravity = Gravity;
         isJumping = false;
@@ -134,17 +102,14 @@ public class ThirdPersonController : MonoBehaviour
             return;
 
         HandleEdgeInputs();
-        HandleMovement();
+        HandleMovement(currentInput.cameraForward);
         HandleGravity();
         HandleMeshTilt();
 
-        if (canCrouch)
-            //HandleCrouchTransition();
-
-            if (isPlayerControlled && inputRecorder != null)
-            {
-                inputRecorder.Record(currentInput);
-            }
+            //if (isPlayerControlled && inputRecorder != null)
+            //{
+            //    inputRecorder.Record(currentInput);
+            //}
 
         previousInput = currentInput;
     }
@@ -159,17 +124,9 @@ public class ThirdPersonController : MonoBehaviour
     {
         if (canJump && currentInput.jump && !previousInput.jump)
             Jump();
-
-        /*       
-                if (canCrouch && currentInput.crouch && !previousInput.crouch)
-                    ToggleCrouch();
-
-                if (currentInput.changePerspective && !previousInput.changePerspective)
-                    ChangePerspective();
-                    */
     }
 
-    void HandleMovement()
+    void HandleMovement(float cameraForward)
     {
         if (!canMove)
         {
@@ -186,7 +143,7 @@ public class ThirdPersonController : MonoBehaviour
 
         if (direction.magnitude >= 0.1f)
         {
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cameraForward;
 
             // Smooth rotation using turn speed
             float angleDifference = Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
@@ -286,8 +243,6 @@ public class ThirdPersonController : MonoBehaviour
         canMove = value;
         if (!value)
         {
-            currentDirection = Vector3.zero;
-            smoothVelocity = Vector3.zero;
             currentSpeed = 0f;
         }
     }

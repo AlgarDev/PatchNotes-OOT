@@ -6,11 +6,12 @@ public struct PlayerInputFrame
 {
     public Vector2 move;
     public Vector2 look;
-    public bool run;
+    public bool interact;
     public bool jump;
+    public float cameraForward;
+    public bool run;
     public bool crouch;
     public bool changePerspective;
-    public bool interact;
 }
 public class PlayerInputProvider : MonoBehaviour
 {
@@ -44,10 +45,11 @@ public class PlayerInputProvider : MonoBehaviour
             jump = jumpQueued,
             crouch = crouchQueued,
             changePerspective = changePerspectiveQueued,
-            interact = interactQueued
+            interact = interactQueued,
+            cameraForward = controller.cameraTransform.eulerAngles.y
         };
         if(controller)
-        controller.SetInput(frame);
+            controller.SetInput(frame);
 
         jumpQueued = false;
         crouchQueued = false;

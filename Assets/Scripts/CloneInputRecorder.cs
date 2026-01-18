@@ -33,5 +33,6 @@ public class CloneInputRecorder : MonoBehaviour
     {
         if (!IsRecording) return;
         Frames.Add(frame);
+        print(Frames.Count);
     }
 }

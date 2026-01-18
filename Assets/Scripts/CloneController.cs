@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerMovementController))]
+[RequireComponent(typeof(ThirdPersonController))]
 public class CloneController : MonoBehaviour
 {
-    private PlayerMovementController movementController;
+    private ThirdPersonController movementController;
     public List<PlayerInputFrame> recordedFrames;
     private int frameIndex;
 
@@ -16,7 +16,7 @@ public class CloneController : MonoBehaviour
         recordedFrames = frames;
         frameIndex = 0;
 
-        movementController = GetComponent<PlayerMovementController>();
+        movementController = GetComponent<ThirdPersonController>();
     }
 
     private void FixedUpdate()

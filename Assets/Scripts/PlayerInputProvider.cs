@@ -15,7 +15,7 @@ public struct PlayerInputFrame
 public class PlayerInputProvider : MonoBehaviour
 {
     private PlayerInputActions actions;
-    private PlayerMovementController controller;
+    private ThirdPersonController controller;
 
     private bool jumpQueued;
     private bool crouchQueued;
@@ -26,7 +26,7 @@ public class PlayerInputProvider : MonoBehaviour
     {
         actions = new PlayerInputActions();
         actions.Player.Enable();
-        controller = GetComponent<PlayerMovementController>();
+        controller = GetComponent<ThirdPersonController>();
 
         actions.Player.Jump.performed += _ => jumpQueued = true;
         actions.Player.Crouch.performed += _ => crouchQueued = true;

@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 public class PlayerMovementController : MonoBehaviour
 {
 
-
     public static PlayerMovementController Instance;
     [Header("Perspective")]
     [SerializeField] private Transform firstPersonCamera;
@@ -27,14 +26,14 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private bool canRun = false;
     [SerializeField] private bool canHeadbob = false;
     [SerializeField] private bool canChangePerspective = true;
-    
-    [field:Header("Movement")]
+
+    [field: Header("Movement")]
     [field: SerializeField] public float WalkSpeed { private set; get; } = 2f;
     [SerializeField] private float runSpeed = 4f;
     [SerializeField] private float crouchSpeed = 1f;
     [field: SerializeField] public float Gravity { private set; get; } = -9.81f;
-    [field:SerializeField] public float SmoothTime { private set; get; } = 0.1f;
-    [field: SerializeField] public float JumpHeight { private set; get; } = 1.5f;   
+    [field: SerializeField] public float SmoothTime { private set; get; } = 0.1f;
+    [field: SerializeField] public float JumpHeight { private set; get; } = 1.5f;
 
     [Header("Crouch")]
     [SerializeField] private float standingHeight = 2f;
@@ -43,7 +42,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private LayerMask blockingLayers;
 
     [field: Header("Mouse Look")]
-    [field:SerializeField] public float MouseSensitivity { private set; get; } = 0.5f;
+    [field: SerializeField] public float MouseSensitivity { private set; get; } = 0.5f;
     [SerializeField] private float lookLimit = 80f;
 
     [Header("Head Bob")]
@@ -117,7 +116,7 @@ public class PlayerMovementController : MonoBehaviour
             cameraTransform.localPosition = thirdPersonOriginalLocalPos;
         }
 
-            currentTargetHeight = standingHeight;
+        currentTargetHeight = standingHeight;
         controller.height = standingHeight;
         isCrouching = false;
 
@@ -182,7 +181,7 @@ public class PlayerMovementController : MonoBehaviour
         currentDirection = Vector3.SmoothDamp(currentDirection, direction * targetSpeed, ref smoothVelocity, SmoothTime);
 
         if (controller.isGrounded)
-        { 
+        {
             if (velocity.y < 0)
             {
                 velocity.y = -2f;

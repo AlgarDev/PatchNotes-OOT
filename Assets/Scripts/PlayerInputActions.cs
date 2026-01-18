@@ -163,6 +163,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Change Perspective"",
+                    ""type"": ""Button"",
+                    ""id"": ""cd34ac53-a047-4ae8-b960-8dbe2414708c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -484,6 +493,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dc103069-959e-457c-83df-6455e3a231b3"",
+                    ""path"": ""<Keyboard>/rightCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Change Perspective"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -500,6 +520,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_OpenInventory = m_Player.FindAction("Open Inventory", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+        m_Player_ChangePerspective = m_Player.FindAction("Change Perspective", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -588,6 +609,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Pause;
     private readonly InputAction m_Player_OpenInventory;
     private readonly InputAction m_Player_Jump;
+    private readonly InputAction m_Player_ChangePerspective;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -631,6 +653,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Jump".
         /// </summary>
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/ChangePerspective".
+        /// </summary>
+        public InputAction @ChangePerspective => m_Wrapper.m_Player_ChangePerspective;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -681,6 +707,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @ChangePerspective.started += instance.OnChangePerspective;
+            @ChangePerspective.performed += instance.OnChangePerspective;
+            @ChangePerspective.canceled += instance.OnChangePerspective;
         }
 
         /// <summary>
@@ -716,6 +745,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @ChangePerspective.started -= instance.OnChangePerspective;
+            @ChangePerspective.performed -= instance.OnChangePerspective;
+            @ChangePerspective.canceled -= instance.OnChangePerspective;
         }
 
         /// <summary>
@@ -812,5 +844,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnJump(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Change Perspective" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnChangePerspective(InputAction.CallbackContext context);
     }
 }

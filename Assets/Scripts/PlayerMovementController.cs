@@ -5,9 +5,8 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovementController : MonoBehaviour
 {
-    [SerializeField]
-    private PlayerInputFrame currentInput;
-    private PlayerInputFrame previousInput;
+
+
     public static PlayerMovementController Instance;
     [Header("Perspective")]
     [SerializeField] private Transform firstPersonCamera;
@@ -52,6 +51,11 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField] private float bobHorizontalAmplitude = 0.05f;
     [SerializeField] private float bobVerticalAmplitude = 0.05f;
     [SerializeField] private float bobSpeedMultiplier = 1.0f;
+    [Header("Input Recording/Clones")]
+    [SerializeField] private bool isPlayerControlled = true;
+    private PlayerInputFrame currentInput;
+    private PlayerInputFrame previousInput;
+    [SerializeField] private CloneInputRecorder inputRecorder;
 
     private float currentTargetHeight;
 
@@ -73,10 +77,6 @@ public class PlayerMovementController : MonoBehaviour
         {
             Instance = this;
         }
-        else
-        {
-            Destroy(gameObject);
-        }
 
         previousInput = currentInput = new PlayerInputFrame();
 
@@ -93,7 +93,10 @@ public class PlayerMovementController : MonoBehaviour
             Debug.LogWarning("No Game Manager!");
 
         controller = GetComponent<CharacterController>();
-        Cursor.lockState = CursorLockMode.Locked;
+        if (isPlayerControlled)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
 
         thirdPersonOriginalLocalPos = thirdPersonCamera.localPosition;
         firstPersonOriginalLocalPos = firstPersonCamera.localPosition;
@@ -125,22 +128,27 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.isGameRunning)
+        if (!GameManager.isGameRunning)
+            return;
+
+        HandleEdgeInputs();
+        HandleMouseLook();
+        HandleMovement();
+
+        if (canHeadbob && canMove)
+            HandleHeadBob();
+
+        if (canCrouch)
+            HandleCrouchTransition();
+
+        if (isPlayerControlled && inputRecorder != null)
         {
-            HandleEdgeInputs();
-
-            HandleMouseLook();
-            HandleMovement();
-
-            if (canHeadbob && canMove)
-                HandleHeadBob();
-
-            if (canCrouch)
-                HandleCrouchTransition();
-
-            previousInput = currentInput;
+            inputRecorder.Record(currentInput);
         }
+
+        previousInput = currentInput;
     }
+
     // ================= INPUT =================
 
     public void SetInput(PlayerInputFrame input)
@@ -198,21 +206,21 @@ public class PlayerMovementController : MonoBehaviour
     {
         if (!canLook)
             return;
+
         float mouseX = currentInput.look.x * MouseSensitivity;
         float mouseY = currentInput.look.y * MouseSensitivity;
 
-        if (isFirstPerson)
-        {
-            cameraPitch -= mouseY;
-            cameraPitch = Mathf.Clamp(cameraPitch, -lookLimit, lookLimit);
-            cameraTransform.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
-        }
-        else
-        {
-            cameraTransform.Rotate(Vector3.right * -mouseY);
-        }
+        // Accumulate & clamp pitch for BOTH modes
+        cameraPitch -= mouseY;
+        cameraPitch = Mathf.Clamp(cameraPitch, -lookLimit, lookLimit);
+
+        // Apply pitch to camera pivot
+        cameraTransform.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
+
+        // Yaw always rotates the player
         transform.Rotate(Vector3.up * mouseX);
     }
+
 
     //=====================CROUCH==========================
     void ToggleCrouch()

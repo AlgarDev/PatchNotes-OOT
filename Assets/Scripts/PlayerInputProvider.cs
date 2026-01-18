@@ -34,7 +34,7 @@ public class PlayerInputProvider : MonoBehaviour
         actions.Player.Interact.performed += _ => interactQueued = true;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         PlayerInputFrame frame = new PlayerInputFrame
         {
@@ -46,7 +46,7 @@ public class PlayerInputProvider : MonoBehaviour
             changePerspective = changePerspectiveQueued,
             interact = interactQueued
         };
-
+        if(controller)
         controller.SetInput(frame);
 
         jumpQueued = false;

@@ -1,34 +1,41 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMovementController))]
 public class CloneController : MonoBehaviour
 {
-    private CloneInputRecorder inputRecorder;
     private PlayerMovementController movementController;
-
+    public List<PlayerInputFrame> recordedFrames;
     private int frameIndex;
 
-    public void Initialize(CloneInputRecorder recorder)
+    /// <summary>
+    /// Initializes the clone with a recording
+    /// </summary>
+    public void Initialize(List<PlayerInputFrame> frames)
     {
-        inputRecorder = recorder;
+        recordedFrames = frames;
         frameIndex = 0;
 
         movementController = GetComponent<PlayerMovementController>();
-
-        // Clones should move and rotate, but not control a player camera
-        movementController.ChangeCanMove(true);
-        movementController.ChangeCanLook(false);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if (inputRecorder == null)
+        if (recordedFrames == null || frameIndex >= recordedFrames.Count)
             return;
 
-        if (frameIndex >= inputRecorder.Frames.Count)
-            return;
+        // Feed the current frame to the movement controller
+        movementController.SetInput(recordedFrames[frameIndex]);
 
-        movementController.SetInput(inputRecorder.Frames[frameIndex]);
+        // Move to the next frame for next FixedUpdate
         frameIndex++;
+    }
+
+    /// <summary>
+    /// Returns true if the clone has finished replaying the input
+    /// </summary>
+    public bool IsFinished()
+    {
+        return recordedFrames != null && frameIndex >= recordedFrames.Count;
     }
 }

@@ -6,7 +6,18 @@ public class CloneInputRecorder : MonoBehaviour
     public readonly List<PlayerInputFrame> Frames = new();
 
     public bool IsRecording { get; private set; }
-
+    public static CloneInputRecorder Instance { get; private set; }
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     public void StartRecording()
     {
         Frames.Clear();

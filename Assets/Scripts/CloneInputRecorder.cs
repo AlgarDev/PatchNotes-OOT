@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class CloneInputRecorder : MonoBehaviour
 {
-    public readonly List<PlayerInputFrame> Frames = new();
+    [field:SerializeField]
+    public List<PlayerInputFrame> Frames = new();
 
     public bool IsRecording { get; private set; }
     public static CloneInputRecorder Instance { get; private set; }
@@ -22,17 +23,18 @@ public class CloneInputRecorder : MonoBehaviour
     {
         Frames.Clear();
         IsRecording = true;
+        Debug.Log("Started Recording");
     }
 
     public void StopRecording()
     {
         IsRecording = false;
+        Debug.Log("Stopped Recording");
     }
-
     public void Record(PlayerInputFrame frame)
     {
         if (!IsRecording) return;
         Frames.Add(frame);
-        print(Frames.Count);
+        //print(Frames.Count);
     }
 }

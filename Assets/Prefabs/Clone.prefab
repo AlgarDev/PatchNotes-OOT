@@ -62,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6148891560622547949, guid: 307465969ebd7134a8b6a0abe20fd947, type: 3}
       propertyPath: m_Name
-      value: Clone Variant
+      value: Clone
       objectReference: {fileID: 0}
     - target: {fileID: 6148891560622547949, guid: 307465969ebd7134a8b6a0abe20fd947, type: 3}
       propertyPath: m_Layer
@@ -72,6 +72,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
+    - target: {fileID: 9113990565466041530, guid: 307465969ebd7134a8b6a0abe20fd947, type: 3}
+      propertyPath: corpseObject
+      value: 
+      objectReference: {fileID: 8580703353953420934, guid: 1c5eedb1ae1dab245bd18b8224c22eef, type: 3}
     m_RemovedComponents:
     - {fileID: 2206900366996723277, guid: 307465969ebd7134a8b6a0abe20fd947, type: 3}
     - {fileID: 3613058007820986645, guid: 307465969ebd7134a8b6a0abe20fd947, type: 3}

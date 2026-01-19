@@ -1,41 +1,70 @@
 using System.Collections.Generic;
+using System.Xml.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(ThirdPersonController))]
 public class CloneController : MonoBehaviour
 {
     private ThirdPersonController movementController;
-    public List<PlayerInputFrame> recordedFrames;
+    private List<PlayerInputFrame> recordedFrames;
     private int frameIndex;
 
-    /// <summary>
-    /// Initializes the clone with a recording
-    /// </summary>
-    public void Initialize(List<PlayerInputFrame> frames)
+    private bool hasFinished;
+    private bool isPlaying; // NEW
+
+    [SerializeField]
+    private GameObject corpseObject;
+
+    [Header("Events")]
+    public UnityEvent onFinishedPlayback;
+
+    private void Awake()
+    {
+        movementController = GetComponent<ThirdPersonController>();
+    }
+
+    public void PassFrames(List<PlayerInputFrame> frames)
     {
         recordedFrames = frames;
         frameIndex = 0;
+        hasFinished = false;
+        isPlaying = false; // don't start immediately
+    }
 
-        movementController = GetComponent<ThirdPersonController>();
+    // Explicitly call this when you want playback to start
+    public void StartPlayback()
+    {
+        if (recordedFrames == null || recordedFrames.Count == 0) return;
+        isPlaying = true;
     }
 
     private void FixedUpdate()
     {
-        if (recordedFrames == null || frameIndex >= recordedFrames.Count)
+        if (!isPlaying || recordedFrames == null || hasFinished) return;
+
+        if (frameIndex < recordedFrames.Count)
+        {
+            movementController.SetInput(recordedFrames[frameIndex]);
+            frameIndex++;
             return;
+        }
 
-        // Feed the current frame to the movement controller
-        movementController.SetInput(recordedFrames[frameIndex]);
-
-        // Move to the next frame for next FixedUpdate
-        frameIndex++;
+        // Finished playback
+        hasFinished = true;
+        OnFinished();
     }
 
-    /// <summary>
-    /// Returns true if the clone has finished replaying the input
-    /// </summary>
-    public bool IsFinished()
+    private void OnFinished()
     {
-        return recordedFrames != null && frameIndex >= recordedFrames.Count;
+        var corpse = Instantiate(corpseObject, transform.position + Vector3.up, Quaternion.identity);
+        corpse.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        corpse.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        corpse.GetComponent<Rigidbody>().isKinematic = true;
+        movementController.SetInput(default);
+        Debug.Log($"{name} finished playback");
+        Destroy(gameObject);
     }
+
+    public bool IsFinished() => hasFinished;
 }

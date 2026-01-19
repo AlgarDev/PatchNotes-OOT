@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 public class ThirdPersonController : MonoBehaviour
 {
     public static ThirdPersonController Instance;
@@ -12,6 +9,7 @@ public class ThirdPersonController : MonoBehaviour
     [SerializeField] private bool canMove = true;
     [SerializeField] private bool canLook = true;
     [SerializeField] private bool canJump = false;
+    [SerializeField] private bool canInteract = false;
 
     [field: Header("Movement")]
     [field: SerializeField] public float topWalkSpeed { private set; get; } = 2f;
@@ -38,13 +36,27 @@ public class ThirdPersonController : MonoBehaviour
     private bool isJumping;
     private float jumpTimer;
 
-    [Header("Input Recording/Clones")]
-    [SerializeField] private bool isPlayerControlled = true;
+    [field: Header("Interact")]
+    [SerializeField]
+    private Transform interactorSource;
+    [field: SerializeField]
+    public Transform grabPivot { private set; get; }
+    [SerializeField]
+    private float interactRadius;
+    [SerializeField]
+    private float interactRange;
+    [SerializeField]
+    GameObject heldObject;
+    [field: SerializeField]
+    public bool isHolding { private set; get; }
+
+    [SerializeField]
+    private Collider[] interactableColliders;
+
+    [field:Header("Input Recording/Clones")]
+    [field:SerializeField] public bool IsPlayerControlled { private set; get; } = true;
     private PlayerInputFrame currentInput;
     private PlayerInputFrame previousInput;
-    [SerializeField] private CloneInputRecorder inputRecorder;
-
-    private float currentTargetHeight;
 
     private CharacterController controller;
     private Vector3 velocity;
@@ -66,7 +78,7 @@ public class ThirdPersonController : MonoBehaviour
 
         controller = GetComponent<CharacterController>();
 
-        if (isPlayerControlled)
+        if (IsPlayerControlled)
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
@@ -101,17 +113,13 @@ public class ThirdPersonController : MonoBehaviour
         if (!GameManager.isGameRunning)
             return;
 
-        HandleEdgeInputs();
+        HandleEdgeInputs(); //jump, interact
         HandleMovement(currentInput.cameraForward);
         HandleGravity();
-        HandleMeshTilt();
-
-            //if (isPlayerControlled && inputRecorder != null)
-            //{
-            //    inputRecorder.Record(currentInput);
-            //}
+        HandleMeshTilt(currentInput.cameraForward);
 
         previousInput = currentInput;
+
     }
 
 
@@ -124,6 +132,8 @@ public class ThirdPersonController : MonoBehaviour
     {
         if (canJump && currentInput.jump && !previousInput.jump)
             Jump();
+        if (canInteract && currentInput.interact && !previousInput.interact)
+            Interact();
     }
 
     void HandleMovement(float cameraForward)
@@ -175,7 +185,7 @@ public class ThirdPersonController : MonoBehaviour
         }
     }
 
-    private void HandleMeshTilt()
+    private void HandleMeshTilt(float cameraForward)
     {
         if (characterMesh == null) return;
 
@@ -184,7 +194,7 @@ public class ThirdPersonController : MonoBehaviour
 
         if (input.magnitude >= 0.1f)
         {
-            float targetAngle = Mathf.Atan2(input.x, input.z) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
+            float targetAngle = Mathf.Atan2(input.x, input.z) * Mathf.Rad2Deg + cameraForward;
             float angleDifference = Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
 
             // Normalize angle difference to -1 to 1 range
@@ -219,6 +229,7 @@ public class ThirdPersonController : MonoBehaviour
         }
         velocity.y += currentGravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+
     }
 
     private void Jump()
@@ -229,6 +240,7 @@ public class ThirdPersonController : MonoBehaviour
 
         if (controller.isGrounded)
         {
+            Debug.Log(controller.isGrounded);
             float requiredVelocity = (JumpHeight - (0.5f * JumpGravity * JumpTime * JumpTime)) / JumpTime;
             velocity.y = requiredVelocity;
 
@@ -245,6 +257,64 @@ public class ThirdPersonController : MonoBehaviour
         {
             currentSpeed = 0f;
         }
+    }
+
+    private void Interact()
+    {
+        print("interacted");
+        if (isHolding && heldObject != null)
+        {
+            if (heldObject.TryGetComponent(out IGrabbable grabbed))
+            {
+                grabbed.Drop(this);
+            }
+            isHolding = false;
+            heldObject = null;
+            return;
+        }
+
+        interactableColliders = Physics.OverlapBox(interactorSource.transform.position + interactorSource.transform.forward * interactRange,
+new Vector3(interactRadius, interactRadius, interactRange), interactorSource.transform.rotation, ~0, QueryTriggerInteraction.Collide);
+
+        foreach (var item in interactableColliders)
+        {
+            if (!isHolding && item.gameObject.TryGetComponent(out IInteractable interactObj))
+            {
+                //print("interacted");
+                interactObj.Interact(this);
+                if (item.TryGetComponent(out IGrabbable grabbable))
+                {
+                    isHolding = true;
+                    heldObject = item.gameObject;
+                    break;
+                }
+            }
+        }
+
+    }
+    private void OnDrawGizmos()
+    {
+        if (interactorSource == null)
+            return;
+
+        Vector3 halfExtents = new Vector3(interactRadius, interactRadius, interactRange);
+
+        Vector3 center =
+            interactorSource.transform.position +
+            interactorSource.transform.forward * interactRange;
+
+        Gizmos.color = Color.cyan;
+        Gizmos.matrix = Matrix4x4.TRS(
+            center,
+            interactorSource.transform.rotation,
+            Vector3.one
+        );
+
+        Gizmos.DrawWireCube(Vector3.zero, halfExtents * 2f);
+        Gizmos.matrix = Matrix4x4.identity;
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawRay(interactorSource.transform.position, interactorSource.transform.forward * interactRange);
+
     }
 
     //=========================SYSTEM===========================

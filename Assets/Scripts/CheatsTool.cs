@@ -27,19 +27,20 @@ public class CheatsTool : EditorWindow
             }
             if (GUILayout.Button("Start Clones"))
             {
-                var player = GameObject.FindGameObjectWithTag("Player");
-                if (player == null)
-                {
-                    Debug.LogWarning("No player with tag 'Player' found!");
-                    return;
-                }
-                player.gameObject.SetActive(false);
+                Debug.Log("Started Clones");
+                //var player = GameObject.FindGameObjectWithTag("Player");
+                //if (player == null)
+                //{
+                //    Debug.LogWarning("No player with tag 'Player' found!");
+                //    return;
+                //}
+                //player.gameObject.SetActive(false);
 
                 // Find all clones
                 CloneController[] clones = FindObjectsOfType<CloneController>();
                 foreach (var clone in clones)
                 {
-                    clone.Initialize(CloneInputRecorder.Instance.Frames);
+                    clone.StartPlayback();
                     Debug.Log("CLONE CONTROLLLLLAA");
                 }
 

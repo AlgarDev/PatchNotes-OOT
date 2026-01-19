@@ -172,6 +172,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Clone"",
+                    ""type"": ""Button"",
+                    ""id"": ""4122cbb8-02f0-42f7-8dc7-f02fd6fd02fd"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -504,6 +513,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Change Perspective"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b441f6b1-6ef6-4949-8965-73be48771596"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Clone"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5694deef-c62f-4be4-9936-95a066516445"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Clone"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -521,6 +552,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_OpenInventory = m_Player.FindAction("Open Inventory", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_ChangePerspective = m_Player.FindAction("Change Perspective", throwIfNotFound: true);
+        m_Player_Clone = m_Player.FindAction("Clone", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -610,6 +642,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_OpenInventory;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_ChangePerspective;
+    private readonly InputAction m_Player_Clone;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -657,6 +690,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/ChangePerspective".
         /// </summary>
         public InputAction @ChangePerspective => m_Wrapper.m_Player_ChangePerspective;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Clone".
+        /// </summary>
+        public InputAction @Clone => m_Wrapper.m_Player_Clone;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -710,6 +747,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ChangePerspective.started += instance.OnChangePerspective;
             @ChangePerspective.performed += instance.OnChangePerspective;
             @ChangePerspective.canceled += instance.OnChangePerspective;
+            @Clone.started += instance.OnClone;
+            @Clone.performed += instance.OnClone;
+            @Clone.canceled += instance.OnClone;
         }
 
         /// <summary>
@@ -748,6 +788,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ChangePerspective.started -= instance.OnChangePerspective;
             @ChangePerspective.performed -= instance.OnChangePerspective;
             @ChangePerspective.canceled -= instance.OnChangePerspective;
+            @Clone.started -= instance.OnClone;
+            @Clone.performed -= instance.OnClone;
+            @Clone.canceled -= instance.OnClone;
         }
 
         /// <summary>
@@ -851,5 +894,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnChangePerspective(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Clone" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnClone(InputAction.CallbackContext context);
     }
 }

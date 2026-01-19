@@ -31,6 +31,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 23899336548509765}
   m_LocalEulerAnglesHint: {x: 28.585, y: 0, z: 0}
+--- !u!1 &1311814009072279550
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4906203166775053833}
+  m_Layer: 3
+  m_Name: GrabPivot
+  m_TagString: Untagged
+  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4906203166775053833
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1311814009072279550}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.79, z: 1.76}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 23899336548509765}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1712988084334810346
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,6 +146,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &4746959884279545726
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9162232954335003176}
+  m_Layer: 3
+  m_Name: Interact
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9162232954335003176
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4746959884279545726}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.79, z: 0.67}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 23899336548509765}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6148891560622547949
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,6 +213,8 @@ Transform:
   m_Children:
   - {fileID: 8003872002636807882}
   - {fileID: 5412902526113506220}
+  - {fileID: 9162232954335003176}
+  - {fileID: 4906203166775053833}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &1657107220087955845
@@ -195,6 +259,7 @@ MonoBehaviour:
   canMove: 1
   canLook: 1
   canJump: 1
+  canInteract: 1
   <topWalkSpeed>k__BackingField: 25
   <SmoothTime>k__BackingField: 0.1
   acceleration: 30
@@ -207,8 +272,14 @@ MonoBehaviour:
   <Gravity>k__BackingField: -50
   <JumpHeight>k__BackingField: 2
   <JumpTime>k__BackingField: 0.2
+  interactorSource: {fileID: 9162232954335003176}
+  <grabPivot>k__BackingField: {fileID: 4906203166775053833}
+  interactRadius: 2
+  interactRange: 2
+  heldObject: {fileID: 0}
+  <isHolding>k__BackingField: 0
+  interactableColliders: []
   isPlayerControlled: 1
-  inputRecorder: {fileID: 2206900366996723277}
 --- !u!114 &3613058007820986645
 MonoBehaviour:
   m_ObjectHideFlags: 0

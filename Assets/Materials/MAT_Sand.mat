@@ -35,7 +35,7 @@ Material:
     m_Floats:
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
-    - _Fill: 0.591
+    - _Fill: 1
     - _Float: 2.26
     - _UV: 0
     m_Colors: []

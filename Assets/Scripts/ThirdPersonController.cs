@@ -62,8 +62,8 @@ public class ThirdPersonController : MonoBehaviour
     [SerializeField]
     private Animator animationController;
 
-    [field:Header("Input Recording/Clones")]
-    [field:SerializeField] public bool IsPlayerControlled { private set; get; } = true;
+    [field: Header("Input Recording/Clones")]
+    [field: SerializeField] public bool IsPlayerControlled { private set; get; } = true;
     private PlayerInputFrame currentInput;
     private PlayerInputFrame previousInput;
 
@@ -283,6 +283,7 @@ public class ThirdPersonController : MonoBehaviour
             }
             isHolding = false;
             heldObject = null;
+            animationController.SetTrigger("Drop"); //?
             return;
         }
 
@@ -299,12 +300,16 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
                 {
                     isHolding = true;
                     heldObject = item.gameObject;
+                    animationController.SetTrigger("GrabNormal");
                     break;
                 }
             }
         }
 
     }
+
+    //use animationController.SetTrigger("GrabToThrow") when getting ready to throw
+    //use animationController.SetTrigger("Throw") when throwing
 
     private void AnimationHandler()
     {

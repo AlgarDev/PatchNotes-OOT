@@ -7,7 +7,8 @@ public struct PlayerInputFrame
 {
     public Vector2 move;
     public Vector2 look;
-    public bool interact;
+    public bool interactPressed;
+    public bool interactHeld;
     public bool jump;
     public float cameraForward;
     //public bool run;
@@ -55,7 +56,8 @@ public class PlayerInputProvider : MonoBehaviour
             move = actions.Player.Move.ReadValue<Vector2>(),
             look = actions.Player.Look.ReadValue<Vector2>(),
             jump = jumpQueued,
-            interact = interactQueued,
+            interactPressed = interactQueued,
+            interactHeld = actions.Player.Interact.IsPressed(),
             cameraForward = controller.cameraTransform.eulerAngles.y
             //run = actions.Player.Run.IsPressed(),
             //crouch = crouchQueued,

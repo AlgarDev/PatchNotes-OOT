@@ -143,8 +143,8 @@ public class ThirdPersonController : MonoBehaviour
     {
         if (canJump && currentInput.jump && !previousInput.jump)
             Jump();
-        if (canInteract && currentInput.interact && !previousInput.interact)
-            Interact();
+        if (canInteract)
+            HandleInteractInput();
     }
 
     void HandleMovement(float cameraForward)
@@ -271,6 +271,39 @@ public class ThirdPersonController : MonoBehaviour
             currentSpeed = 0f;
         }
     }
+    private void HandleInteractInput()
+    {
+        // Button pressed
+        if (currentInput.interactPressed)
+        {
+            interactHoldTimer = 0f;
+            interactConsumed = false;
+        }
+
+        // Button held
+        if (currentInput.interactHeld)
+        {
+            interactHoldTimer += Time.deltaTime;
+
+            if (!interactConsumed && isHolding && interactHoldTimer >= throwHoldTime)
+            {
+                print("throw"); 
+                ThrowHeldObject();
+                interactConsumed = true;
+            }
+        }
+
+        if (!currentInput.interactHeld && previousInput.interactHeld)
+        {
+            if (!interactConsumed)
+            {
+                Interact();
+            }
+
+            interactHoldTimer = 0f;
+            interactConsumed = false;
+        }
+    }
 
     private void Interact()
     {
@@ -307,6 +340,20 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
         }
 
     }
+    private void ThrowHeldObject()
+    {
+        if (heldObject == null)
+            return;
+
+        if (heldObject.TryGetComponent(out IGrabbable grabbed))
+        {
+            grabbed.Throw(this);
+        }
+
+        isHolding = false;
+        heldObject = null;
+    }
+
 
     //use animationController.SetTrigger("GrabToThrow") when getting ready to throw
     //use animationController.SetTrigger("Throw") when throwing

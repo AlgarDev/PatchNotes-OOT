@@ -8,64 +8,59 @@ public class InteractableButton : MonoBehaviour
     [SerializeField] private UnityEvent buttonReleased;
     private HashSet<GameObject> occupants = new HashSet<GameObject>();
     public List<GameObject> exposed = new List<GameObject>();
-    private void OnTriggerEnter(Collider other)
+    public bool IsPressed => occupants.Count > 0;
+    public UnityEvent onStateChanged;
+
+    [Header("Detection")]
+    [SerializeField] private Vector3 checkSize = new Vector3(1f, 0.3f, 1f);
+    [SerializeField] private LayerMask pusherMask;
+
+    private bool wasPressedLastFrame;
+    private void FixedUpdate()
     {
-        GameObject root = GetValidPusher(other);
-        if (root == null)
-            return;
+        HashSet<GameObject> detectedThisFrame = new HashSet<GameObject>();
 
-        bool wasEmpty = occupants.Count == 0;
-        occupants.Add(root);
+        Collider[] hits = Physics.OverlapBox(
+            transform.position,
+            checkSize * 0.5f,
+            transform.rotation,
+            ~0,
+            QueryTriggerInteraction.Ignore
+        );
 
-        if (wasEmpty && occupants.Count == 1)
+        foreach (var hit in hits)
+        {
+            GameObject root = GetValidPusher(hit);
+            if (root != null)
+                detectedThisFrame.Add(root);
+        }
+
+        // State transition detection
+        bool isPressedNow = detectedThisFrame.Count > 0;
+
+        if (!wasPressedLastFrame && isPressedNow)
+        {
             buttonPressed.Invoke();
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        GameObject root = GetValidPusher(other);
-        if (root == null)
-            return;
-
-        occupants.Remove(root);
-
-        if (occupants.Count == 0)
+            onStateChanged.Invoke();
+        }
+        else if (wasPressedLastFrame && !isPressedNow)
+        {
             buttonReleased.Invoke();
+            onStateChanged.Invoke();
+        }
+
+        wasPressedLastFrame = isPressedNow;
+
+        occupants.Clear();
+        foreach (var obj in detectedThisFrame)
+            occupants.Add(obj);
     }
 
     private void Update()
     {
-        CleanupDestroyedOccupants();
         exposed.Clear();
         foreach (var item in occupants)
-        {
             exposed.Add(item);
-        }
-    }
-
-    private void CleanupDestroyedOccupants()
-    {
-        if (occupants.Count == 0)
-            return;
-
-        bool removedAny = false;
-
-        var toRemove = new List<GameObject>();
-
-        foreach (var obj in occupants)
-        {
-            if (obj == null || !obj.activeInHierarchy)
-                toRemove.Add(obj);
-        }
-
-        foreach (var obj in toRemove)
-        {
-            occupants.Remove(obj);
-            removedAny = true;
-        }
-
-        if (removedAny && occupants.Count == 0)
-            buttonReleased.Invoke();
     }
 
     private GameObject GetValidPusher(Collider other)
@@ -80,4 +75,13 @@ public class InteractableButton : MonoBehaviour
 
         return null;
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
+        Gizmos.DrawWireCube(Vector3.zero, checkSize);
+    }
+#endif
 }

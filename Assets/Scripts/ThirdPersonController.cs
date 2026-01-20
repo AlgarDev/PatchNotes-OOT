@@ -50,8 +50,17 @@ public class ThirdPersonController : MonoBehaviour
     [field: SerializeField]
     public bool isHolding { private set; get; }
 
+    [Header("Interact Hold Logic")]
+    [SerializeField] private float throwHoldTime = 1f;
+
+    private float interactHoldTimer;
+    private bool interactConsumed;
     [SerializeField]
     private Collider[] interactableColliders;
+
+    [Header("Animation")]
+    [SerializeField]
+    private Animator animationController;
 
     [field:Header("Input Recording/Clones")]
     [field:SerializeField] public bool IsPlayerControlled { private set; get; } = true;
@@ -77,6 +86,7 @@ public class ThirdPersonController : MonoBehaviour
             Debug.LogWarning("No Game Manager!");
 
         controller = GetComponent<CharacterController>();
+        animationController = GetComponentInChildren<Animator>();
 
         if (IsPlayerControlled)
         {
@@ -117,6 +127,7 @@ public class ThirdPersonController : MonoBehaviour
         HandleMovement(currentInput.cameraForward);
         HandleGravity();
         HandleMeshTilt(currentInput.cameraForward);
+        AnimationHandler();
 
         previousInput = currentInput;
 
@@ -247,6 +258,8 @@ public class ThirdPersonController : MonoBehaviour
             currentGravity = JumpGravity;
             isJumping = true;
             jumpTimer = 0f;
+
+            animationController.SetTrigger("Jump");
         }
     }
 
@@ -290,6 +303,13 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
                 }
             }
         }
+
+    }
+
+    private void AnimationHandler()
+    {
+        animationController.SetBool("isGrounded", controller.isGrounded);
+        animationController.SetFloat("Movement", currentSpeed);
 
     }
     private void OnDrawGizmos()

@@ -8,7 +8,9 @@ public class ButtonController: MonoBehaviour
     [SerializeField] private List<InteractableButton> buttons;
 
     [Header("Events")]
+    [SerializeField]
     public UnityEvent onRequirementMet;
+    [SerializeField]
     public UnityEvent onRequirementLost;
 
     private bool requirementMet;

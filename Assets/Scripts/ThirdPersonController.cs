@@ -67,7 +67,7 @@ public class ThirdPersonController : MonoBehaviour
     private PlayerInputFrame currentInput;
     private PlayerInputFrame previousInput;
 
-    private CharacterController controller;
+    public CharacterController controller;
     private Vector3 velocity;
 
     private void Awake()
@@ -388,7 +388,6 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
         Gizmos.DrawRay(interactorSource.transform.position, interactorSource.transform.forward * interactRange);
 
     }
-
     //=========================SYSTEM===========================
     private void OnDestroy()
     {

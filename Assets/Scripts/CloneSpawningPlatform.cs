@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,6 +8,7 @@ public class CloneSpawningPlatform : MonoBehaviour
 {
 
     [Header("Clone")]
+    [SerializeField] private ColorRef platformColor;
     [SerializeField] private UnityEvent spawnClone;
     [SerializeField] private GameObject cloneObject;
 
@@ -27,6 +29,13 @@ public class CloneSpawningPlatform : MonoBehaviour
     private ThirdPersonController player;
 
     private bool cloneQueuedLastFrame;
+
+    [Header("Visuals")]
+    [SerializeField] private MeshRenderer[] meshRenderers;
+    private ColorsSO colors;
+    [SerializeField] private GameObject shine;
+
+
     private void OnTriggerEnter(Collider other)
     {
         var controller = other.GetComponentInParent<ThirdPersonController>();
@@ -34,6 +43,9 @@ public class CloneSpawningPlatform : MonoBehaviour
         {
             isPlayerInside = true;
             player = controller;
+            player.GetComponent<PlayerColorManager>().ChangeColor(platformColor);
+            player.GetComponent<PlayerColorManager>().EnableHourglassSand();
+            player.GetComponent<PlayerColorManager>().UpdateTargetValue(1);
         }
     }
     private void OnTriggerExit(Collider other)
@@ -42,7 +54,15 @@ public class CloneSpawningPlatform : MonoBehaviour
         if (controller != null && controller.IsPlayerControlled)
         {
             isPlayerInside = false;
+            player.GetComponent<PlayerColorManager>().ChangeColor(ColorRef.Green);
+            player.GetComponent<PlayerColorManager>().DisableHourglassSand();
         }
+    }
+    private void Start()
+    {
+        if (shine != null) shine.SetActive(false);
+        colors = Resources.Load<ColorsSO>("ColorsSO");
+        if (colors != null) ChangeColor(platformColor);
     }
     private void Update()
     {
@@ -107,6 +127,7 @@ public class CloneSpawningPlatform : MonoBehaviour
         if (!isRecording)
             return;
 
+        if (shine != null) shine.SetActive(true);
         CloneInputRecorder.Instance.StopRecording();
         isRecording = false;
 
@@ -127,11 +148,21 @@ public class CloneSpawningPlatform : MonoBehaviour
         Debug.Log("Clone spawned");
         spawnClone?.Invoke();
         currentClone = Instantiate(cloneObject, CloneInputRecorder.Instance.gameObject.transform.position, CloneInputRecorder.Instance.gameObject.transform.rotation);
+        // TO DO : CHANGE CLONE COLOR & DISABLE ITS HOURGLASS MODEL
         // your spawn logic here
     }
 
     public void PauseTimer(bool pause)
     {
         timerPaused = pause;
+    }
+
+    public void ChangeColor(ColorRef color)
+    {
+        foreach (MeshRenderer mr in meshRenderers)
+        {
+            Material mat = mr.material;
+            mat.SetColor("_Color", colors.ReturnPlatformColor(color));
+        }
     }
 }

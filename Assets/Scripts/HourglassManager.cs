@@ -33,7 +33,7 @@ public class HourglassManager : MonoBehaviour
     void ChangeSliderColor(ColorRef color)
     {
         if (colors == null) return;
-        sliderBar.color = colors.ReturnColor(color);
+        sliderBar.color = colors.ReturnHourglassColor(color);
     }
 
     void UpdateSliderValue(float currentValue, float maxValue)

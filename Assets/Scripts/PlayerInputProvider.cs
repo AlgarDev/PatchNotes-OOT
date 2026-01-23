@@ -11,6 +11,7 @@ public struct PlayerInputFrame
     public bool interactHeld;
     public bool jump;
     public float cameraForward;
+    public bool controllingHourglass;
     //public bool run;
     //public bool crouch;
     //public bool changePerspective;
@@ -23,6 +24,8 @@ public class PlayerInputProvider : MonoBehaviour
 
     private bool jumpQueued;
     private bool interactQueued;
+    private bool controllingHourglassQueued;
+
     public bool CloneQueued { get; private set; }
     //private bool crouchQueued;
     //private bool changePerspectiveQueued;
@@ -45,6 +48,7 @@ public class PlayerInputProvider : MonoBehaviour
         actions.Player.Jump.performed += _ => jumpQueued = true;
         actions.Player.Interact.performed += _ => interactQueued = true;
         actions.Player.Clone.performed += _ => CloneQueued = true;
+        actions.Player.ControlHourglass.performed += _ => controllingHourglassQueued = true;
         //actions.Player.Crouch.performed += _ => crouchQueued = true;
         //actions.Player.ChangePerspective.performed += _ => changePerspectiveQueued = true;
     }
@@ -57,6 +61,7 @@ public class PlayerInputProvider : MonoBehaviour
             look = actions.Player.Look.ReadValue<Vector2>(),
             jump = jumpQueued,
             interactPressed = interactQueued,
+            controllingHourglass = controllingHourglassQueued,
             interactHeld = actions.Player.Interact.IsPressed(),
             cameraForward = controller.cameraTransform.eulerAngles.y
             //run = actions.Player.Run.IsPressed(),
@@ -69,6 +74,7 @@ public class PlayerInputProvider : MonoBehaviour
         jumpQueued = false;
         interactQueued = false;
         CloneQueued = false;
+        controllingHourglassQueued = false;
         //crouchQueued = false;
         //changePerspectiveQueued = false;
 

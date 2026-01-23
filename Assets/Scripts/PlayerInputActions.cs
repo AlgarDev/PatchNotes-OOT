@@ -181,6 +181,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ControlHourglass"",
+                    ""type"": ""Button"",
+                    ""id"": ""a327518e-572e-46be-89e0-4e1f1b70257b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -535,6 +544,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Clone"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2c87fa7a-bf5b-4275-851d-892b152c255b"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ControlHourglass"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -553,6 +573,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_ChangePerspective = m_Player.FindAction("Change Perspective", throwIfNotFound: true);
         m_Player_Clone = m_Player.FindAction("Clone", throwIfNotFound: true);
+        m_Player_ControlHourglass = m_Player.FindAction("ControlHourglass", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -643,6 +664,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_ChangePerspective;
     private readonly InputAction m_Player_Clone;
+    private readonly InputAction m_Player_ControlHourglass;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -694,6 +716,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Clone".
         /// </summary>
         public InputAction @Clone => m_Wrapper.m_Player_Clone;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/ControlHourglass".
+        /// </summary>
+        public InputAction @ControlHourglass => m_Wrapper.m_Player_ControlHourglass;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -750,6 +776,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Clone.started += instance.OnClone;
             @Clone.performed += instance.OnClone;
             @Clone.canceled += instance.OnClone;
+            @ControlHourglass.started += instance.OnControlHourglass;
+            @ControlHourglass.performed += instance.OnControlHourglass;
+            @ControlHourglass.canceled += instance.OnControlHourglass;
         }
 
         /// <summary>
@@ -791,6 +820,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Clone.started -= instance.OnClone;
             @Clone.performed -= instance.OnClone;
             @Clone.canceled -= instance.OnClone;
+            @ControlHourglass.started -= instance.OnControlHourglass;
+            @ControlHourglass.performed -= instance.OnControlHourglass;
+            @ControlHourglass.canceled -= instance.OnControlHourglass;
         }
 
         /// <summary>
@@ -901,5 +933,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnClone(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ControlHourglass" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnControlHourglass(InputAction.CallbackContext context);
     }
 }

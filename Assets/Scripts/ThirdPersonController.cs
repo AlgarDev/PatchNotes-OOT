@@ -1,9 +1,12 @@
+using Cinemachine;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 public class ThirdPersonController : MonoBehaviour
 {
     public static ThirdPersonController Instance;
 
     [SerializeField] public Transform cameraTransform;
+    [SerializeField] public CinemachineFreeLook cinemachineFreeLook;
 
     [Header("Toggles")]
     [SerializeField] private bool canMove = true;
@@ -69,6 +72,13 @@ public class ThirdPersonController : MonoBehaviour
 
     public CharacterController controller;
     private Vector3 velocity;
+
+    [field: Header("Hourglass")]
+    [field: SerializeField] public InteractableBox Hourglass { get; private set; }
+    private bool controllingHourglass;
+    private Vector3 storedPlayerPosition;
+    private Quaternion storedPlayerRotation;
+
 
     private void Awake()
     {
@@ -141,6 +151,10 @@ public class ThirdPersonController : MonoBehaviour
 
     private void HandleEdgeInputs()
     {
+        if (currentInput.controllingHourglass && !previousInput.controllingHourglass)
+        {
+            ToggleHourglassControl();
+        }
         if (canJump && currentInput.jump && !previousInput.jump)
             Jump();
         if (canInteract)
@@ -388,6 +402,69 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
         Gizmos.DrawRay(interactorSource.transform.position, interactorSource.transform.forward * interactRange);
 
     }
+    public void ToggleHourglassControl()
+    {
+        controllingHourglass = !controllingHourglass;
+        currentInput.controllingHourglass = controllingHourglass;
+
+        if (controllingHourglass)
+        {
+            // store player state
+            storedPlayerPosition = transform.position;
+            storedPlayerRotation = transform.rotation;
+
+            // swap positions
+            controller.enabled = false;
+            transform.position = Hourglass.transform.position;
+            transform.rotation = Hourglass.transform.rotation;
+            controller.enabled = true;
+            Hourglass.transform.position = storedPlayerPosition;
+            Hourglass.transform.rotation = storedPlayerRotation;
+
+            // disable player movement, enable hourglass physics
+            ChangeCanMove(false);
+            Hourglass.EnableControl(true);
+            if (IsPlayerControlled)
+            {
+                cinemachineFreeLook.Follow = Hourglass.transform;
+                cinemachineFreeLook.LookAt = Hourglass.transform;
+                //TODO, ONLY PLAYER PAUSES THE SPAWNER TIMER---------------------------------
+            }
+            print(transform.position);
+        }
+        else
+        {
+            // swap back
+            Vector3 hgPos = Hourglass.transform.position;
+            Quaternion hgRot = Hourglass.transform.rotation;
+
+            Hourglass.transform.position = transform.position;
+            Hourglass.transform.rotation = transform.rotation;
+
+            controller.enabled = false;
+            transform.position = hgPos;
+            transform.rotation = hgRot;
+            controller.enabled = true;
+
+            ChangeCanMove(true);
+            Hourglass.EnableControl(false);
+
+            if (IsPlayerControlled)
+            {
+                cinemachineFreeLook.Follow = transform;
+                cinemachineFreeLook.LookAt = transform; 
+            }
+            print(Hourglass.transform.position);
+
+        }
+    }
+
+    public void SetHourglass(GameObject hourglass)
+    {
+        Hourglass = hourglass.GetComponent<InteractableBox>();
+        print(Hourglass.transform.position);
+    }
+
     //=========================SYSTEM===========================
     private void OnDestroy()
     {

@@ -9,6 +9,7 @@ public class CloneSpawningPlatform : MonoBehaviour
     [Header("Clone")]
     [SerializeField] private UnityEvent spawnClone;
     [SerializeField] private GameObject cloneObject;
+    [SerializeField] private GameObject cloneHourglass;
 
     [Header("Recording Timer")]
     [SerializeField] private float recordingDuration = 10f;
@@ -20,6 +21,7 @@ public class CloneSpawningPlatform : MonoBehaviour
     private bool isRecording = false;
 
     private GameObject currentClone;
+    private GameObject currentHourglass;
     private List<PlayerInputFrame> currentRecording;
 
     private Vector3 recordingStartPosition;
@@ -127,6 +129,12 @@ public class CloneSpawningPlatform : MonoBehaviour
         Debug.Log("Clone spawned");
         spawnClone?.Invoke();
         currentClone = Instantiate(cloneObject, CloneInputRecorder.Instance.gameObject.transform.position, CloneInputRecorder.Instance.gameObject.transform.rotation);
+        currentHourglass = Instantiate(cloneHourglass,
+            new Vector3(CloneInputRecorder.Instance.gameObject.transform.position.x,
+            CloneInputRecorder.Instance.gameObject.transform.position.y-100,
+            CloneInputRecorder.Instance.gameObject.transform.position.z),
+            CloneInputRecorder.Instance.gameObject.transform.rotation);
+        currentClone.GetComponent<ThirdPersonController>().SetHourglass(currentHourglass);
         // your spawn logic here
     }
 

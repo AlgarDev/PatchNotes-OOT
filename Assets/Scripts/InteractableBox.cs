@@ -20,7 +20,10 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
     [SerializeField] private float upwardBias = 0.2f;
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        if (TryGetComponent<Rigidbody>(out Rigidbody rigidBody))
+        {
+            rb = rigidBody;
+        }
         boxCollider = GetComponent<Collider>();
 
     }
@@ -93,4 +96,10 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
 
         holder = null;
     }
+    public void EnableControl(bool value)
+    {
+        //rb.isKinematic = !value;
+        //rb.useGravity = value;
+    }
+
 }

@@ -33,7 +33,8 @@ public class CloneSpawningPlatform : MonoBehaviour
     private bool cloneQueuedLastFrame;
 
     [Header("Visuals")]
-    [SerializeField] private MeshRenderer[] meshRenderers;
+    [SerializeField] private MeshRenderer[] platformFloorAndShine;
+    [SerializeField] private MeshRenderer platformBorder;
     private ColorsSO colors;
     [SerializeField] private GameObject shine;
 
@@ -152,7 +153,7 @@ public class CloneSpawningPlatform : MonoBehaviour
         currentClone = Instantiate(cloneObject, CloneInputRecorder.Instance.gameObject.transform.position, CloneInputRecorder.Instance.gameObject.transform.rotation);
         currentHourglass = Instantiate(cloneHourglass,
             new Vector3(CloneInputRecorder.Instance.gameObject.transform.position.x,
-            CloneInputRecorder.Instance.gameObject.transform.position.y-100,
+            CloneInputRecorder.Instance.gameObject.transform.position.y - 100,
             CloneInputRecorder.Instance.gameObject.transform.position.z),
             CloneInputRecorder.Instance.gameObject.transform.rotation);
         currentClone.GetComponent<ThirdPersonController>().SetHourglass(currentHourglass);
@@ -166,10 +167,19 @@ public class CloneSpawningPlatform : MonoBehaviour
 
     public void ChangeColor(ColorRef color)
     {
-        foreach (MeshRenderer mr in meshRenderers)
+        foreach (MeshRenderer mr in platformFloorAndShine)
         {
             Material mat = mr.material;
             mat.SetColor("_Color", colors.ReturnPlatformColor(color));
         }
+
+        int UVint = 0;
+        if (color == ColorRef.Green) UVint = 1;
+        if (color == ColorRef.Blue) UVint = 2;
+        if (color == ColorRef.Red) UVint = 3;
+        if (color == ColorRef.Pink) UVint = 4;
+        Material mat2 = platformBorder.material;
+        mat2.SetInt("_ColorInt", UVint);
+
     }
 }

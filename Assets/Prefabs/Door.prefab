@@ -47,9 +47,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 112cd63baf18ae44ca8ebb1f6ef5ff0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doorObject: {fileID: 8606328997963624611}
   doorCheckPrefab: {fileID: 763534316444629125, guid: c87f39ee7168b554f82a9d6e56bb88df, type: 3}
   doorCheckSpacing: 2
   doorSize: 4.1
+  openDoorY: 8.22
+  doorSpeed: 0.2
 --- !u!114 &-6736220802368226464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,16 +66,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttons: []
+  onRequirementUpdate:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3526365317692086350}
+        m_TargetAssemblyTypeName: Door, Assembly-CSharp
+        m_MethodName: UpdateCheckState
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onRequirementMet:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3526365317692086350}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 0
+        m_TargetAssemblyTypeName: Door, Assembly-CSharp
+        m_MethodName: OpenDoor
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -80,7 +98,20 @@ MonoBehaviour:
         m_CallState: 2
   onRequirementLost:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3526365317692086350}
+        m_TargetAssemblyTypeName: Door, Assembly-CSharp
+        m_MethodName: CloseDoor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  pressedCount: 0
 --- !u!1001 &1847188666754791298
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -206,13 +237,39 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a025f4ed13da0804483b0fd5035a7f70, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3213571043281862281}
   m_SourcePrefab: {fileID: 100100000, guid: a025f4ed13da0804483b0fd5035a7f70, type: 3}
 --- !u!4 &2705521214079140848 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a025f4ed13da0804483b0fd5035a7f70, type: 3}
   m_PrefabInstance: {fileID: 2450319149826958363}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3368729463021427018 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a025f4ed13da0804483b0fd5035a7f70, type: 3}
+  m_PrefabInstance: {fileID: 2450319149826958363}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3213571043281862281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3368729463021427018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidth: 1.5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1001 &8912266810708905458
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -287,8 +344,34 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 266f70ef1b8a1e745b5259b5a3764744, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2173040916488949865}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 266f70ef1b8a1e745b5259b5a3764744, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7951637233838495386}
   m_SourcePrefab: {fileID: 100100000, guid: 266f70ef1b8a1e745b5259b5a3764744, type: 3}
+--- !u!1 &8606328997963624611 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 266f70ef1b8a1e745b5259b5a3764744, type: 3}
+  m_PrefabInstance: {fileID: 8912266810708905458}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7951637233838495386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8606328997963624611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidth: 1.5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!4 &8945277012800678425 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 266f70ef1b8a1e745b5259b5a3764744, type: 3}

@@ -57,9 +57,10 @@ MonoBehaviour:
   recordingDuration: 10
   timerRemaining: 0
   timerPaused: 0
-  meshRenderers:
-  - {fileID: 2823560507319760670}
+  platformFloorAndShine:
   - {fileID: 6095991290621008135}
+  - {fileID: 2707237535145381260}
+  platformBorder: {fileID: 2823560507319760670}
   shine: {fileID: 4508936939782433881}
 --- !u!65 &5197859875121963727
 BoxCollider:
@@ -130,6 +131,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 1fa88c0a76dd7494c9f04cab36761fb9, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9fd7a32a76d4682439c64e465502a0af, type: 2}
     - target: {fileID: 919132149155446097, guid: 1fa88c0a76dd7494c9f04cab36761fb9, type: 3}
       propertyPath: m_Name
       value: TimePlatform
@@ -137,7 +142,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1fa88c0a76dd7494c9f04cab36761fb9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1203634822562072838}
   m_SourcePrefab: {fileID: 100100000, guid: 1fa88c0a76dd7494c9f04cab36761fb9, type: 3}
 --- !u!23 &2823560507319760670 stripped
 MeshRenderer:
@@ -149,6 +157,29 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1fa88c0a76dd7494c9f04cab36761fb9, type: 3}
   m_PrefabInstance: {fileID: 3525994098651507610}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4336879727482640075 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1fa88c0a76dd7494c9f04cab36761fb9, type: 3}
+  m_PrefabInstance: {fileID: 3525994098651507610}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1203634822562072838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4336879727482640075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidth: 1.5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1001 &3626417565893611784
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -210,6 +241,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33758966428df4c448a828f5e500c536, type: 3}
+--- !u!23 &2707237535145381260 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 33758966428df4c448a828f5e500c536, type: 3}
+  m_PrefabInstance: {fileID: 3626417565893611784}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3880175355334375139 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 33758966428df4c448a828f5e500c536, type: 3}

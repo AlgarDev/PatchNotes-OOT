@@ -41,7 +41,7 @@ public class PlayerColorManager : MonoBehaviour
 
     public void EnableHourglassSand()
     {
-        hourglass.gameObject.SetActive(true);
+        hourglassSand.gameObject.SetActive(true);
     }
 
     public void UpdateTargetValue(float target)

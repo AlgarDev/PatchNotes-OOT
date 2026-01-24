@@ -4,20 +4,74 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
+    [SerializeField] private GameObject doorObject;
     [SerializeField] private GameObject doorCheckPrefab;
     [SerializeField] private float doorCheckSpacing;
     [SerializeField] private float doorSize = 4.1f;
     private List<DoorCheck> doorChecks = new List<DoorCheck>();
+    private Animator doorAnimator;
+    [SerializeField] private float openDoorY = 8.22f;
+    private float currentDoorYTarget;
+    private Coroutine moveDoorCoroutine;
+    [SerializeField] private float doorSpeed = 0.2f;
 
     void Start()
     {
-        // TO DO: Spawn based on connected buttons
-        //SpawnDoorCheck(3);
+        doorAnimator = GetComponent<Animator>();
+        SpawnDoorCheck(GetComponent<ButtonController>().buttons.Count);
+    }
+
+    public void OpenDoor()
+    {
+        if (doorObject == null) return;
+        if (moveDoorCoroutine != null) StopCoroutine(moveDoorCoroutine);
+        currentDoorYTarget = openDoorY;
+        moveDoorCoroutine = StartCoroutine(MoveDoor());
+
+    }
+
+    public void CloseDoor()
+    {
+        if (doorObject == null) return;
+        if (moveDoorCoroutine != null) StopCoroutine(moveDoorCoroutine);
+        currentDoorYTarget = 0;
+        moveDoorCoroutine = StartCoroutine(MoveDoor());
+    }
+
+    private IEnumerator MoveDoor()
+    {
+        Vector3 startPosition = transform.localPosition;
+        Vector3 targetPosition = new Vector3(
+            startPosition.x,
+            currentDoorYTarget,
+            startPosition.z
+        );
+
+        float distance = Mathf.Abs(targetPosition.y - startPosition.y);
+        float duration = distance / doorSpeed;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / duration);
+
+            // Smooth interpolation using Lerp
+            transform.localPosition = Vector3.Lerp(startPosition, targetPosition, t);
+
+            yield return null; // Wait for next frame
+        }
+
+        // Ensure exact final position
+        transform.localPosition = targetPosition;
+        moveDoorCoroutine = null;
     }
 
 
-    private void SetDoorCheckStates(int numberOfChecks)
+    public void UpdateCheckState()
     {
+        int numberOfChecks = GetComponent<ButtonController>().pressedCount;
+
         if (numberOfChecks > doorChecks.Count) numberOfChecks = doorChecks.Count;
         for (int i = 0; i < numberOfChecks; i++)
         {
@@ -26,8 +80,7 @@ public class Door : MonoBehaviour
 
     }
 
-
-    private void SpawnDoorCheck(int numberOfChecks)
+    public void SpawnDoorCheck(int numberOfChecks)
     {
         float space = (doorSize * 2 - doorCheckSpacing) / numberOfChecks;
 

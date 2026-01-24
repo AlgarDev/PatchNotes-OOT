@@ -5,18 +5,18 @@ using UnityEngine.Events;
 public class ButtonController : MonoBehaviour
 {
     [Header("When all buttons in this list are pressed")]
-    [SerializeField] private List<InteractableButton> buttons;
+    [SerializeField] public List<InteractableButton> buttons;
 
     [Header("Events")]
     [SerializeField]
-    public UnityEvent<int> onRequirementUpdate;
+    public UnityEvent onRequirementUpdate;
     [SerializeField]
     public UnityEvent onRequirementMet;
     [SerializeField]
     public UnityEvent onRequirementLost;
 
     private bool requirementMet;
-    int pressedCount = 0;
+    public int pressedCount = 0;
     private void Awake()
     {
         foreach (var button in buttons)
@@ -37,9 +37,9 @@ public class ButtonController : MonoBehaviour
                 pressedCount++; //this shit isn't reseting nigga
         }
 
-        //onRequirementUpdate.Invoke(pressedCount);
-
         bool nowMet = pressedCount >= requiredPressed;
+
+        onRequirementUpdate.Invoke();
 
         if (nowMet && !requirementMet)
         {

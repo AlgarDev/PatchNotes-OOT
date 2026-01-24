@@ -1,6 +1,7 @@
 using Cinemachine;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.EventSystems;
 public class ThirdPersonController : MonoBehaviour
 {
     public static ThirdPersonController Instance;
@@ -70,6 +71,7 @@ public class ThirdPersonController : MonoBehaviour
     private PlayerInputFrame currentInput;
     private PlayerInputFrame previousInput;
 
+    private CloneSpawningPlatform activeSpawner;
     public CharacterController controller;
     private Vector3 velocity;
 
@@ -78,6 +80,11 @@ public class ThirdPersonController : MonoBehaviour
     private bool controllingHourglass;
     private Vector3 storedPlayerPosition;
     private Quaternion storedPlayerRotation;
+
+    private MovingPlatform currentPlatform;
+    private Vector3 lastPlatformGhostPosition;
+
+    private float verticalVelocity;
 
 
     private void Awake()
@@ -161,11 +168,58 @@ public class ThirdPersonController : MonoBehaviour
             HandleInteractInput();
     }
 
+    //void HandleMovement(float cameraForward)
+    //{
+    //    if (!canMove)
+    //    {
+    //        // Decelerate when can't move
+    //        if (currentSpeed > 0f)
+    //        {
+    //            currentSpeed = Mathf.Max(0f, currentSpeed - deceleration * Time.deltaTime);
+    //        }
+    //        return;
+    //    }
+
+    //    Vector3 input = new Vector3(currentInput.move.x, 0, currentInput.move.y).normalized;
+    //    Vector3 direction = new Vector3(input.x, 0f, input.z).normalized;
+
+    //    if (direction.magnitude >= 0.1f)
+    //    {
+    //        float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cameraForward;
+
+    //        // Smooth rotation using turn speed
+    //        float angleDifference = Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
+    //        float maxRotation = turnSpeed * Time.deltaTime;
+    //        float rotationAmount = Mathf.Clamp(angleDifference, -maxRotation, maxRotation);
+    //        float angle = transform.eulerAngles.y + rotationAmount;
+    //        transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+    //        // Accelerate
+    //        currentSpeed = Mathf.Min(topWalkSpeed, currentSpeed + acceleration * Time.deltaTime);
+
+    //        Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+    //        controller.Move(moveDir.normalized * currentSpeed * Time.deltaTime);
+    //    }
+    //    else
+    //    {
+    //        // Decelerate when no input
+    //        if (currentSpeed > 0f)
+    //        {
+    //            currentSpeed = Mathf.Max(0f, currentSpeed - deceleration * Time.deltaTime);
+
+    //            // Apply residual momentum in current direction
+    //            if (currentSpeed > 0f)
+    //            {
+    //                Vector3 moveDir = transform.forward;
+    //                controller.Move(moveDir * currentSpeed * Time.deltaTime);
+    //            }
+    //        }
+    //    }
+    //}
     void HandleMovement(float cameraForward)
     {
         if (!canMove)
         {
-            // Decelerate when can't move
             if (currentSpeed > 0f)
             {
                 currentSpeed = Mathf.Max(0f, currentSpeed - deceleration * Time.deltaTime);
@@ -176,38 +230,47 @@ public class ThirdPersonController : MonoBehaviour
         Vector3 input = new Vector3(currentInput.move.x, 0, currentInput.move.y).normalized;
         Vector3 direction = new Vector3(input.x, 0f, input.z).normalized;
 
+        Vector3 moveDirection = Vector3.zero;
+
         if (direction.magnitude >= 0.1f)
         {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cameraForward;
 
-            // Smooth rotation using turn speed
             float angleDifference = Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
             float maxRotation = turnSpeed * Time.deltaTime;
             float rotationAmount = Mathf.Clamp(angleDifference, -maxRotation, maxRotation);
             float angle = transform.eulerAngles.y + rotationAmount;
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
-            // Accelerate
             currentSpeed = Mathf.Min(topWalkSpeed, currentSpeed + acceleration * Time.deltaTime);
 
-            Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            controller.Move(moveDir.normalized * currentSpeed * Time.deltaTime);
+            moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
         }
         else
         {
-            // Decelerate when no input
             if (currentSpeed > 0f)
             {
                 currentSpeed = Mathf.Max(0f, currentSpeed - deceleration * Time.deltaTime);
-
-                // Apply residual momentum in current direction
-                if (currentSpeed > 0f)
-                {
-                    Vector3 moveDir = transform.forward;
-                    controller.Move(moveDir * currentSpeed * Time.deltaTime);
-                }
+                moveDirection = transform.forward;
             }
         }
+
+        Vector3 finalMove = moveDirection.normalized * currentSpeed;
+        finalMove.y = verticalVelocity;
+
+        if (platformGhost != null)
+        {
+            Vector3 platformDelta = platformGhost.position - lastPlatformGhostPosition;
+            finalMove += platformDelta / Time.deltaTime;
+        }
+
+        controller.Move(finalMove * Time.deltaTime);
+
+        if (platformGhost != null)
+        {
+            lastPlatformGhostPosition = platformGhost.position;
+        }
+
     }
 
     private void HandleMeshTilt(float cameraForward)
@@ -239,8 +302,37 @@ public class ThirdPersonController : MonoBehaviour
         characterMesh.localRotation = Quaternion.Euler(0f, 0f, currentMeshTilt);
     }
 
+    //private void HandleGravity()
+    //{
+    //    if (isJumping)
+    //    {
+    //        jumpTimer += Time.deltaTime;
+
+    //        if (jumpTimer >= JumpTime)
+    //        {
+    //            isJumping = false;
+    //            currentGravity = Gravity;
+    //            jumpTimer = 0f;
+    //        }
+    //    }
+    //    if (controller.isGrounded == false)
+    //    {
+    //        Debug.Log("is player grounded? " + controller.isGrounded);
+
+    //        // print("velocity.y increasing");
+    //        //print("is player grounded? " + controller.isGrounded);
+    //        velocity.y += currentGravity * Time.deltaTime;
+    //    controller.Move(velocity * Time.deltaTime);
+    //    }
+
+    //}
     private void HandleGravity()
     {
+        if (controller.isGrounded && verticalVelocity < 0f)
+        {
+            verticalVelocity = -2f; // small downward bias to stay grounded
+        }
+
         if (isJumping)
         {
             jumpTimer += Time.deltaTime;
@@ -249,33 +341,43 @@ public class ThirdPersonController : MonoBehaviour
             {
                 isJumping = false;
                 currentGravity = Gravity;
-                jumpTimer = 0f;
             }
         }
-        velocity.y += currentGravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
-
+        verticalVelocity += currentGravity * Time.deltaTime;
     }
 
+    //private void Jump()
+    //{
+    //    Debug.Log("is player grounded? "+controller.isGrounded);
+    //    if (!canJump)
+    //        return;
+
+    //    if (controller.isGrounded)
+    //    {
+    //        //Debug.Log(controller.isGrounded);
+    //        float requiredVelocity = (JumpHeight - (0.5f * JumpGravity * JumpTime * JumpTime)) / JumpTime;
+    //        velocity.y = requiredVelocity;
+
+    //        currentGravity = JumpGravity;
+    //        isJumping = true;
+    //        jumpTimer = 0f;
+
+    //        animationController.SetTrigger("Jump");
+    //    }
+    //}
     private void Jump()
     {
-        Debug.Log(controller.isGrounded);
-        if (!canJump)
+        if (!canJump || !controller.isGrounded)
             return;
 
-        if (controller.isGrounded)
-        {
-            Debug.Log(controller.isGrounded);
-            float requiredVelocity = (JumpHeight - (0.5f * JumpGravity * JumpTime * JumpTime)) / JumpTime;
-            velocity.y = requiredVelocity;
+        verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * JumpGravity);
+        currentGravity = JumpGravity;
+        isJumping = true;
+        jumpTimer = 0f;
 
-            currentGravity = JumpGravity;
-            isJumping = true;
-            jumpTimer = 0f;
-
-            animationController.SetTrigger("Jump");
-        }
+        animationController.SetTrigger("Jump");
     }
+
 
     public void ChangeCanMove(bool value)
     {
@@ -402,6 +504,7 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
         Gizmos.DrawRay(interactorSource.transform.position, interactorSource.transform.forward * interactRange);
 
     }
+    //=======================HOURGLASS============================
     public void ToggleHourglassControl()
     {
         controllingHourglass = !controllingHourglass;
@@ -428,9 +531,11 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
             {
                 cinemachineFreeLook.Follow = Hourglass.transform;
                 cinemachineFreeLook.LookAt = Hourglass.transform;
-                //TODO, ONLY PLAYER PAUSES THE SPAWNER TIMER---------------------------------
+                if (activeSpawner != null)
+                {
+                    activeSpawner.PauseTimer(controllingHourglass);
+                }
             }
-            print(transform.position);
         }
         else
         {
@@ -452,10 +557,12 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
             if (IsPlayerControlled)
             {
                 cinemachineFreeLook.Follow = transform;
-                cinemachineFreeLook.LookAt = transform; 
+                cinemachineFreeLook.LookAt = transform;
+                if (activeSpawner != null)
+                {
+                    activeSpawner.PauseTimer(controllingHourglass);
+                }
             }
-            print(Hourglass.transform.position);
-
         }
     }
 
@@ -464,6 +571,27 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
         Hourglass = hourglass.GetComponent<InteractableBox>();
         print(Hourglass.transform.position);
     }
+    //=====================PLATFORMS=============================
+    [SerializeField] private Transform platformGhost;
+
+    public void SetPlatformGhost(Transform ghost)
+    {
+        platformGhost = ghost;
+        lastPlatformGhostPosition = ghost.position;
+    }
+
+
+    public void ClearPlatformGhost(Transform ghost)
+    {
+        if (platformGhost == ghost)
+            platformGhost = null;
+    }
+    //==========================SETTERS========================
+    public void SetActiveSpawner(CloneSpawningPlatform spawner)
+    {
+        activeSpawner = spawner;
+    }
+
 
     //=========================SYSTEM===========================
     private void OnDestroy()

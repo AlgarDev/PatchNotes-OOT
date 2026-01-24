@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MAT_Props
-  m_Shader: {fileID: -6465566751694194690, guid: 0e2d4d1d8b7457b46b56bb7d1e378bd3, type: 3}
+  m_Name: MAT_DoorSymbol
+  m_Shader: {fileID: -6465566751694194690, guid: 8ddd4bc3cc209a64f984c023c06812b7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -23,12 +23,8 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _SampleTexture2D_982efc5f71da4917858204519b934360_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 05a87aac8a0524844bfa50bd845a6b07, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _Texture2D:
-        m_Texture: {fileID: 2800000, guid: 05a87aac8a0524844bfa50bd845a6b07, type: 3}
+        m_Texture: {fileID: 2800000, guid: aff09310c3d86ca49a98b1b88021308b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -39,7 +35,7 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &5177121062814646267
+--- !u!114 &305836270773583970
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

@@ -23,15 +23,31 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _ColorTexture:
+        m_Texture: {fileID: 2800000, guid: eacbabea94c87a043bc46c8354d462f2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTexture:
+        m_Texture: {fileID: 2800000, guid: 8de42ea52478c8645bbf3c9308a81a6e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_982efc5f71da4917858204519b934360_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: 8de42ea52478c8645bbf3c9308a81a6e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture2D:
-        m_Texture: {fileID: 2800000, guid: 8de42ea52478c8645bbf3c9308a81a6e, type: 3}
+        m_Texture: {fileID: 2800000, guid: eacbabea94c87a043bc46c8354d462f2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture2DAsset_312edaa1f8d24db591e579a96ff9401c_Out_0_Texture2D:
+        m_Texture: {fileID: 2800000, guid: eacbabea94c87a043bc46c8354d462f2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_3b2e1f5f8b5d44bcacf46ead88fbf5db_Out_0_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 8de42ea52478c8645bbf3c9308a81a6e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_9a3f2bdeaa4a4e60aaa0ec5f6ed17ea6_Out_0_Texture2D:
         m_Texture: {fileID: 2800000, guid: eacbabea94c87a043bc46c8354d462f2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -43,7 +59,7 @@ Material:
     m_Floats:
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
-    - _ColorInt: 0
+    - _ColorInt: 1
     - _Fill: 0.728
     - _Float: 2.26
     - _UV: 1

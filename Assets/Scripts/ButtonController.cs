@@ -2,12 +2,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ButtonController: MonoBehaviour
+public class ButtonController : MonoBehaviour
 {
     [Header("When all buttons in this list are pressed")]
     [SerializeField] private List<InteractableButton> buttons;
 
     [Header("Events")]
+    [SerializeField]
+    public UnityEvent<int> onRequirementUpdate;
     [SerializeField]
     public UnityEvent onRequirementMet;
     [SerializeField]
@@ -34,6 +36,8 @@ public class ButtonController: MonoBehaviour
             if (button != null && button.IsPressed)
                 pressedCount++; //this shit isn't reseting nigga
         }
+
+        //onRequirementUpdate.Invoke(pressedCount);
 
         bool nowMet = pressedCount >= requiredPressed;
 

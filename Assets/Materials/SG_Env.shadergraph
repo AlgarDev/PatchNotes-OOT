@@ -266,7 +266,7 @@
     "m_SubDatas": [],
     "m_ActiveTargets": [
         {
-            "m_Id": "77b92da77a904b599612f84e7fe09d38"
+            "m_Id": "8737e8d71cb846cb9733ae0ae85c0de2"
         }
     ]
 }
@@ -1053,23 +1053,6 @@
 }
 
 {
-    "m_SGVersion": 2,
-    "m_Type": "UnityEditor.Rendering.BuiltIn.ShaderGraph.BuiltInTarget",
-    "m_ObjectId": "77b92da77a904b599612f84e7fe09d38",
-    "m_ActiveSubTarget": {
-        "m_Id": "c440b6f32f5246dd8821f66b6a13e06e"
-    },
-    "m_AllowMaterialOverride": false,
-    "m_SurfaceType": 0,
-    "m_ZWriteControl": 0,
-    "m_ZTestMode": 4,
-    "m_AlphaMode": 0,
-    "m_RenderFace": 2,
-    "m_AlphaClip": false,
-    "m_CustomEditorGUI": ""
-}
-
-{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
     "m_ObjectId": "7d2c2577b9494b73863a6df61f2f95e7",
@@ -1200,6 +1183,28 @@
     "m_Property": {
         "m_Id": "b9effa3dc85a4af08895a28f81fdc507"
     }
+}
+
+{
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.Rendering.Universal.ShaderGraph.UniversalTarget",
+    "m_ObjectId": "8737e8d71cb846cb9733ae0ae85c0de2",
+    "m_Datas": [],
+    "m_ActiveSubTarget": {
+        "m_Id": "da4b76b7458844d38f16997edb4ec5fa"
+    },
+    "m_AllowMaterialOverride": false,
+    "m_SurfaceType": 0,
+    "m_ZTestMode": 4,
+    "m_ZWriteControl": 0,
+    "m_AlphaMode": 0,
+    "m_RenderFace": 2,
+    "m_AlphaClip": false,
+    "m_CastShadows": true,
+    "m_ReceiveShadows": true,
+    "m_SupportsLODCrossFade": false,
+    "m_CustomEditorGUI": "",
+    "m_SupportVFX": false
 }
 
 {
@@ -1481,12 +1486,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.Rendering.BuiltIn.ShaderGraph.BuiltInUnlitSubTarget",
-    "m_ObjectId": "c440b6f32f5246dd8821f66b6a13e06e"
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicValueMaterialSlot",
     "m_ObjectId": "c444519301fa4970af24381f47771bc1",
     "m_Id": 2,
@@ -1733,6 +1732,12 @@
         "x": 0.0,
         "y": 0.0
     }
+}
+
+{
+    "m_SGVersion": 2,
+    "m_Type": "UnityEditor.Rendering.Universal.ShaderGraph.UniversalUnlitSubTarget",
+    "m_ObjectId": "da4b76b7458844d38f16997edb4ec5fa"
 }
 
 {

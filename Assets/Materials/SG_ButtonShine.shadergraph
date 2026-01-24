@@ -366,8 +366,8 @@
     },
     "m_FragmentContext": {
         "m_Position": {
-            "x": 951.9999389648438,
-            "y": 336.9999694824219
+            "x": 1142.0,
+            "y": 327.0
         },
         "m_Blocks": [
             {
@@ -394,7 +394,7 @@
     "m_SubDatas": [],
     "m_ActiveTargets": [
         {
-            "m_Id": "a2b8104f5bd048a28ace9803c753ea4c"
+            "m_Id": "ce858adfeae14303931860a047af024f"
         }
     ]
 }
@@ -1212,6 +1212,12 @@
         "e32": 0.0,
         "e33": 1.0
     }
+}
+
+{
+    "m_SGVersion": 2,
+    "m_Type": "UnityEditor.Rendering.Universal.ShaderGraph.UniversalUnlitSubTarget",
+    "m_ObjectId": "4e37268da61849d0b169a16c7ed077bd"
 }
 
 {
@@ -2109,23 +2115,6 @@
 }
 
 {
-    "m_SGVersion": 2,
-    "m_Type": "UnityEditor.Rendering.BuiltIn.ShaderGraph.BuiltInTarget",
-    "m_ObjectId": "a2b8104f5bd048a28ace9803c753ea4c",
-    "m_ActiveSubTarget": {
-        "m_Id": "cecf0fefa75849ca87c9c9716d7b0235"
-    },
-    "m_AllowMaterialOverride": false,
-    "m_SurfaceType": 1,
-    "m_ZWriteControl": 0,
-    "m_ZTestMode": 4,
-    "m_AlphaMode": 0,
-    "m_RenderFace": 0,
-    "m_AlphaClip": false,
-    "m_CustomEditorGUI": ""
-}
-
-{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicValueMaterialSlot",
     "m_ObjectId": "a2d6d7a1ac5e4f12bc525484fb959b11",
@@ -2470,9 +2459,25 @@
 }
 
 {
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.Rendering.BuiltIn.ShaderGraph.BuiltInUnlitSubTarget",
-    "m_ObjectId": "cecf0fefa75849ca87c9c9716d7b0235"
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.Rendering.Universal.ShaderGraph.UniversalTarget",
+    "m_ObjectId": "ce858adfeae14303931860a047af024f",
+    "m_Datas": [],
+    "m_ActiveSubTarget": {
+        "m_Id": "4e37268da61849d0b169a16c7ed077bd"
+    },
+    "m_AllowMaterialOverride": false,
+    "m_SurfaceType": 1,
+    "m_ZTestMode": 4,
+    "m_ZWriteControl": 0,
+    "m_AlphaMode": 0,
+    "m_RenderFace": 0,
+    "m_AlphaClip": false,
+    "m_CastShadows": true,
+    "m_ReceiveShadows": true,
+    "m_SupportsLODCrossFade": false,
+    "m_CustomEditorGUI": "",
+    "m_SupportVFX": false
 }
 
 {

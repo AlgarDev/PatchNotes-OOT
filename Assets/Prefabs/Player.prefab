@@ -240,7 +240,7 @@ MonoBehaviour:
   meshTiltSpeed: 5
   <JumpGravity>k__BackingField: -6
   <Gravity>k__BackingField: -50
-  <JumpHeight>k__BackingField: 2
+  <JumpHeight>k__BackingField: 8
   <JumpTime>k__BackingField: 0.2
   interactorSource: {fileID: 9162232954335003176}
   <grabPivot>k__BackingField: {fileID: 8271743224450882865}
@@ -254,6 +254,7 @@ MonoBehaviour:
   <IsPlayerControlled>k__BackingField: 1
   controller: {fileID: 0}
   <Hourglass>k__BackingField: {fileID: 0}
+  platformGhost: {fileID: 0}
 --- !u!114 &3613058007820986645
 MonoBehaviour:
   m_ObjectHideFlags: 0

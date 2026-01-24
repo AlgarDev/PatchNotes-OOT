@@ -108,7 +108,8 @@ public class CloneSpawningPlatform : MonoBehaviour
 
     private void StartRecording()
     {
-        // Start playback on existing clones
+        CleanupSpawnedObjects();
+
         foreach (var clone in FindObjectsOfType<CloneController>())
         {
             clone.StartPlayback();
@@ -123,6 +124,8 @@ public class CloneSpawningPlatform : MonoBehaviour
 
         CloneInputRecorder.Instance.StartRecording();
         isRecording = true;
+        player.SetActiveSpawner(this);
+
     }
 
     private void StopRecording()
@@ -144,6 +147,10 @@ public class CloneSpawningPlatform : MonoBehaviour
         player.transform.position = recordingStartPosition;
         player.transform.rotation = recordingStartRotation;
         player.controller.enabled = true;
+
+        player.SetActiveSpawner(null);
+        timerPaused = false;
+
     }
 
     private void SpawnClone()
@@ -181,5 +188,28 @@ public class CloneSpawningPlatform : MonoBehaviour
         Material mat2 = platformBorder.material;
         mat2.SetInt("_ColorInt", UVint);
 
+    }
+    public void CleanupSpawnedObjects()
+    {
+        if (currentClone != null)
+        {
+            Destroy(currentClone);
+            currentClone = null;
+        }
+
+        if (currentHourglass != null)
+        {
+            Destroy(currentHourglass);
+            currentHourglass = null;
+        }
+
+        currentRecording = null;
+        isRecording = false;
+        timerPaused = false;
+        timerRemaining = 0f;
+    }
+    private void OnDestroy()
+    {
+        CleanupSpawnedObjects();
     }
 }

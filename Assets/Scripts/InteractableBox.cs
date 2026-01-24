@@ -18,6 +18,9 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
     private Collider boxCollider;
     [SerializeField] private float throwForce = 8f;
     [SerializeField] private float upwardBias = 0.2f;
+    private Transform platformGhost;
+    private Vector3 lastPlatformGhostPosition;
+
     private void Awake()
     {
         if (TryGetComponent<Rigidbody>(out Rigidbody rigidBody))
@@ -26,6 +29,18 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
         }
         boxCollider = GetComponent<Collider>();
 
+    }
+    private void FixedUpdate()
+    {
+        if (platformGhost == null)
+            return;
+
+        if (rb.isKinematic)
+            return;
+
+        Vector3 platformDelta = platformGhost.position - lastPlatformGhostPosition;
+        rb.MovePosition(rb.position + platformDelta);
+        lastPlatformGhostPosition = platformGhost.position;
     }
 
     public void Interact(ThirdPersonController interactor)
@@ -98,8 +113,19 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
     }
     public void EnableControl(bool value)
     {
-        //rb.isKinematic = !value;
-        //rb.useGravity = value;
+        rb.isKinematic = !value;
+        rb.useGravity = value;
+    }
+    public void SetPlatformGhost(Transform ghost)
+    {
+        platformGhost = ghost;
+        lastPlatformGhostPosition = ghost.position;
+    }
+
+    public void ClearPlatformGhost(Transform ghost)
+    {
+        if (platformGhost == ghost)
+            platformGhost = null;
     }
 
 }

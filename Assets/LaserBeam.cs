@@ -27,7 +27,7 @@ public class LaserBeam : MonoBehaviour
         float distance = Vector3.Distance(startPoint.position, endPoint.position);
 
         // Check if something is blocking the laser
-        if (Physics.Raycast(startPoint.position, direction, out RaycastHit hitBlocker, distance, blockerLayer))
+        if (Physics.Raycast(startPoint.position, direction, out RaycastHit hitBlocker, distance, blockerLayer) && !hitBlocker.collider.isTrigger)
         {
             // Laser is blocked, cut it at the blocker
             Vector3 targetLocalPos = lineRenderer.transform.InverseTransformPoint(hitBlocker.point);

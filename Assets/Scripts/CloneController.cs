@@ -13,6 +13,8 @@ public class CloneController : MonoBehaviour
     private bool hasFinished;
     private bool isPlaying; // NEW
 
+    public CloneSpawningPlatform activeSpawner;
+
     [SerializeField]
     private GameObject corpseObject;
 
@@ -57,19 +59,15 @@ public class CloneController : MonoBehaviour
 
     private void OnFinished()
     {
-        if (hasFinished) return;
-        hasFinished = true;
-
-        isPlaying = false;
-        recordedFrames?.Clear();
         movementController.ToggleHourglassControl();
+        //var corpse = Instantiate(corpseObject, transform.position + Vector3.up, Quaternion.identity);
+        //corpse.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        //corpse.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        //corpse.GetComponent<Rigidbody>().isKinematic = true;
         movementController.SetInput(default);
-
         Debug.Log($"{name} finished playback");
+        //Destroy(gameObject);
     }
 
-    public void StopPlayback()
-    {
-        OnFinished();
-    }
+    public bool IsFinished() => hasFinished;
 }

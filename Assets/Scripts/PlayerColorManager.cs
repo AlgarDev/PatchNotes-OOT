@@ -8,6 +8,7 @@ public class PlayerColorManager : MonoBehaviour
 
     [SerializeField] private MeshRenderer[] meshRenderers;
     [SerializeField] private MeshRenderer hourglassSand;
+    [SerializeField] private MeshRenderer hourglassPlatform;
     [SerializeField] private GameObject hourglass;
     [SerializeField] private float maxSand = 0.7f;
     private ColorsSO colors;
@@ -36,7 +37,25 @@ public class PlayerColorManager : MonoBehaviour
         Material mat2 = hourglassSand.material;
         mat2.SetFloat("_ColorInt", UVint);
 
+        if (hourglassPlatform != null)
+        {
+            Material mat3 = hourglassPlatform.material;
+            mat3.SetFloat("_ColorInt", UVint);
+        }
+
         //Change grabable hourglass as well
+    }
+
+    public void GhostState(bool state)
+    {
+        int i = 0;
+        if (state) i = 1;
+        foreach (MeshRenderer mr in meshRenderers)
+        {
+            Material mat = mr.material;
+            mat.SetInt("_Ghost", i);
+        }
+
     }
 
     public void EnableHourglassSand()

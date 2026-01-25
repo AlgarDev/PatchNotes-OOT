@@ -9,6 +9,7 @@ interface IGrabbable
     public void Drop(ThirdPersonController interactor);
     public void Throw(ThirdPersonController interactor);
 }
+[RequireComponent(typeof(Rigidbody))]
 public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
 {
     private Rigidbody rb;
@@ -19,7 +20,6 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
     [SerializeField] private float upwardBias = 0.2f;
     private Transform platformGhost;
     private Vector3 lastPlatformGhostPosition;
-    private Quaternion originalRot;
 
     private void Awake()
     {
@@ -28,7 +28,6 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
             rb = rigidBody;
         }
         boxCollider = GetComponent<Collider>();
-        originalRot = transform.rotation;
 
     }
     private void FixedUpdate()
@@ -55,23 +54,21 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
 
     public void Pickup(ThirdPersonController interactor)
     {
-        if (interactor == null) return;
-
+        if (interactor == null || interactor.transform == null)
+            return;
         holder = interactor;
         isHeld = true;
-
         rb.useGravity = false;
+
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-        rb.isKinematic = true;
 
-        rb.constraints = RigidbodyConstraints.FreezeRotation;
+        gameObject.transform.position = interactor.grabPivot.position;
         boxCollider.isTrigger = true;
-
         transform.SetParent(interactor.grabPivot);
+        rb.isKinematic = true;
+        rb.interpolation = RigidbodyInterpolation.None;
 
-        transform.position = interactor.grabPivot.position;
-        transform.rotation = new Quaternion(0.224952295f, -0.608373523f, 0.662968934f, -0.373831898f);
     }
 
     public void Drop(ThirdPersonController interactor)
@@ -81,11 +78,9 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
         boxCollider.isTrigger = false;
 
         rb.isKinematic = false;
-        rb.interpolation = RigidbodyInterpolation.None;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
         rb.useGravity = true;
         transform.SetParent(null);
-        transform.rotation = Quaternion.identity;
-
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
@@ -103,15 +98,13 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
 
         rb.isKinematic = false;
         rb.useGravity = true;
-        rb.interpolation = RigidbodyInterpolation.None;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
 
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
         // Calculate throw direction
         Vector3 throwDirection = (interactor.transform.forward + Vector3.up * upwardBias).normalized;
-
-        transform.rotation = Quaternion.identity;
 
         // Apply impulse
         rb.AddForce(throwDirection * throwForce, ForceMode.Impulse);

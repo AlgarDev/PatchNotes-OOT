@@ -8,7 +8,7 @@ public class CloneSpawningPlatform : MonoBehaviour
 {
 
     [Header("Clone")]
-    [SerializeField] private ColorRef platformColor;
+    [SerializeField] public ColorRef platformColor;
     [SerializeField] private UnityEvent spawnClone;
     [SerializeField] private GameObject cloneObject;
     [SerializeField] private GameObject cloneHourglass;
@@ -22,7 +22,7 @@ public class CloneSpawningPlatform : MonoBehaviour
     private bool isPlayerInside;
     private bool isRecording = false;
 
-    private GameObject currentClone;
+    public GameObject currentClone;
     private GameObject currentHourglass;
     private List<PlayerInputFrame> currentRecording;
 
@@ -32,6 +32,8 @@ public class CloneSpawningPlatform : MonoBehaviour
 
     private bool cloneQueuedLastFrame;
 
+    public CloneManager manager;
+
     [Header("Visuals")]
     [SerializeField] private MeshRenderer[] platformFloorAndShine;
     [SerializeField] private MeshRenderer platformBorder;
@@ -39,16 +41,25 @@ public class CloneSpawningPlatform : MonoBehaviour
     [SerializeField] private GameObject shine;
 
 
+
+
     private void OnTriggerEnter(Collider other)
     {
         var controller = other.GetComponentInParent<ThirdPersonController>();
-        if (controller != null && controller.IsPlayerControlled)
+        if (controller != null && controller.IsPlayerControlled && manager.isRecording == false)
         {
             isPlayerInside = true;
             player = controller;
-            player.GetComponent<PlayerColorManager>().ChangeColor(platformColor);
-            player.GetComponent<PlayerColorManager>().EnableHourglassSand();
-            player.GetComponent<PlayerColorManager>().UpdateTargetValue(1);
+
+            if (manager.isRecording == false)
+            {
+                player.GetComponent<PlayerColorManager>().ChangeColor(platformColor);
+                player.GetComponent<PlayerColorManager>().EnableHourglassSand();
+                player.GetComponent<PlayerColorManager>().UpdateTargetValue(1);
+                UIManager.instance.UIState(true);
+                UIManager.instance.ChangeSliderColor(platformColor);
+                UIManager.instance.UpdateSliderValue(1, 1);
+            }
         }
     }
     private void OnTriggerExit(Collider other)
@@ -57,8 +68,14 @@ public class CloneSpawningPlatform : MonoBehaviour
         if (controller != null && controller.IsPlayerControlled)
         {
             isPlayerInside = false;
-            player.GetComponent<PlayerColorManager>().ChangeColor(ColorRef.Green);
-            player.GetComponent<PlayerColorManager>().DisableHourglassSand();
+            if (manager.isRecording == false)
+            {
+                player.GetComponent<PlayerColorManager>().ChangeColor(ColorRef.Green);
+                player.GetComponent<PlayerColorManager>().DisableHourglassSand();
+
+                UIManager.instance.UIState(false);
+            }
+            //to do : Dont change player color if recording
         }
     }
     private void Start()
@@ -99,6 +116,9 @@ public class CloneSpawningPlatform : MonoBehaviour
             return;
 
         timerRemaining -= Time.deltaTime;
+        UIManager.instance.UpdateSliderValue(timerRemaining, recordingDuration);
+        player.GetComponent<PlayerColorManager>().UpdateTargetValue(timerRemaining / recordingDuration);
+        if (currentHourglass != null) currentHourglass.GetComponent<PlayerColorManager>().UpdateTargetValue(timerRemaining / recordingDuration);
 
         if (timerRemaining <= 0f)
         {
@@ -108,14 +128,10 @@ public class CloneSpawningPlatform : MonoBehaviour
 
     private void StartRecording()
     {
-        CleanupSpawnedObjects();
+        if (manager.isRecording == true) return;
+        if (currentRecording != null) currentRecording = null;
 
-        foreach (var clone in FindObjectsOfType<CloneController>())
-        {
-            clone.StartPlayback();
-        }
-
-        SpawnClone();
+        Debug.Log("Started Recording " + platformColor.ToString());
 
         recordingStartPosition = player.transform.position;
         recordingStartRotation = player.transform.rotation;
@@ -125,22 +141,30 @@ public class CloneSpawningPlatform : MonoBehaviour
         CloneInputRecorder.Instance.StartRecording();
         isRecording = true;
         player.SetActiveSpawner(this);
+        manager.StartedRecording(this);
 
     }
 
-    private void StopRecording()
+    public void StopRecording()
     {
+        if (manager.isRecording == false) return;
+
+
+        Debug.Log("Stoped Recording " + platformColor.ToString());
         if (!isRecording)
             return;
 
-        if (shine != null) shine.SetActive(true);
-        CloneInputRecorder.Instance.StopRecording();
         isRecording = false;
 
-        currentRecording = new List<PlayerInputFrame>(CloneInputRecorder.Instance.Frames);
+        if (shine != null) shine.SetActive(true);
+        manager.StopedRecording(this);
 
-        var cloneController = currentClone.GetComponent<CloneController>();
-        cloneController.PassFrames(currentRecording);
+        //Visuals
+        CloneInputRecorder.Instance.StopRecording();
+        UIManager.instance.UIState(false);
+
+        //Save current recording
+        currentRecording = new List<PlayerInputFrame>(CloneInputRecorder.Instance.Frames);
 
         // Teleport player back
         player.controller.enabled = false;
@@ -153,18 +177,61 @@ public class CloneSpawningPlatform : MonoBehaviour
 
     }
 
+    public void StartPlaying()
+    {
+        SpawnClone();
+    }
+
+    public void DisableClone()
+    {
+        if (currentClone == null) return;
+        Debug.Log("Stoped Playback of " + platformColor.ToString());
+
+        if (currentClone != null)
+        {
+            Destroy(currentClone);
+            currentClone = null;
+        }
+
+        if (currentHourglass != null)
+        {
+            Destroy(currentHourglass);
+            currentHourglass = null;
+        }
+
+        isRecording = false;
+        timerPaused = false;
+        timerRemaining = 0f;
+    }
+
     private void SpawnClone()
     {
-        Debug.Log("Clone spawned");
-        spawnClone?.Invoke();
-        currentClone = Instantiate(cloneObject, CloneInputRecorder.Instance.gameObject.transform.position, CloneInputRecorder.Instance.gameObject.transform.rotation);
-        currentHourglass = Instantiate(cloneHourglass,
-            new Vector3(CloneInputRecorder.Instance.gameObject.transform.position.x,
-            CloneInputRecorder.Instance.gameObject.transform.position.y - 100,
-            CloneInputRecorder.Instance.gameObject.transform.position.z),
-            CloneInputRecorder.Instance.gameObject.transform.rotation);
-        currentClone.GetComponent<ThirdPersonController>().SetHourglass(currentHourglass);
+        if (currentRecording != null)
+        {
+            Debug.Log("Started Playback of " + platformColor.ToString());
+            spawnClone?.Invoke();
+            currentClone = Instantiate(cloneObject, recordingStartPosition, recordingStartRotation);
+            currentHourglass = Instantiate(cloneHourglass,
+                recordingStartPosition * -100,
+                Quaternion.identity);
+            currentClone.GetComponent<CloneController>().activeSpawner = this;
+            currentClone.GetComponent<ThirdPersonController>().SetHourglass(currentHourglass);
+            currentClone.GetComponent<PlayerColorManager>().GhostState(true);
+            currentClone.GetComponent<PlayerColorManager>().DisableHourglass();
+            currentClone.GetComponent<PlayerColorManager>().ChangeColor(platformColor);
+            currentHourglass.GetComponent<PlayerColorManager>().ChangeColor(platformColor);
+            currentHourglass.GetComponent<PlayerColorManager>().UpdateTargetValue(1);
+
+            currentClone.GetComponent<CloneController>().PassFrames(currentRecording);
+            currentClone.GetComponent<CloneController>().StartPlayback();
+        }
+
         // TO DO : CHANGE CLONE COLOR & DISABLE ITS HOURGLASS MODEL
+    }
+
+    public void StopEarly()
+    {
+        StopRecording();
     }
 
     public void PauseTimer(bool pause)
@@ -189,27 +256,8 @@ public class CloneSpawningPlatform : MonoBehaviour
         mat2.SetInt("_ColorInt", UVint);
 
     }
-    public void CleanupSpawnedObjects()
-    {
-        if (currentClone != null)
-        {
-            Destroy(currentClone);
-            currentClone = null;
-        }
-
-        if (currentHourglass != null)
-        {
-            Destroy(currentHourglass);
-            currentHourglass = null;
-        }
-
-        currentRecording = null;
-        isRecording = false;
-        timerPaused = false;
-        timerRemaining = 0f;
-    }
     private void OnDestroy()
     {
-        CleanupSpawnedObjects();
+        DisableClone();
     }
 }

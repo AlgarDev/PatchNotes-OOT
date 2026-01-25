@@ -115,6 +115,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &3430649244604319776
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1354749214411511518}
+  m_Layer: 0
+  m_Name: GrabLocation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1354749214411511518
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3430649244604319776}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 2.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8593470366266031040}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4746959884279545726
 GameObject:
   m_ObjectHideFlags: 0
@@ -145,6 +176,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 23899336548509765}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5939074135958147364
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 757732112512244924}
+  m_Layer: 0
+  m_Name: ThrowLocation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &757732112512244924
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5939074135958147364}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 6.4, z: -0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8593470366266031040}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6148891560622547949
 GameObject:
@@ -236,14 +298,14 @@ MonoBehaviour:
   deceleration: 100
   turnSpeed: 360
   characterMesh: {fileID: 5412902526113506220}
-  meshTiltAmount: 45
-  meshTiltSpeed: 5
+  meshTiltAmount: 0
+  meshTiltSpeed: 0
   <JumpGravity>k__BackingField: -6
   <Gravity>k__BackingField: -50
-  <JumpHeight>k__BackingField: 8
+  <JumpHeight>k__BackingField: 12
   <JumpTime>k__BackingField: 0.2
   interactorSource: {fileID: 9162232954335003176}
-  <grabPivot>k__BackingField: {fileID: 8271743224450882865}
+  <grabPivot>k__BackingField: {fileID: 8593470366266031040}
   interactRadius: 2
   interactRange: 2
   heldObject: {fileID: 0}
@@ -254,6 +316,7 @@ MonoBehaviour:
   <IsPlayerControlled>k__BackingField: 1
   controller: {fileID: 0}
   <Hourglass>k__BackingField: {fileID: 0}
+  controllingHourglass: 0
   platformGhost: {fileID: 0}
 --- !u!114 &3613058007820986645
 MonoBehaviour:
@@ -292,6 +355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2a38a840ed679047b493a192fd992d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeSpawner: {fileID: 0}
   corpseObject: {fileID: 0}
   onFinishedPlayback:
     m_PersistentCalls:
@@ -322,6 +386,7 @@ MonoBehaviour:
   - {fileID: 8917069918276818223}
   - {fileID: 6719027581944225859}
   hourglassSand: {fileID: 9198539630198431780}
+  hourglassPlatform: {fileID: 0}
   hourglass: {fileID: 4798385410665241884}
   maxSand: 0.7
 --- !u!1001 &3752995680226343085
@@ -675,6 +740,12 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 4167280743394806330, guid: 953c72c01ef960e4ea4208729568049e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1354749214411511518}
+    - targetCorrespondingSourceObject: {fileID: 4167280743394806330, guid: 953c72c01ef960e4ea4208729568049e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 757732112512244924}
     - targetCorrespondingSourceObject: {fileID: 1802723320045497821, guid: 953c72c01ef960e4ea4208729568049e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8264362751548482389}
@@ -795,9 +866,9 @@ MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -4705513067661209056, guid: 953c72c01ef960e4ea4208729568049e, type: 3}
   m_PrefabInstance: {fileID: 5662999477514826234}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &8271743224450882865 stripped
+--- !u!4 &8593470366266031040 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 4349393835795541195, guid: 953c72c01ef960e4ea4208729568049e, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4167280743394806330, guid: 953c72c01ef960e4ea4208729568049e, type: 3}
   m_PrefabInstance: {fileID: 5662999477514826234}
   m_PrefabAsset: {fileID: 0}
 --- !u!23 &8917069918276818223 stripped

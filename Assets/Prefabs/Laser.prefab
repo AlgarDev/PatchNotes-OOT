@@ -79,12 +79,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineRenderer: {fileID: 8306343925269576545}
-  updateInEditor: 1
+  updateInEditor: 0
   startPoint: {fileID: 1375465470231388734}
   endPoint: {fileID: 929564081410166507}
-  blockerLayer:
-    serializedVersion: 2
-    m_Bits: 128
+  cam: {fileID: 0}
 --- !u!120 &8306343925269576545
 LineRenderer:
   serializedVersion: 2

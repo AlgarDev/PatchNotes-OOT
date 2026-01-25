@@ -77,7 +77,7 @@ public class ThirdPersonController : MonoBehaviour
 
     [field: Header("Hourglass")]
     [field: SerializeField] public InteractableBox Hourglass { get; private set; }
-    private bool controllingHourglass;
+    public bool controllingHourglass;
     private Vector3 storedPlayerPosition;
     private Quaternion storedPlayerRotation;
 
@@ -160,7 +160,7 @@ public class ThirdPersonController : MonoBehaviour
     {
         if (currentInput.controllingHourglass && !previousInput.controllingHourglass)
         {
-            ToggleHourglassControl();
+            //ToggleHourglassControl();
         }
         if (canJump && currentInput.jump && !previousInput.jump)
             Jump();
@@ -403,7 +403,7 @@ public class ThirdPersonController : MonoBehaviour
 
             if (!interactConsumed && isHolding && interactHoldTimer >= throwHoldTime)
             {
-                print("throw"); 
+                print("throw");
                 ThrowHeldObject();
                 interactConsumed = true;
             }
@@ -423,7 +423,7 @@ public class ThirdPersonController : MonoBehaviour
 
     private void Interact()
     {
-        print("interacted");
+        print("Grabbed hourglass");
         if (isHolding && heldObject != null)
         {
             if (heldObject.TryGetComponent(out IGrabbable grabbed))
@@ -468,6 +468,14 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
 
         isHolding = false;
         heldObject = null;
+    }
+
+    public void ResetGrab()
+    {
+        Debug.Log("Reset grab");
+        isHolding = false;
+        heldObject = null;
+        animationController.SetTrigger("Drop");
     }
 
 
@@ -569,7 +577,7 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
     public void SetHourglass(GameObject hourglass)
     {
         Hourglass = hourglass.GetComponent<InteractableBox>();
-        print(Hourglass.transform.position);
+        //print(Hourglass.transform.position);
     }
     //=====================PLATFORMS=============================
     [SerializeField] private Transform platformGhost;

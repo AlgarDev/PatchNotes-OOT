@@ -61,7 +61,7 @@ public class LaserBeam : MonoBehaviour
             {
                 if (player.TryGetComponent(out CloneController clone))
                 {
-                    clone.StopPlayback();
+                    clone.activeSpawner.StopRecording();
                     print("Clone hit laser");
                 }
             }

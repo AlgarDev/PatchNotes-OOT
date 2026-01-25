@@ -586,10 +586,35 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
         if (platformGhost == ghost)
             platformGhost = null;
     }
+    //==========================CHECKPOINT=====================
+    private Transform checkpoint;
+    public void SetCheckpoint(Transform Tr)
+    {
+        checkpoint = Tr;
+    }
+    public void RespawnAtCheckpoint()
+    {
+        if (activeSpawner != null)
+        {
+            activeSpawner.StopEarly();
+            controller.enabled = false;
+            if (checkpoint != null)
+                transform.position = checkpoint.position;
+            controller.enabled = true;
+        }
+        else
+        {
+            controller.enabled = false;
+            if (checkpoint != null)
+                transform.position = checkpoint.position;
+            controller.enabled = true;
+        }
+    }
     //==========================SETTERS========================
     public void SetActiveSpawner(CloneSpawningPlatform spawner)
     {
         activeSpawner = spawner;
+        print(activeSpawner.transform.position);
     }
 
 

@@ -55,7 +55,7 @@ public class LaserBeam : MonoBehaviour
             if (player.IsPlayerControlled)
             {
                 print("Player hit laser");
-                // player.RespawnAtCheckpoint();
+                player.RespawnAtCheckpoint();
             }
             else
             {

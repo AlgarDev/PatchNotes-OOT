@@ -953,7 +953,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 311948004}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.20841213, y: 0, z: 0, w: 0.9780411}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3003,7 +3003,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7814098188548783363, guid: 1c5eedb1ae1dab245bd18b8224c22eef, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.79
+      value: 5.15
       objectReference: {fileID: 0}
     - target: {fileID: 7814098188548783363, guid: 1c5eedb1ae1dab245bd18b8224c22eef, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3328,10 +3328,12 @@ MonoBehaviour:
   <JumpTime>k__BackingField: 0.2
   interactorSource: {fileID: 0}
   <grabPivot>k__BackingField: {fileID: 0}
+  <throwPivot>k__BackingField: {fileID: 0}
   interactRadius: 0
   interactRange: 0
   heldObject: {fileID: 0}
   <isHolding>k__BackingField: 0
+  <isReadyToThrow>k__BackingField: 0
   throwHoldTime: 1
   interactableColliders: []
   animationController: {fileID: 0}

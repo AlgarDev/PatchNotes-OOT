@@ -131,7 +131,7 @@ public class CloneSpawningPlatform : MonoBehaviour
         if (manager.isRecording == true) return;
         if (currentRecording != null) currentRecording = null;
 
-        Debug.Log("Started Recording " + platformColor.ToString());
+        //Debug.Log("Started Recording " + platformColor.ToString());
 
         recordingStartPosition = player.transform.position;
         recordingStartRotation = player.transform.rotation;
@@ -150,7 +150,7 @@ public class CloneSpawningPlatform : MonoBehaviour
         if (manager.isRecording == false) return;
 
 
-        Debug.Log("Stoped Recording " + platformColor.ToString());
+        //Debug.Log("Stoped Recording " + platformColor.ToString());
         if (!isRecording)
             return;
 
@@ -185,7 +185,7 @@ public class CloneSpawningPlatform : MonoBehaviour
     public void DisableClone()
     {
         if (currentClone == null) return;
-        Debug.Log("Stoped Playback of " + platformColor.ToString());
+        //Debug.Log("Stoped Playback of " + platformColor.ToString());
 
         if (currentClone != null)
         {
@@ -208,7 +208,7 @@ public class CloneSpawningPlatform : MonoBehaviour
     {
         if (currentRecording != null)
         {
-            Debug.Log("Started Playback of " + platformColor.ToString());
+            //Debug.Log("Started Playback of " + platformColor.ToString());
             spawnClone?.Invoke();
             currentClone = Instantiate(cloneObject, recordingStartPosition, recordingStartRotation);
             currentHourglass = Instantiate(cloneHourglass,

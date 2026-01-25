@@ -305,7 +305,8 @@ MonoBehaviour:
   <JumpHeight>k__BackingField: 12
   <JumpTime>k__BackingField: 0.2
   interactorSource: {fileID: 9162232954335003176}
-  <grabPivot>k__BackingField: {fileID: 8593470366266031040}
+  <grabPivot>k__BackingField: {fileID: 1354749214411511518}
+  <throwPivot>k__BackingField: {fileID: 757732112512244924}
   interactRadius: 2
   interactRange: 2
   heldObject: {fileID: 0}

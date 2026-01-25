@@ -68,6 +68,7 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
         transform.SetParent(interactor.grabPivot);
         rb.isKinematic = true;
         rb.interpolation = RigidbodyInterpolation.None;
+        transform.rotation = Quaternion.identity;
 
     }
 

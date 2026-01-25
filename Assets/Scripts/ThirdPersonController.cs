@@ -45,6 +45,8 @@ public class ThirdPersonController : MonoBehaviour
     private Transform interactorSource;
     [field: SerializeField]
     public Transform grabPivot { private set; get; }
+    [field: SerializeField]
+    public Transform throwPivot { private set; get; }
     [SerializeField]
     private float interactRadius;
     [SerializeField]
@@ -53,6 +55,8 @@ public class ThirdPersonController : MonoBehaviour
     GameObject heldObject;
     [field: SerializeField]
     public bool isHolding { private set; get; }
+    [field: SerializeField]
+    public bool isReadyToThrow { private set; get; }
 
     [Header("Interact Hold Logic")]
     [SerializeField] private float throwHoldTime = 1f;
@@ -85,6 +89,7 @@ public class ThirdPersonController : MonoBehaviour
     private Vector3 lastPlatformGhostPosition;
 
     private float verticalVelocity;
+
 
 
     private void Awake()
@@ -145,6 +150,9 @@ public class ThirdPersonController : MonoBehaviour
         HandleGravity();
         HandleMeshTilt(currentInput.cameraForward);
         AnimationHandler();
+
+        animationController.SetBool("IsHolding", isHolding);
+        animationController.SetBool("IsReadyToThrow", isReadyToThrow);
 
         previousInput = currentInput;
 
@@ -389,28 +397,43 @@ public class ThirdPersonController : MonoBehaviour
     }
     private void HandleInteractInput()
     {
-        // Button pressed
-        if (currentInput.interactPressed)
+        if (isHolding && heldObject != null)
         {
-            interactHoldTimer = 0f;
-            interactConsumed = false;
-        }
-
-        // Button held
-        if (currentInput.interactHeld)
-        {
-            interactHoldTimer += Time.deltaTime;
-
-            if (!interactConsumed && isHolding && interactHoldTimer >= throwHoldTime)
+            if (currentInput.interactPressed)
             {
-                print("throw");
-                ThrowHeldObject();
-                interactConsumed = true;
+                interactHoldTimer = 0f;
+                interactConsumed = false;
+            }
+
+            // Button held
+            if (currentInput.interactHeld)
+            {
+
+                if (!interactConsumed && isHolding && interactHoldTimer >= throwHoldTime)
+                {
+                    print("throw");
+                    ThrowHeldObject();
+                    interactConsumed = true;
+                }
+                else
+                {
+                    print("holding");
+                    interactHoldTimer += Time.deltaTime;
+                    isReadyToThrow = true;
+                    heldObject.transform.SetParent(throwPivot);
+                    heldObject.transform.localPosition = Vector3.zero;
+                }
             }
         }
 
         if (!currentInput.interactHeld && previousInput.interactHeld)
         {
+            isReadyToThrow = false;
+            if (isHolding && heldObject != null)
+            {
+                heldObject.transform.SetParent(grabPivot);
+                heldObject.transform.localPosition = Vector3.zero;
+            }
             if (!interactConsumed)
             {
                 Interact();
@@ -423,7 +446,7 @@ public class ThirdPersonController : MonoBehaviour
 
     private void Interact()
     {
-        print("Grabbed hourglass");
+        print("qeqwe qweqw");
         if (isHolding && heldObject != null)
         {
             if (heldObject.TryGetComponent(out IGrabbable grabbed))
@@ -432,32 +455,37 @@ public class ThirdPersonController : MonoBehaviour
             }
             isHolding = false;
             heldObject = null;
-            animationController.SetTrigger("Drop"); //?
-            return;
+            print("Drop hourglass");
         }
-
-        interactableColliders = Physics.OverlapBox(interactorSource.transform.position + interactorSource.transform.forward * interactRange,
+        else
+        {
+            interactableColliders = Physics.OverlapBox(interactorSource.transform.position + interactorSource.transform.forward * interactRange,
 new Vector3(interactRadius, interactRadius, interactRange), interactorSource.transform.rotation, ~0, QueryTriggerInteraction.Collide);
 
-        foreach (var item in interactableColliders)
-        {
-            if (!isHolding && item.gameObject.TryGetComponent(out IInteractable interactObj))
+            foreach (var item in interactableColliders)
             {
-                //print("interacted");
-                interactObj.Interact(this);
-                if (item.TryGetComponent(out IGrabbable grabbable))
+                if (!isHolding && item.gameObject.TryGetComponent(out IInteractable interactObj))
                 {
-                    isHolding = true;
-                    heldObject = item.gameObject;
-                    animationController.SetTrigger("GrabNormal");
-                    break;
+                    //print("interacted");
+                    interactObj.Interact(this);
+                    if (item.TryGetComponent(out IGrabbable grabbable))
+                    {
+                        print("Grabbed hourglass");
+                        isHolding = true;
+                        heldObject = item.gameObject;
+                        animationController.SetTrigger("GrabNormal");
+                        break;
+                    }
                 }
             }
         }
 
+
+
     }
     private void ThrowHeldObject()
     {
+        animationController.SetTrigger("Throw");
         if (heldObject == null)
             return;
 
@@ -468,6 +496,7 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
 
         isHolding = false;
         heldObject = null;
+        isReadyToThrow = false;
     }
 
     public void ResetGrab()
@@ -475,12 +504,8 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
         Debug.Log("Reset grab");
         isHolding = false;
         heldObject = null;
-        animationController.SetTrigger("Drop");
+        isReadyToThrow = false;
     }
-
-
-    //use animationController.SetTrigger("GrabToThrow") when getting ready to throw
-    //use animationController.SetTrigger("Throw") when throwing
 
     private void AnimationHandler()
     {
@@ -594,6 +619,7 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
         if (platformGhost == ghost)
             platformGhost = null;
     }
+
     //==========================CHECKPOINT=====================
     private Transform checkpoint;
     public void SetCheckpoint(Transform Tr)

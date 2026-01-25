@@ -230,6 +230,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: a025f4ed13da0804483b0fd5035a7f70, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6123b28510bd2394099d69565b14dc2c, type: 2}
     - target: {fileID: 919132149155446097, guid: a025f4ed13da0804483b0fd5035a7f70, type: 3}
       propertyPath: m_Name
       value: DoorJamb
@@ -322,6 +326,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 266f70ef1b8a1e745b5259b5a3764744, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6123b28510bd2394099d69565b14dc2c, type: 2}
     - target: {fileID: -7511558181221131132, guid: 266f70ef1b8a1e745b5259b5a3764744, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 

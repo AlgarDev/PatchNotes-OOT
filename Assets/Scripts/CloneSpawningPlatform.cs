@@ -208,10 +208,6 @@ public class CloneSpawningPlatform : MonoBehaviour
         timerPaused = false;
         timerRemaining = 0f;
     }
-    public void StopEarly()
-    {
-        StopRecording();
-    }
     private void OnDestroy()
     {
         CleanupSpawnedObjects();

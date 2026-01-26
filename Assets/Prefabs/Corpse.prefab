@@ -70,8 +70,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 205739b9cadbd1e43868b333d00169c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  throwForce: 10
-  upwardBias: 0.45
+  throwForce: 30
+  upwardBias: 0.6
 --- !u!54 &6789495677438206733
 Rigidbody:
   m_ObjectHideFlags: 0

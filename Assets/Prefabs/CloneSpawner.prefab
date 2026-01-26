@@ -109,7 +109,7 @@ MonoBehaviour:
         m_CallState: 2
   cloneObject: {fileID: 7014434762759812635, guid: 84b17d6e4ef1f874e912e8c787f5e79c, type: 3}
   cloneHourglass: {fileID: 8580703353953420934, guid: 1c5eedb1ae1dab245bd18b8224c22eef, type: 3}
-  recordingDuration: 30
+  recordingDuration: 80
   timerRemaining: 0
   timerPaused: 0
   currentClone: {fileID: 0}

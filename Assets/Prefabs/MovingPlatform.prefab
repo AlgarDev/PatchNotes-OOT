@@ -116,7 +116,6 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   pressedCount: 0
-  startEnabled: 0
 --- !u!1 &8474610602653041621
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,7 +241,7 @@ MonoBehaviour:
   waypoints:
   - {fileID: 1654195166979446706}
   - {fileID: 2180655575996540550}
-  speed: 2
+  speed: 12
   loop: 1
   waitTimeAtPoint: 0
   canMove: 0

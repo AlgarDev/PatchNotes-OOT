@@ -36,6 +36,14 @@ public class MovingPlatform : MonoBehaviour
         lastPosition = transform.position;
     }
 
+    public void RestartPlatform()
+    {
+        transform.position = waypoints[0].position;
+        lastPosition = transform.position;
+        currentIndex = 0;
+
+    }
+
     private void Update()
     {
         if (waypoints.Count < 2)
@@ -44,7 +52,7 @@ public class MovingPlatform : MonoBehaviour
         {
             MovePlatform();
         }
-            HandleOccupants();
+        HandleOccupants();
     }
 
     private void MovePlatform()
@@ -132,7 +140,7 @@ public class MovingPlatform : MonoBehaviour
 
         exposed.Clear();
         foreach (var item in detectedThisFrame)
-        //print(item);
+            //print(item);
             exposed.Add(item);
     }
 
@@ -150,20 +158,17 @@ public class MovingPlatform : MonoBehaviour
         return null;
     }
 
-#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        // Detection volume
-        Gizmos.color = new Color(0f, 1f, 1f, 0.25f);
-        Gizmos.matrix = Matrix4x4.TRS(
-            transform.position + Vector3.up * 0.5f,
-            transform.rotation,
-            Vector3.one
-        );
-        Gizmos.DrawCube(Vector3.zero, checkSize);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(waypoints[0].position, waypoints[1].position);
+
+        Gizmos.DrawSphere(waypoints[0].position, 0.3f);
+        Gizmos.DrawSphere(waypoints[1].position, 0.3f);
+
     }
 
-#endif
 
     public void CanMove(bool move)
     {

@@ -19,7 +19,7 @@ public class Door : MonoBehaviour
     void Start()
     {
         doorAnimator = GetComponent<Animator>();
-        SpawnDoorCheck(GetComponent<ButtonController>().buttons.Count);
+        //SpawnDoorCheck(GetComponent<ButtonController>().buttons.Count);
     }
 
     public void OpenDoor()

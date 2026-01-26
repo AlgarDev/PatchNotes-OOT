@@ -5,6 +5,7 @@ using UnityEngine;
 public class CloneManager : MonoBehaviour
 {
     [SerializeField] List<CloneSpawningPlatform> platforms = new List<CloneSpawningPlatform>();
+    [SerializeField] List<MovingPlatform> movingPlatforms = new List<MovingPlatform>();
     public bool isRecording = false;
     [SerializeField] ThirdPersonController thirdPersonController;
     public ColorRef currentColor;
@@ -27,6 +28,11 @@ public class CloneManager : MonoBehaviour
             {
                 platform.StartPlaying();
             }
+
+        }
+        foreach (var movingPlatform in movingPlatforms)
+        {
+            movingPlatform.RestartPlatform();
 
         }
     }

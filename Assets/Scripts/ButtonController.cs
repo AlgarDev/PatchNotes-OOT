@@ -21,7 +21,6 @@ public class ButtonController : MonoBehaviour
     private bool requirementMet;
     public int pressedCount = 0;
 
-    [SerializeField] private bool startEnabled;
 
     private void Awake()
     {
@@ -34,10 +33,9 @@ public class ButtonController : MonoBehaviour
 
     private void Start()
     {
-        if (startEnabled)
-        {
-            onStart.Invoke();
-        }
+
+        onStart.Invoke();
+
     }
 
     public void Recalculate()

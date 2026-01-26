@@ -91,15 +91,15 @@ public class ThirdPersonController : MonoBehaviour
     private float verticalVelocity;
 
     [field: Header("Sounds")]
-    [SerializeField] private AudioSource audioSource; 
-    [SerializeField] private AudioClip jumpSFX; 
-    [SerializeField] private AudioClip grabSFX; 
-    [SerializeField] private AudioClip dropSFX; 
-    [SerializeField] private AudioClip throwSFX; 
-    [SerializeField] private AudioClip walkSFX; 
-    [SerializeField] private AudioClip backToCheckpointSFX; 
-    [SerializeField] private AudioClip dieAndStopRecordingSFX; 
-    [SerializeField] private AudioClip respawnSFX; 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip jumpSFX;
+    [SerializeField] private AudioClip grabSFX;
+    [SerializeField] private AudioClip dropSFX;
+    [SerializeField] private AudioClip throwSFX;
+    [SerializeField] private AudioClip walkSFX;
+    [SerializeField] private AudioClip backToCheckpointSFX;
+    [SerializeField] private AudioClip dieAndStopRecordingSFX;
+    [SerializeField] private AudioClip respawnSFX;
 
     private void Awake()
     {
@@ -311,7 +311,7 @@ public class ThirdPersonController : MonoBehaviour
         currentGravity = JumpGravity;
         isJumping = true;
         jumpTimer = 0f;
-        
+
         animationController.SetTrigger("Jump");
 
         StopWalkSFX();
@@ -625,7 +625,7 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
     //=========================SYSTEM===========================
     public void CleanMyShit()
     {
-        activeSpawner.GoToHell();
+        if (activeSpawner != null) activeSpawner.GoToHell();
         GetComponent<PlayerColorManager>().ChangeColor(ColorRef.Green);
         GetComponent<PlayerColorManager>().DisableHourglassSand();
 

@@ -578,6 +578,8 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
             if (checkpoint != null)
                 transform.position = checkpoint.position;
             controller.enabled = true;
+            GetComponent<PlayerColorManager>().ChangeColor(ColorRef.Green);
+            GetComponent<PlayerColorManager>().DisableHourglassSand();
         }
         else
         {

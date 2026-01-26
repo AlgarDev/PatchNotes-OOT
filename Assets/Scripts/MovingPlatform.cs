@@ -22,6 +22,7 @@ public class MovingPlatform : MonoBehaviour
     private HashSet<GameObject> occupants = new HashSet<GameObject>();
     public List<GameObject> exposed = new List<GameObject>();
 
+    private AudioSource audioSource;
 
     private void Start()
     {
@@ -30,6 +31,7 @@ public class MovingPlatform : MonoBehaviour
             print("No waypoints");
             return;
         }
+        audioSource = GetComponent<AudioSource>();
         transform.position = waypoints[0].position;
         lastPosition = transform.position;
     }
@@ -166,6 +168,12 @@ public class MovingPlatform : MonoBehaviour
     public void CanMove(bool move)
     {
         canMove = move;
+        if (canMove)
+        {
+            audioSource.Play();
+        }
+        else
+            audioSource.Stop();
     }
     public Vector3 GetDelta()
     {

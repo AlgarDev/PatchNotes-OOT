@@ -10,6 +10,8 @@ public class CloneSpawningPlatform : MonoBehaviour
     [Header("Clone")]
     [SerializeField] public ColorRef platformColor;
     [SerializeField] private UnityEvent spawnClone;
+    [SerializeField] private UnityEvent startRecording;
+    [SerializeField] private UnityEvent stopRecording;
     [SerializeField] private GameObject cloneObject;
     [SerializeField] private GameObject cloneHourglass;
 
@@ -142,6 +144,7 @@ public class CloneSpawningPlatform : MonoBehaviour
         isRecording = true;
         player.SetActiveSpawner(this);
         manager.StartedRecording(this);
+        startRecording?.Invoke();
 
     }
 
@@ -174,6 +177,8 @@ public class CloneSpawningPlatform : MonoBehaviour
 
         player.SetActiveSpawner(null);
         timerPaused = false;
+        stopRecording?.Invoke();
+
 
     }
 

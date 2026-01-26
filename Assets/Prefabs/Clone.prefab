@@ -66,11 +66,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1318322612649660117, guid: 307465969ebd7134a8b6a0abe20fd947, type: 3}
       propertyPath: MaxDistance
-      value: 20
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 1318322612649660117, guid: 307465969ebd7134a8b6a0abe20fd947, type: 3}
       propertyPath: MinDistance
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1318322612649660117, guid: 307465969ebd7134a8b6a0abe20fd947, type: 3}
       propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value

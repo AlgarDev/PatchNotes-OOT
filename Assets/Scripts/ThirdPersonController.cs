@@ -573,6 +573,7 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
     }
     public void RespawnAtCheckpoint()
     {
+        print("huiwqiehbiwq");
         if (activeSpawner != null)
         {
             activeSpawner.StopEarly();

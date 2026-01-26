@@ -84,7 +84,7 @@ MonoBehaviour:
   endPoint: {fileID: 929564081410166507}
   blockerLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
 --- !u!120 &8306343925269576545
 LineRenderer:
   serializedVersion: 2

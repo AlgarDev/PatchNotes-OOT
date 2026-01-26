@@ -23,30 +23,50 @@ public class LaserBeam : MonoBehaviour
     {
         if (startPoint == null || endPoint == null) return;
 
-        Vector3 direction = (endPoint.position - startPoint.position).normalized;
-        float distance = Vector3.Distance(startPoint.position, endPoint.position);
+        Vector3 start = startPoint.position;
+        Vector3 end = endPoint.position;
 
-        // Check if something is blocking the laser
-        if (Physics.Raycast(startPoint.position, direction, out RaycastHit hitBlocker, distance, blockerLayer) && !hitBlocker.collider.isTrigger)
+        Vector3 direction = (end - start).normalized;
+        float distance = Vector3.Distance(start, end);
+
+        float radius = 1f; // laser thickness
+
+        // Blocker check
+        if (Physics.CapsuleCast(
+            start,
+            start + direction * 0.01f, // tiny height capsule
+            radius,
+            direction,
+            out RaycastHit hitBlocker,
+            distance,
+            blockerLayer,
+            QueryTriggerInteraction.Ignore))
         {
-            // Laser is blocked, cut it at the blocker
-            Vector3 targetLocalPos = lineRenderer.transform.InverseTransformPoint(hitBlocker.point);
+            Vector3 targetLocalPos =
+                lineRenderer.transform.InverseTransformPoint(hitBlocker.point);
 
             SetLine(targetLocalPos);
-            // Player/clones behind this point are safe
         }
         else
         {
-            // No blocker, full length
             SetLine(endPoint.localPosition);
 
-            // Raycast for player/clone hits
-            if (Physics.Raycast(startPoint.position, direction, out RaycastHit hitPlayer, distance))
+            // Player / clone hit check
+            if (Physics.CapsuleCast(
+                start,
+                start + direction * 0.01f,
+                radius,
+                direction,
+                out RaycastHit hitPlayer,
+                distance,
+                ~0,
+                QueryTriggerInteraction.Ignore))
             {
                 HandleHit(hitPlayer.collider);
             }
         }
     }
+
 
     private void HandleHit(Collider other)
     {
@@ -70,12 +90,32 @@ public class LaserBeam : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (lineRenderer == null || startPoint == null || endPoint == null) return;
+        if (startPoint == null || endPoint == null) return;
+
+        float radius = 1f;
+
+        Vector3 start = startPoint.position;
+        Vector3 end = endPoint.position;
+        Vector3 dir = (end - start).normalized;
+        float dist = Vector3.Distance(start, end);
 
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(startPoint.position, endPoint.position);
 
-        Gizmos.DrawSphere(startPoint.position, 0.3f);
-        Gizmos.DrawSphere(endPoint.position, 0.3f);
+        // Draw center line
+        Gizmos.DrawLine(start, end);
+
+        // Draw capsule ends
+        Gizmos.DrawWireSphere(start, radius);
+        Gizmos.DrawWireSphere(end, radius);
+
+        // Draw capsule sides (approx)
+        Vector3 right = Vector3.Cross(dir, Vector3.up).normalized * radius;
+        Vector3 up = Vector3.Cross(dir, right).normalized * radius;
+
+        Gizmos.DrawLine(start + right, end + right);
+        Gizmos.DrawLine(start - right, end - right);
+        Gizmos.DrawLine(start + up, end + up);
+        Gizmos.DrawLine(start - up, end - up);
     }
+
 }

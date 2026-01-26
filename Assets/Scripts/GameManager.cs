@@ -17,19 +17,6 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private UnityEvent unPauseGame;
     private bool isPaused = false;
-    [SerializeField]
-    private UnityEvent gameOver;
-
-    [Header("Timer")]
-    [SerializeField]
-    private bool hasTimer = false;
-    [SerializeField]
-    private float countdownTime = 60f;
-    private float currentTime;
-    private bool timerRunning = false;
-    [SerializeField]
-    private TextMeshProUGUI timeDisplay;
-
 
     private void Awake()
     {
@@ -49,68 +36,9 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         isGameRunning = true;
-        currentTime = countdownTime;
     }
 
-    private void Update()
-    {
-        if (!timerRunning || !hasTimer) return;
 
-        currentTime -= Time.deltaTime;
-
-        if (timeDisplay)
-        {
-            int minutes = Mathf.FloorToInt(currentTime / 60);
-            int seconds = Mathf.FloorToInt(currentTime % 60);
-            timeDisplay.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-        }
-        else
-            Debug.LogWarning("No Timer assigned!");
-
-        if (currentTime <= 0f)
-        {
-            currentTime = 0f;
-            GameOver();
-        }
-
-
-
-    }
-
-    public void StopTimer()
-    {
-        timerRunning = false;
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        isGameRunning = false;
-
-    }
-
-    public void ResumeTimer()
-    {
-        timerRunning = true;
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        isGameRunning = true;
-
-    }
-
-    public float GetTimeRemaining()
-    {
-        return currentTime;
-    }
-
-    public void GameOver()
-    {
-        timerRunning = false;
-        Debug.Log("Timer finished!");
-        timeDisplay.text = string.Format("{0:00}:{1:00}", 0, 0);
-        isGameRunning = false;
-        Cursor.lockState = CursorLockMode.None;
-        gameOver.Invoke();
-        //meter aqui as merdas de quando o jogo acaba
-    }
     public void PauseGame()
     {
         if (canPause)
@@ -118,12 +46,10 @@ public class GameManager : MonoBehaviour
             FlipisPaused();
             if (isPaused == true)
             {
-                StopTimer();
                 pauseGame.Invoke();
             }
             else
             {
-                ResumeTimer();
                 unPauseGame.Invoke();
 
             }
@@ -145,4 +71,32 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 
+    public void PauseGameCall()
+    {
+        Cursor.lockState = CursorLockMode.None; 
+        isGameRunning = false;
+        Time.timeScale = 0;
+        var audioSources = FindObjectsOfType<AudioSource>();
+        foreach (var audioSource in audioSources)
+        {
+            audioSource.Pause();
+        }
+
+    }
+    public void UnpauseGame()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        isGameRunning = true;
+        Time.timeScale = 1;
+        var audioSources = FindObjectsOfType<AudioSource>();
+        foreach (var audioSource in audioSources)
+        {
+            audioSource.UnPause();
+        }
+    }
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+    }
 }

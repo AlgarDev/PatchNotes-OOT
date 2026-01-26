@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 interface IInteractable
 {
@@ -58,10 +59,12 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
             return;
         holder = interactor;
         isHeld = true;
+
         rb.useGravity = false;
 
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
+        rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
 
         gameObject.transform.position = interactor.grabPivot.position;
         boxCollider.isTrigger = true;
@@ -70,21 +73,24 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
         rb.interpolation = RigidbodyInterpolation.None;
         transform.rotation = Quaternion.identity;
 
+
+
     }
 
     public void Drop(ThirdPersonController interactor)
     {
 
         isHeld = false;
-        boxCollider.isTrigger = false;
+
+        transform.position = interactor.grabPivot.position + interactor.transform.forward * 2.5f;
+        transform.SetParent(null);
+        StartCoroutine(EnableColliderNextFixedFrame());
 
         rb.isKinematic = false;
-        rb.interpolation = RigidbodyInterpolation.Interpolate;
         rb.useGravity = true;
-        transform.SetParent(null);
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-
+        rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
         holder = null;
     }
     public void Throw(ThirdPersonController interactor)
@@ -99,10 +105,10 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
 
         rb.isKinematic = false;
         rb.useGravity = true;
-        rb.interpolation = RigidbodyInterpolation.Interpolate;
 
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
 
         // Calculate throw direction
         Vector3 throwDirection = (interactor.transform.forward + Vector3.up * upwardBias).normalized;
@@ -127,6 +133,11 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
     {
         if (platformGhost == ghost)
             platformGhost = null;
+    }
+    private IEnumerator EnableColliderNextFixedFrame()
+    {
+        yield return new WaitForFixedUpdate();
+        boxCollider.isTrigger = false;
     }
 
 }

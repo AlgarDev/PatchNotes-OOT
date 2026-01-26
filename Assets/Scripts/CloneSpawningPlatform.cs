@@ -170,10 +170,14 @@ public class CloneSpawningPlatform : MonoBehaviour
         currentRecording = new List<PlayerInputFrame>(CloneInputRecorder.Instance.Frames);
 
         // Teleport player back
-        player.controller.enabled = false;
-        player.transform.position = recordingStartPosition;
-        player.transform.rotation = recordingStartRotation;
-        player.controller.enabled = true;
+        if (recordingStartPosition != null && recordingStartRotation != null)
+        {
+            player.controller.enabled = false;
+            player.transform.position = recordingStartPosition;
+            player.transform.rotation = recordingStartRotation;
+            player.controller.enabled = true;
+
+        }
 
         player.SetActiveSpawner(null);
         timerPaused = false;
@@ -260,6 +264,14 @@ public class CloneSpawningPlatform : MonoBehaviour
         Material mat2 = platformBorder.material;
         mat2.SetInt("_ColorInt", UVint);
 
+    }
+    public void GoToHell()
+    {
+        recordingStartRotation = player.transform.rotation;
+        recordingStartPosition = player.transform.position;
+        StopEarly();
+        DisableClone();
+        player = null;
     }
     private void OnDestroy()
     {

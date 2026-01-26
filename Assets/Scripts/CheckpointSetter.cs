@@ -10,6 +10,7 @@ public class CheckpointSetter : MonoBehaviour
         if (other.TryGetComponent(out ThirdPersonController player) && player.IsPlayerControlled && doOnce == false)
         {
             player.SetCheckpoint(checkpoint);
+            player.CleanMyShit();
             doOnce = true;
         }
     }

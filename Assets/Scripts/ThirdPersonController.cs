@@ -99,6 +99,7 @@ public class ThirdPersonController : MonoBehaviour
     [SerializeField] private AudioClip walkSFX; 
     [SerializeField] private AudioClip backToCheckpointSFX; 
     [SerializeField] private AudioClip dieAndStopRecordingSFX; 
+    [SerializeField] private AudioClip respawnSFX; 
 
     private void Awake()
     {
@@ -348,7 +349,8 @@ public class ThirdPersonController : MonoBehaviour
                 if (!interactConsumed && isHolding && interactHoldTimer >= throwHoldTime)
                 {
                     print("throw");
-                    ThrowHeldObject();
+                    animationController.SetTrigger("Throw");
+                    //ThrowHeldObject();
                     interactConsumed = true;
                 }
                 else
@@ -356,11 +358,12 @@ public class ThirdPersonController : MonoBehaviour
                     if (interactHoldTimer >= throwHoldTime / 3)
                     {
                         isReadyToThrow = true;
+                        heldObject.transform.SetParent(throwPivot);
+                        heldObject.transform.localPosition = Vector3.zero;
                     }
                     print("holding");
                     interactHoldTimer += Time.deltaTime;
-                    heldObject.transform.SetParent(throwPivot);
-                    heldObject.transform.localPosition = Vector3.zero;
+
                 }
             }
         }
@@ -425,9 +428,8 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
 
 
     }
-    private void ThrowHeldObject()
+    public void ThrowHeldObject()
     {
-        animationController.SetTrigger("Throw");
         if (heldObject == null)
             return;
 
@@ -580,6 +582,7 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
             controller.enabled = true;
             GetComponent<PlayerColorManager>().ChangeColor(ColorRef.Green);
             GetComponent<PlayerColorManager>().DisableHourglassSand();
+            audioSource.PlayOneShot(respawnSFX);
         }
         else
         {
@@ -587,6 +590,7 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
             if (checkpoint != null)
                 transform.position = checkpoint.position;
             controller.enabled = true;
+            audioSource.PlayOneShot(respawnSFX);
         }
     }
     //========================SOUNDS============================
@@ -619,6 +623,13 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
 
 
     //=========================SYSTEM===========================
+    public void CleanMyShit()
+    {
+        activeSpawner.GoToHell();
+        GetComponent<PlayerColorManager>().ChangeColor(ColorRef.Green);
+        GetComponent<PlayerColorManager>().DisableHourglassSand();
+
+    }
     private void OnDestroy()
     {
         if (Instance == this)

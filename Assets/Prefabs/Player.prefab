@@ -328,6 +328,7 @@ MonoBehaviour:
   walkSFX: {fileID: 8300000, guid: 169bda36583ff304f81571fad8a72db0, type: 3}
   backToCheckpointSFX: {fileID: 8300000, guid: 14a844bd231821446b4fa0b211612ff5, type: 3}
   dieAndStopRecordingSFX: {fileID: 8300000, guid: 5511b676b04a0dd488958a0d5713e1c8, type: 3}
+  respawnSFX: {fileID: 8300000, guid: 14a844bd231821446b4fa0b211612ff5, type: 3}
   platformGhost: {fileID: 0}
 --- !u!114 &3613058007820986645
 MonoBehaviour:

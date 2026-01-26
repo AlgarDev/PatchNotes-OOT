@@ -246,7 +246,7 @@ MonoBehaviour:
   waitTimeAtPoint: 0
   canMove: 0
   ghostTransform: {fileID: 5281787799915102016}
-  checkSize: {x: 4, y: 0.92, z: 4}
+  checkSize: {x: 4, y: 4, z: 4}
   exposed: []
 --- !u!82 &651106339135553369
 AudioSource:

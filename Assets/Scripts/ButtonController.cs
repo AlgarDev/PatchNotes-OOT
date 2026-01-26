@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,6 +10,8 @@ public class ButtonController : MonoBehaviour
 
     [Header("Events")]
     [SerializeField]
+    public UnityEvent onStart;
+    [SerializeField]
     public UnityEvent onRequirementUpdate;
     [SerializeField]
     public UnityEvent onRequirementMet;
@@ -17,6 +20,9 @@ public class ButtonController : MonoBehaviour
 
     private bool requirementMet;
     public int pressedCount = 0;
+
+    [SerializeField] private bool startEnabled;
+
     private void Awake()
     {
         foreach (var button in buttons)
@@ -24,6 +30,14 @@ public class ButtonController : MonoBehaviour
             button.onStateChanged.AddListener(Recalculate);
         }
         requirementMet = false;
+    }
+
+    private void Start()
+    {
+        if (startEnabled)
+        {
+            onStart.Invoke();
+        }
     }
 
     public void Recalculate()
@@ -63,5 +77,15 @@ public class ButtonController : MonoBehaviour
             }
         }
 
+    }
+
+    private void OnDrawGizmos()
+    {
+
+        foreach (InteractableButton button in buttons)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(transform.position, button.transform.position);
+        }
     }
 }

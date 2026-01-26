@@ -4084,7 +4084,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6736220802368226464, guid: c7b954d77d2e18a4ebf8bf7d88bc5e09, type: 3}
       propertyPath: buttons.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -6736220802368226464, guid: c7b954d77d2e18a4ebf8bf7d88bc5e09, type: 3}
       propertyPath: buttons.Array.data[1]

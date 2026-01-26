@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 351fe58713ae09542ab541dd070f7e9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  platformColor: 0
+  platformColor: 1
   spawnClone:
     m_PersistentCalls:
       m_Calls: []

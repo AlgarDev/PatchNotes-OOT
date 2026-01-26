@@ -90,7 +90,15 @@ public class ThirdPersonController : MonoBehaviour
 
     private float verticalVelocity;
 
-
+    [field: Header("Sounds")]
+    [SerializeField] private AudioSource audioSource; 
+    [SerializeField] private AudioClip jumpSFX; 
+    [SerializeField] private AudioClip grabSFX; 
+    [SerializeField] private AudioClip dropSFX; 
+    [SerializeField] private AudioClip throwSFX; 
+    [SerializeField] private AudioClip walkSFX; 
+    [SerializeField] private AudioClip backToCheckpointSFX; 
+    [SerializeField] private AudioClip dieAndStopRecordingSFX; 
 
     private void Awake()
     {
@@ -175,55 +183,6 @@ public class ThirdPersonController : MonoBehaviour
         if (canInteract)
             HandleInteractInput();
     }
-
-    //void HandleMovement(float cameraForward)
-    //{
-    //    if (!canMove)
-    //    {
-    //        // Decelerate when can't move
-    //        if (currentSpeed > 0f)
-    //        {
-    //            currentSpeed = Mathf.Max(0f, currentSpeed - deceleration * Time.deltaTime);
-    //        }
-    //        return;
-    //    }
-
-    //    Vector3 input = new Vector3(currentInput.move.x, 0, currentInput.move.y).normalized;
-    //    Vector3 direction = new Vector3(input.x, 0f, input.z).normalized;
-
-    //    if (direction.magnitude >= 0.1f)
-    //    {
-    //        float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cameraForward;
-
-    //        // Smooth rotation using turn speed
-    //        float angleDifference = Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
-    //        float maxRotation = turnSpeed * Time.deltaTime;
-    //        float rotationAmount = Mathf.Clamp(angleDifference, -maxRotation, maxRotation);
-    //        float angle = transform.eulerAngles.y + rotationAmount;
-    //        transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
-    //        // Accelerate
-    //        currentSpeed = Mathf.Min(topWalkSpeed, currentSpeed + acceleration * Time.deltaTime);
-
-    //        Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-    //        controller.Move(moveDir.normalized * currentSpeed * Time.deltaTime);
-    //    }
-    //    else
-    //    {
-    //        // Decelerate when no input
-    //        if (currentSpeed > 0f)
-    //        {
-    //            currentSpeed = Mathf.Max(0f, currentSpeed - deceleration * Time.deltaTime);
-
-    //            // Apply residual momentum in current direction
-    //            if (currentSpeed > 0f)
-    //            {
-    //                Vector3 moveDir = transform.forward;
-    //                controller.Move(moveDir * currentSpeed * Time.deltaTime);
-    //            }
-    //        }
-    //    }
-    //}
     void HandleMovement(float cameraForward)
     {
         if (!canMove)
@@ -279,6 +238,19 @@ public class ThirdPersonController : MonoBehaviour
             lastPlatformGhostPosition = platformGhost.position;
         }
 
+        bool shouldWalk = canMove && controller.isGrounded && currentSpeed > 0.1f && currentInput.move.magnitude > 0.1f;
+
+        if (shouldWalk && !isWalking)
+        {
+            isWalking = true;
+            StartWalkSFX();
+        }
+        else if (!shouldWalk && isWalking)
+        {
+            isWalking = false;
+            StopWalkSFX();
+        }
+
     }
 
     private void HandleMeshTilt(float cameraForward)
@@ -310,30 +282,6 @@ public class ThirdPersonController : MonoBehaviour
         characterMesh.localRotation = Quaternion.Euler(0f, 0f, currentMeshTilt);
     }
 
-    //private void HandleGravity()
-    //{
-    //    if (isJumping)
-    //    {
-    //        jumpTimer += Time.deltaTime;
-
-    //        if (jumpTimer >= JumpTime)
-    //        {
-    //            isJumping = false;
-    //            currentGravity = Gravity;
-    //            jumpTimer = 0f;
-    //        }
-    //    }
-    //    if (controller.isGrounded == false)
-    //    {
-    //        Debug.Log("is player grounded? " + controller.isGrounded);
-
-    //        // print("velocity.y increasing");
-    //        //print("is player grounded? " + controller.isGrounded);
-    //        velocity.y += currentGravity * Time.deltaTime;
-    //    controller.Move(velocity * Time.deltaTime);
-    //    }
-
-    //}
     private void HandleGravity()
     {
         if (controller.isGrounded && verticalVelocity < 0f)
@@ -353,26 +301,6 @@ public class ThirdPersonController : MonoBehaviour
         }
         verticalVelocity += currentGravity * Time.deltaTime;
     }
-
-    //private void Jump()
-    //{
-    //    Debug.Log("is player grounded? "+controller.isGrounded);
-    //    if (!canJump)
-    //        return;
-
-    //    if (controller.isGrounded)
-    //    {
-    //        //Debug.Log(controller.isGrounded);
-    //        float requiredVelocity = (JumpHeight - (0.5f * JumpGravity * JumpTime * JumpTime)) / JumpTime;
-    //        velocity.y = requiredVelocity;
-
-    //        currentGravity = JumpGravity;
-    //        isJumping = true;
-    //        jumpTimer = 0f;
-
-    //        animationController.SetTrigger("Jump");
-    //    }
-    //}
     private void Jump()
     {
         if (!canJump || !controller.isGrounded)
@@ -382,8 +310,13 @@ public class ThirdPersonController : MonoBehaviour
         currentGravity = JumpGravity;
         isJumping = true;
         jumpTimer = 0f;
-
+        
         animationController.SetTrigger("Jump");
+
+        StopWalkSFX();
+        isWalking = false;
+
+        audioSource.PlayOneShot(jumpSFX);
     }
 
 
@@ -393,7 +326,10 @@ public class ThirdPersonController : MonoBehaviour
         if (!value)
         {
             currentSpeed = 0f;
+            isWalking = false;
+            StopWalkSFX();
         }
+
     }
     private void HandleInteractInput()
     {
@@ -449,7 +385,6 @@ public class ThirdPersonController : MonoBehaviour
 
     private void Interact()
     {
-        print("qeqwe qweqw");
         if (isHolding && heldObject != null)
         {
             if (heldObject.TryGetComponent(out IGrabbable grabbed))
@@ -459,6 +394,8 @@ public class ThirdPersonController : MonoBehaviour
             isHolding = false;
             heldObject = null;
             print("Drop hourglass");
+            audioSource.PlayOneShot(dropSFX);
+
         }
         else
         {
@@ -477,6 +414,8 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
                         isHolding = true;
                         heldObject = item.gameObject;
                         animationController.SetTrigger("GrabNormal");
+                        audioSource.PlayOneShot(grabSFX);
+
                         break;
                     }
                 }
@@ -500,6 +439,7 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
         isHolding = false;
         heldObject = null;
         isReadyToThrow = false;
+        audioSource.PlayOneShot(throwSFX);
     }
 
     public void ResetGrab()
@@ -647,6 +587,28 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
             controller.enabled = true;
         }
     }
+    //========================SOUNDS============================
+    private bool isWalking;
+    private void StartWalkSFX()
+    {
+        if (audioSource.isPlaying && audioSource.clip == walkSFX)
+            return;
+
+        audioSource.clip = walkSFX;
+        audioSource.loop = true;
+        audioSource.Play();
+    }
+
+    private void StopWalkSFX()
+    {
+        if (audioSource.clip == walkSFX)
+        {
+            audioSource.Stop();
+            audioSource.loop = false;
+            audioSource.clip = null;
+        }
+    }
+
     //==========================SETTERS========================
     public void SetActiveSpawner(CloneSpawningPlatform spawner)
     {

@@ -373,7 +373,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -526118121760392873, guid: 87edbcef6e22a2c44a768792c413ac2a, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 645bb1b618cddba4c9d50fd777183e38, type: 3}
+  m_audioClip: {fileID: 8300000, guid: a3d32486ff65f094b9ab775e269d4c6c, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -1334,7 +1334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17d471b63aaea834c862adf013445cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UIClick: {fileID: 0}
+  UIClick: {fileID: 8300000, guid: 137fbc4a8cbee144eae29202301d481e, type: 3}
   clickAudioSource: {fileID: 1147992358}
 --- !u!4 &1147992360
 Transform:

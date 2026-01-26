@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 658712729605542620, guid: 307465969ebd7134a8b6a0abe20fd947, type: 3}
+      propertyPath: outlineMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1126606576567047751, guid: 307465969ebd7134a8b6a0abe20fd947, type: 3}
       propertyPath: inputRecorder
       value: 

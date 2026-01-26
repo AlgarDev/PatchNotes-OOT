@@ -14,6 +14,7 @@ public class Door : MonoBehaviour
     private float currentDoorYTarget;
     private Coroutine moveDoorCoroutine;
     [SerializeField] private float doorSpeed = 0.2f;
+    [SerializeField] private float checkZSpacing = 0.71f;
 
     void Start()
     {
@@ -40,7 +41,7 @@ public class Door : MonoBehaviour
 
     private IEnumerator MoveDoor()
     {
-        Vector3 startPosition = transform.localPosition;
+        Vector3 startPosition = doorObject.transform.localPosition;
         Vector3 targetPosition = new Vector3(
             startPosition.x,
             currentDoorYTarget,
@@ -57,41 +58,80 @@ public class Door : MonoBehaviour
             float t = Mathf.Clamp01(elapsedTime / duration);
 
             // Smooth interpolation using Lerp
-            transform.localPosition = Vector3.Lerp(startPosition, targetPosition, t);
+            doorObject.transform.localPosition = Vector3.Lerp(startPosition, targetPosition, t);
 
             yield return null; // Wait for next frame
         }
 
         // Ensure exact final position
-        transform.localPosition = targetPosition;
+        doorObject.transform.localPosition = targetPosition;
         moveDoorCoroutine = null;
     }
 
 
     public void UpdateCheckState()
     {
+        print("Checking Checks");
         int numberOfChecks = GetComponent<ButtonController>().pressedCount;
 
-        if (numberOfChecks > doorChecks.Count) numberOfChecks = doorChecks.Count;
-        for (int i = 0; i < numberOfChecks; i++)
+        for (int i = 0; i < doorChecks.Count; i++)
         {
-            if (doorChecks.Count < i) doorChecks[i].ChangeState(true);
+            numberOfChecks--;
+            if (numberOfChecks >= 0)
+            {
+                print("T");
+                doorChecks[i].ChangeState(true);
+            }
+            else
+            {
+                print("F");
+                doorChecks[i].ChangeState(false);
+            }
         }
 
     }
 
     public void SpawnDoorCheck(int numberOfChecks)
     {
-        float space = (doorSize * 2 - doorCheckSpacing) / numberOfChecks;
-
-        for (int i = 0; i < numberOfChecks; i++)
+        if (numberOfChecks == 1)
         {
-            float x = -doorSize + doorCheckSpacing + (space * i);
-            Vector3 location = new Vector3(x, 0, 0);
+            Vector3 location = new Vector3(0, 0, checkZSpacing);
             GameObject doorCheck = Instantiate(doorCheckPrefab);
             doorCheck.transform.parent = transform;
             doorCheck.transform.localPosition = location;
-            if (doorCheck.GetComponent<DoorCheck>()) doorChecks.Add(doorCheck.GetComponent<DoorCheck>());
+
+            if (doorCheck.GetComponent<DoorCheck>())
+                doorChecks.Add(doorCheck.GetComponent<DoorCheck>());
+
+            return;
         }
+        else
+        {
+            float totalAvailableSpace = (doorSize * 2 - doorCheckSpacing * 2);
+            float spaceBetweenChecks = 0f;
+
+            if (numberOfChecks > 1)
+            {
+                spaceBetweenChecks = totalAvailableSpace / (numberOfChecks - 1);
+            }
+
+            float startX = -totalAvailableSpace / 2f;
+
+            for (int i = 0; i < numberOfChecks; i++)
+            {
+                float x = startX + (spaceBetweenChecks * i);
+                Vector3 location = new Vector3(x, 0, checkZSpacing);
+                GameObject doorCheck = Instantiate(doorCheckPrefab);
+                doorCheck.transform.parent = transform;
+                doorCheck.transform.localPosition = location;
+
+                if (doorCheck.GetComponent<DoorCheck>())
+                    doorChecks.Add(doorCheck.GetComponent<DoorCheck>());
+            }
+        }
+
+
     }
+
+
 }

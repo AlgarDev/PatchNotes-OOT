@@ -23,36 +23,45 @@ public class ButtonController : MonoBehaviour
         {
             button.onStateChanged.AddListener(Recalculate);
         }
+        requirementMet = false;
     }
 
     public void Recalculate()
     {
-        print("recalculating");
-
+        //print("recalculating");
+        pressedCount = 0;
         int requiredPressed = buttons.Count;
 
         foreach (var button in buttons)
         {
-            if (button != null && button.IsPressed)
-                pressedCount++; //this shit isn't reseting nigga
+            if (button != null && button.isPressedNow)
+                pressedCount++;
         }
 
         bool nowMet = pressedCount >= requiredPressed;
 
         onRequirementUpdate.Invoke();
 
-        if (nowMet && !requirementMet)
+        if (nowMet)
         {
-            requirementMet = true;
-            onRequirementMet.Invoke();
-            print("bounce on it king");
+            //print("Requirement Met");
+            if (!requirementMet)
+            {
+                //print("Open Door");
+                requirementMet = true;
+                onRequirementMet.Invoke();
+            }
         }
-        else if (!nowMet && requirementMet)
+        else
         {
-            requirementMet = false;
-            onRequirementLost.Invoke();
-            print("unbounce on it king");
+            //print("Requirement not Met");
+            if (requirementMet)
+            {
+                //print("Closing Door");
+                requirementMet = false;
+                onRequirementLost.Invoke();
+            }
+        }
 
-        }
     }
 }

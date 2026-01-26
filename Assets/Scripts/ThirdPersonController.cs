@@ -417,9 +417,12 @@ public class ThirdPersonController : MonoBehaviour
                 }
                 else
                 {
+                    if (interactHoldTimer >= throwHoldTime / 3)
+                    {
+                        isReadyToThrow = true;
+                    }
                     print("holding");
                     interactHoldTimer += Time.deltaTime;
-                    isReadyToThrow = true;
                     heldObject.transform.SetParent(throwPivot);
                     heldObject.transform.localPosition = Vector3.zero;
                 }

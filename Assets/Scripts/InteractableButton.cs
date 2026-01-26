@@ -8,8 +8,8 @@ public class InteractableButton : MonoBehaviour
     [SerializeField] private UnityEvent buttonReleased;
     private HashSet<GameObject> occupants = new HashSet<GameObject>();
     public List<GameObject> exposed = new List<GameObject>();
-    public bool IsPressed => occupants.Count > 0;
     public UnityEvent onStateChanged;
+    public bool isPressedNow;
 
     [Header("Detection")]
     [SerializeField] private Vector3 checkSize = new Vector3(1f, 0.3f, 1f);
@@ -36,7 +36,7 @@ public class InteractableButton : MonoBehaviour
         }
 
         // State transition detection
-        bool isPressedNow = detectedThisFrame.Count > 0;
+        isPressedNow = detectedThisFrame.Count > 0;
 
         if (!wasPressedLastFrame && isPressedNow)
         {

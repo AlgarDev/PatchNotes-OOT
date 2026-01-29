@@ -13,11 +13,20 @@ public class PlayerColorManager : MonoBehaviour
     [SerializeField] private float maxSand = 0.7f;
     private ColorsSO colors;
     private float targetSandValue;
+    //Main menu:
+    [SerializeField] private ColorRef spawnColor;
 
     void Start()
     {
         //ChangeColor(ColorRef.Pink);
         DisableHourglassSand();
+
+        if (spawnColor != ColorRef.Green)
+        {
+            ChangeColor(spawnColor);
+            GhostState(true);
+            DisableHourglass();
+        }
     }
 
     public void ChangeColor(ColorRef color)

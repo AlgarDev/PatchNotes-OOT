@@ -1,9 +1,10 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CheckpointSetter : MonoBehaviour
 {
-    [SerializeField]
-    private Transform checkpoint;
+    [SerializeField] private Transform checkpoint;
+    [SerializeField] private UnityEvent checkpointReached;
     private bool doOnce = false;
     private void OnTriggerEnter(Collider other)
     {
@@ -11,6 +12,7 @@ public class CheckpointSetter : MonoBehaviour
         {
             player.SetCheckpoint(checkpoint);
             player.CleanMyShit();
+            checkpointReached.Invoke();
             doOnce = true;
         }
     }

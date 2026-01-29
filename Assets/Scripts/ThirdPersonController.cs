@@ -254,6 +254,13 @@ public class ThirdPersonController : MonoBehaviour
 
     }
 
+    public void StopMovement()
+    {
+        velocity = Vector3.zero;         
+        currentSpeed = 0f;                
+        verticalVelocity = 0f;
+    }
+
     private void HandleMeshTilt(float cameraForward)
     {
         if (characterMesh == null) return;

@@ -99,7 +99,7 @@ public class CloneSpawningPlatform : MonoBehaviour
 
         if (clonePressedEdge)
         {
-            if (isPlayerInside && !isRecording)
+            if (isPlayerInside && !isRecording && player.GetComponent<CharacterController>().isGrounded)
             {
                 StartRecording();
             }
@@ -133,6 +133,9 @@ public class CloneSpawningPlatform : MonoBehaviour
         if (manager.isRecording == true) return;
         if (currentRecording != null) currentRecording = null;
 
+        player.controller.enabled = false;
+        player.StopMovement();
+        player.controller.enabled = true;
         //Debug.Log("Started Recording " + platformColor.ToString());
 
         recordingStartPosition = player.transform.position;

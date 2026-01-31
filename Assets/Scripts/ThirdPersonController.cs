@@ -1,4 +1,5 @@
 using Cinemachine;
+using System.Collections;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -69,6 +70,8 @@ public class ThirdPersonController : MonoBehaviour
     [Header("Animation")]
     [SerializeField]
     private Animator animationController;
+    [SerializeField] float minTimeToLongIdle = 1, maxTimeToLongIdle = 3;
+    Coroutine longIdleCoroutine;
 
     [field: Header("Input Recording/Clones")]
     [field: SerializeField] public bool IsPlayerControlled { private set; get; } = true;
@@ -147,6 +150,8 @@ public class ThirdPersonController : MonoBehaviour
                 characterMesh = transform.GetChild(0);
             }
         }
+
+        longIdleCoroutine = null;
     }
 
     private void Update()
@@ -164,6 +169,26 @@ public class ThirdPersonController : MonoBehaviour
         animationController.SetBool("IsReadyToThrow", isReadyToThrow);
 
         previousInput = currentInput;
+
+        if (controller.velocity.magnitude < 0.1)
+        {
+            //Debug.Log("Not moving");
+            if (longIdleCoroutine == null)
+            {
+                longIdleCoroutine = StartCoroutine(LongIdle());
+            }
+        }
+        else
+        {
+            //Debug.Log("moving");
+            if (longIdleCoroutine != null)
+            {
+                StopCoroutine(longIdleCoroutine);
+                longIdleCoroutine = null;
+                animationController.SetBool("LongIdleA", false);
+                animationController.SetBool("LongIdleB", false);
+            }
+        }
 
     }
 
@@ -256,8 +281,8 @@ public class ThirdPersonController : MonoBehaviour
 
     public void StopMovement()
     {
-        velocity = Vector3.zero;         
-        currentSpeed = 0f;                
+        velocity = Vector3.zero;
+        currentSpeed = 0f;
         verticalVelocity = 0f;
     }
 
@@ -453,7 +478,7 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
 
     public void ResetGrab()
     {
-        Debug.Log("Reset grab");
+        //Debug.Log("Reset grab");
         isHolding = false;
         heldObject = null;
         isReadyToThrow = false;
@@ -465,6 +490,38 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
         animationController.SetFloat("Movement", currentSpeed);
 
     }
+
+    private IEnumerator LongIdle()
+    {
+        //Debug.Log("Started");
+        float timeToWait = Random.Range(minTimeToLongIdle, maxTimeToLongIdle);
+
+        //Debug.Log("timeToWait " + timeToWait);
+        yield return new WaitForSeconds(timeToWait);
+
+        int randomAnimation = Random.Range(0, 2);
+        //Debug.Log("randomAnimation " + randomAnimation);
+        if (randomAnimation == 0)
+        {
+            //Debug.Log("A");
+            animationController.SetBool("LongIdleA", true);
+        }
+        else
+        {
+            //Debug.Log("B");
+            animationController.SetBool("LongIdleB", true);
+        }
+
+    }
+
+    public void ResetLongAnimation()
+    {
+        animationController.SetBool("LongIdleA", false);
+        animationController.SetBool("LongIdleB", false);
+        longIdleCoroutine = null;
+    }
+
+
     private void OnDrawGizmos()
     {
         if (interactorSource == null)

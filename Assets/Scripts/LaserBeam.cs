@@ -29,7 +29,7 @@ public class LaserBeam : MonoBehaviour
         Vector3 direction = (end - start).normalized;
         float distance = Vector3.Distance(start, end);
 
-        float radius = 1f; // laser thickness
+        float radius = .5f; // laser thickness
 
         // Blocker check
         if (Physics.CapsuleCast(
@@ -92,7 +92,7 @@ public class LaserBeam : MonoBehaviour
     {
         if (startPoint == null || endPoint == null) return;
 
-        float radius = 1f;
+        float radius = .5f;
 
         Vector3 start = startPoint.position;
         Vector3 end = endPoint.position;

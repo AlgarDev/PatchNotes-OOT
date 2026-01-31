@@ -203,7 +203,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5.578223, y: 1.0861828, z: 5.578223}
+  m_Size: {x: 5.5, y: 1, z: 5.5}
   m_Center: {x: 0, y: 0.0024583042, z: 0}
 --- !u!65 &3871576153841049915
 BoxCollider:
@@ -224,7 +224,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5.2862167, y: 1.4914236, z: 5.2862167}
+  m_Size: {x: 5, y: 1.4914236, z: 5.2862167}
   m_Center: {x: 0, y: 0.86407256, z: 0}
 --- !u!114 &7359302533026301709
 MonoBehaviour:
@@ -246,7 +246,7 @@ MonoBehaviour:
   waitTimeAtPoint: 0
   canMove: 0
   ghostTransform: {fileID: 5281787799915102016}
-  checkSize: {x: 4, y: 4, z: 4}
+  checkSize: {x: 10, y: 4, z: 10}
   exposed: []
 --- !u!82 &651106339135553369
 AudioSource:

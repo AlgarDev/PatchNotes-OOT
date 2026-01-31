@@ -70,8 +70,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 205739b9cadbd1e43868b333d00169c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  throwForce: 30
-  upwardBias: 0.6
+  throwForce: 20
+  upwardBias: 4
 --- !u!54 &6789495677438206733
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -116,6 +116,7 @@ MonoBehaviour:
   hourglassPlatform: {fileID: 3843947741323637780}
   hourglass: {fileID: 3590274630768102678}
   maxSand: 0.9
+  spawnColor: 0
 --- !u!1001 &2493278659513690256
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -127,6 +127,8 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
     {
         platformGhost = ghost;
         lastPlatformGhostPosition = ghost.position;
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
+
     }
 
     public void ClearPlatformGhost(Transform ghost)

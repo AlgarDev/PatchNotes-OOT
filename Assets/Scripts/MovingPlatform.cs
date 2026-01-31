@@ -120,7 +120,6 @@ public class MovingPlatform : MonoBehaviour
             }
         }
 
-        // Exit (missing this frame)
         foreach (var obj in occupants)
         {
             if (obj == null)
@@ -166,6 +165,16 @@ public class MovingPlatform : MonoBehaviour
 
         Gizmos.DrawSphere(waypoints[0].position, 0.3f);
         Gizmos.DrawSphere(waypoints[1].position, 0.3f);
+
+        Gizmos.color = new Color(0f, 1f, 0f, 0.3f); // semi-transparent green
+        Gizmos.matrix = Matrix4x4.TRS(
+            transform.position + Vector3.up * 0.5f, // center
+            transform.rotation,                     // rotation
+            Vector3.one                             // scale
+        );
+
+        Gizmos.DrawWireCube(Vector3.zero, checkSize);   // draw wireframe
+        Gizmos.DrawCube(Vector3.zero, checkSize * 0.1f); // optional small center cube
 
     }
 

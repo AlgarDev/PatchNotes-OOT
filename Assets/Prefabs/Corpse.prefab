@@ -51,11 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 205739b9cadbd1e43868b333d00169c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  throwForce: 60
+  throwForce: 90
   upwardBias: 2.5
-  blockingLayers:
-    serializedVersion: 2
-    m_Bits: 512
 --- !u!54 &6789495677438206733
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -64,7 +61,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8580703353953420934}
   serializedVersion: 4
-  m_Mass: 3.93
+  m_Mass: 4
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -141,8 +138,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 0.1, z: 1}
-  m_Center: {x: 0, y: -0.7, z: 0}
+  m_Size: {x: 1, y: 0.2, z: 1}
+  m_Center: {x: 0, y: -0.675, z: 0}
 --- !u!65 &3981789448654280148
 BoxCollider:
   m_ObjectHideFlags: 0

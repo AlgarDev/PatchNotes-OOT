@@ -446,7 +446,7 @@ public class ThirdPersonController : MonoBehaviour
         else
         {
             interactableColliders = Physics.OverlapBox(interactorSource.transform.position + interactorSource.transform.forward * interactRange,
-new Vector3(interactRadius, interactRadius, interactRange), interactorSource.transform.rotation, ~0, QueryTriggerInteraction.Collide);
+            new Vector3(interactRadius, interactRadius, interactRange), interactorSource.transform.rotation, ~0, QueryTriggerInteraction.Collide);
 
             foreach (var item in interactableColliders)
             {

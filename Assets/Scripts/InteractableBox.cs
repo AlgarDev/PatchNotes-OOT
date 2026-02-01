@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using static Unity.Collections.AllocatorManager;
 interface IInteractable
 {
     public void Interact(ThirdPersonController interactor);
@@ -111,6 +110,7 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
         boxCollider.isTrigger = false;
 
         transform.SetParent(null);
+        transform.rotation = Quaternion.identity;
 
         rb.isKinematic = false;
         rb.useGravity = true;
@@ -152,3 +152,4 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
     }
 
 }
+    

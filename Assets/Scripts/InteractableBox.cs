@@ -1,5 +1,7 @@
 using System.Collections;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using static Unity.Collections.AllocatorManager;
 interface IInteractable
 {
     public void Interact(ThirdPersonController interactor);
@@ -21,15 +23,13 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
     [SerializeField] private float upwardBias = 0.2f;
     private Transform platformGhost;
     private Vector3 lastPlatformGhostPosition;
-
     private void Awake()
     {
         if (TryGetComponent<Rigidbody>(out Rigidbody rigidBody))
         {
             rb = rigidBody;
         }
-        boxCollider = GetComponent<Collider>();
-
+        boxCollider = GetComponent<Collider>();           
     }
     private void FixedUpdate()
     {
@@ -79,18 +79,27 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
 
     public void Drop(ThirdPersonController interactor)
     {
-
         isHeld = false;
 
-        transform.position = interactor.grabPivot.position + interactor.transform.forward * 2.5f;
         transform.SetParent(null);
-        StartCoroutine(EnableColliderNextFixedFrame());
+        if (interactor.isTooClose)
+        {
+            transform.position = interactor.transform.position + Vector3.up * 5f;
+            print("wall");
+        }
+        else
+        {
+            transform.position = interactor.grabPivot.position + interactor.transform.forward * 2.5f;
+            print("no wall");
 
+        }
+        transform.rotation = Quaternion.identity;
         rb.isKinematic = false;
         rb.useGravity = true;
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+        StartCoroutine(EnableColliderNextFixedFrame());
         holder = null;
     }
     public void Throw(ThirdPersonController interactor)
@@ -120,7 +129,7 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
     }
     public void EnableControl(bool value)
     {
-        rb.isKinematic = !value;
+        rb.isKinematic = !value;    
         rb.useGravity = value;
     }
     public void SetPlatformGhost(Transform ghost)

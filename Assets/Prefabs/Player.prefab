@@ -316,10 +316,17 @@ MonoBehaviour:
   throwHoldTime: 1
   interactableColliders: []
   animationController: {fileID: 0}
+  minTimeToLongIdle: 5
+  maxTimeToLongIdle: 6
   <IsPlayerControlled>k__BackingField: 1
   controller: {fileID: 0}
   <Hourglass>k__BackingField: {fileID: 0}
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  distanceToWall: 6
   controllingHourglass: 0
+  isTooClose: 0
   audioSource: {fileID: 1318322612649660117}
   jumpSFX: {fileID: 8300000, guid: 34e3d03ed7c34c142b5fa51d94c3f84c, type: 3}
   grabSFX: {fileID: 8300000, guid: 4c39111f16e0a7c45bfd7a80fec782a3, type: 3}
@@ -497,6 +504,7 @@ MonoBehaviour:
   hourglassPlatform: {fileID: 0}
   hourglass: {fileID: 4798385410665241884}
   maxSand: 0.7
+  spawnColor: 0
 --- !u!1001 &3752995680226343085
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -952,6 +960,22 @@ MonoBehaviour:
         - m_Target: {fileID: 1126606576567047751}
           m_TargetAssemblyTypeName: ThirdPersonController, Assembly-CSharp
           m_MethodName: ThrowHeldObject
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventName: LongIdle
+    eventAction:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1126606576567047751}
+          m_TargetAssemblyTypeName: ThirdPersonController, Assembly-CSharp
+          m_MethodName: ResetLongAnimation
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

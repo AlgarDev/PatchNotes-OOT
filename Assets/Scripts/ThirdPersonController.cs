@@ -84,9 +84,12 @@ public class ThirdPersonController : MonoBehaviour
 
     [field: Header("Hourglass")]
     [field: SerializeField] public InteractableBox Hourglass { get; private set; }
+    [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private float distanceToWall = 3;
     public bool controllingHourglass;
     private Vector3 storedPlayerPosition;
     private Quaternion storedPlayerRotation;
+    public bool isTooClose;
 
     private MovingPlatform currentPlatform;
     private Vector3 lastPlatformGhostPosition;
@@ -103,6 +106,8 @@ public class ThirdPersonController : MonoBehaviour
     [SerializeField] private AudioClip backToCheckpointSFX;
     [SerializeField] private AudioClip dieAndStopRecordingSFX;
     [SerializeField] private AudioClip respawnSFX;
+
+    private bool isWalking;
 
     private void Awake()
     {
@@ -189,6 +194,12 @@ public class ThirdPersonController : MonoBehaviour
                 animationController.SetBool("LongIdleB", false);
             }
         }
+        if (Physics.Raycast(transform.position, transform.forward, distanceToWall, wallLayer))
+        {
+            isTooClose = true;
+        }
+        else
+            isTooClose = false;
 
     }
 
@@ -659,7 +670,7 @@ new Vector3(interactRadius, interactRadius, interactRange), interactorSource.tra
         }
     }
     //========================SOUNDS============================
-    private bool isWalking;
+
     private void StartWalkSFX()
     {
         if (audioSource.isPlaying && audioSource.clip == walkSFX)

@@ -248,7 +248,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 4782
+  m_VersionIndex: 4788
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -601,7 +601,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 6002
+  m_VersionIndex: 6008
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -769,7 +769,10 @@ MonoBehaviour:
   - {fileID: 8226101791063154592}
   - {fileID: 7143795187528061125}
   - {fileID: 586356680949204618}
-  movingPlatforms: []
+  movingPlatforms:
+  - {fileID: 8787798446221321323}
+  - {fileID: 3173424435737184956}
+  - {fileID: 4067350726128071156}
   isRecording: 0
   thirdPersonController: {fileID: 0}
   currentColor: 0
@@ -1021,7 +1024,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 5120
+  m_VersionIndex: 5126
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1525,7 +1528,7 @@ PrefabInstance:
       objectReference: {fileID: 2713290466994466629}
     - target: {fileID: 6208979701194852224, guid: f7c66d06b5dae7349a3890920690e152, type: 3}
       propertyPath: m_VersionIndex
-      value: 6549
+      value: 6555
       objectReference: {fileID: 0}
     - target: {fileID: 6208979701194852224, guid: f7c66d06b5dae7349a3890920690e152, type: 3}
       propertyPath: m_SelectedEdges.Array.size
@@ -2809,6 +2812,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4786782593173621026, guid: 592df8a05065cef4982915565be63157, type: 3}
   m_PrefabInstance: {fileID: 5344429276584381873}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3173424435737184956 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7359302533026301709, guid: 592df8a05065cef4982915565be63157, type: 3}
+  m_PrefabInstance: {fileID: 5344429276584381873}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04f7581568d8245488e2c9e5a87ee878, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5692881858673334295
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3199,7 +3213,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6208979701194852224, guid: f7c66d06b5dae7349a3890920690e152, type: 3}
       propertyPath: m_VersionIndex
-      value: 6549
+      value: 6555
       objectReference: {fileID: 0}
     - target: {fileID: 6208979701194852224, guid: f7c66d06b5dae7349a3890920690e152, type: 3}
       propertyPath: m_SelectedEdges.Array.size

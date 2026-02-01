@@ -148,6 +148,7 @@ public class CloneSpawningPlatform : MonoBehaviour
         player.SetActiveSpawner(this);
         manager.StartedRecording(this);
         startRecording?.Invoke();
+        UIManager.instance.StartBlinkEffect();
 
     }
 
@@ -168,6 +169,7 @@ public class CloneSpawningPlatform : MonoBehaviour
         //Visuals
         CloneInputRecorder.Instance.StopRecording();
         UIManager.instance.UIState(false);
+        UIManager.instance.StopBlinkEffect();
 
         //Save current recording
         currentRecording = new List<PlayerInputFrame>(CloneInputRecorder.Instance.Frames);

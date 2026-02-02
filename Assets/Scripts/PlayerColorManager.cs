@@ -19,7 +19,7 @@ public class PlayerColorManager : MonoBehaviour
     void Start()
     {
         //ChangeColor(ColorRef.Pink);
-        DisableHourglassSand();
+        //DisableHourglassSand();
 
         if (spawnColor != ColorRef.Green)
         {
@@ -70,6 +70,7 @@ public class PlayerColorManager : MonoBehaviour
     public void EnableHourglassSand()
     {
         hourglassSand.gameObject.SetActive(true);
+        Debug.Log(hourglassSand.gameObject.activeSelf);
     }
 
     public void UpdateTargetValue(float target)

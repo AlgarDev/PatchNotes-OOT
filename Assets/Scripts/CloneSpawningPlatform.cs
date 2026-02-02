@@ -42,6 +42,8 @@ public class CloneSpawningPlatform : MonoBehaviour
     private ColorsSO colors;
     [SerializeField] private GameObject shine;
 
+    private float savedTime;
+
 
 
 
@@ -120,7 +122,7 @@ public class CloneSpawningPlatform : MonoBehaviour
         timerRemaining -= Time.deltaTime;
         UIManager.instance.UpdateSliderValue(timerRemaining, recordingDuration);
         player.GetComponent<PlayerColorManager>().UpdateTargetValue(timerRemaining / recordingDuration);
-        if (currentHourglass != null) currentHourglass.GetComponent<PlayerColorManager>().UpdateTargetValue(timerRemaining / recordingDuration);
+
 
         if (timerRemaining <= 0f)
         {
@@ -155,7 +157,7 @@ public class CloneSpawningPlatform : MonoBehaviour
     public void StopRecording()
     {
         if (manager.isRecording == false) return;
-
+        savedTime = timerRemaining;
 
         //Debug.Log("Stoped Recording " + platformColor.ToString());
         if (!isRecording)
@@ -233,14 +235,15 @@ public class CloneSpawningPlatform : MonoBehaviour
             currentClone.GetComponent<PlayerColorManager>().GhostState(true);
             currentClone.GetComponent<PlayerColorManager>().DisableHourglass();
             currentClone.GetComponent<PlayerColorManager>().ChangeColor(platformColor);
+
             currentHourglass.GetComponent<PlayerColorManager>().ChangeColor(platformColor);
-            currentHourglass.GetComponent<PlayerColorManager>().UpdateTargetValue(1);
+            currentHourglass.GetComponent<PlayerColorManager>().UpdateTargetValue(savedTime / recordingDuration);
+            currentHourglass.GetComponent<PlayerColorManager>().EnableHourglassSand();
 
             currentClone.GetComponent<CloneController>().PassFrames(currentRecording);
             currentClone.GetComponent<CloneController>().StartPlayback();
         }
 
-        // TO DO : CHANGE CLONE COLOR & DISABLE ITS HOURGLASS MODEL
     }
 
     public void StopEarly()

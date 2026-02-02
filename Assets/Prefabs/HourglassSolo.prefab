@@ -104,6 +104,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hourglass
       objectReference: {fileID: 0}
+    - target: {fileID: 4002211901388686542, guid: 7b6ee1fc94054e045aa7fc8e8aa4df8b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6918816345038409961, guid: 7b6ee1fc94054e045aa7fc8e8aa4df8b, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 

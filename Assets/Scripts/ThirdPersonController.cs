@@ -102,11 +102,12 @@ public class ThirdPersonController : MonoBehaviour
     [SerializeField] private AudioClip grabSFX;
     [SerializeField] private AudioClip dropSFX;
     [SerializeField] private AudioClip throwSFX;
-    [SerializeField] private AudioClip walkSFX;
+    [SerializeField] private AudioClip[] walkSFXClips;
     [SerializeField] private AudioClip backToCheckpointSFX;
     [SerializeField] private AudioClip dieAndStopRecordingSFX;
     [SerializeField] private AudioClip respawnSFX;
 
+    private Coroutine footstepCoroutine;
     private bool isWalking;
 
     private void Awake()
@@ -277,16 +278,27 @@ public class ThirdPersonController : MonoBehaviour
 
         bool shouldWalk = canMove && controller.isGrounded && currentSpeed > 0.1f && currentInput.move.magnitude > 0.1f;
 
-        if (shouldWalk && !isWalking)
+        if (shouldWalk)
         {
-            isWalking = true;
-            StartWalkSFX();
+            if (!isWalking)
+            {
+                isWalking = true;
+                footstepCoroutine ??= StartCoroutine(PlayWalkingSFX());
+            }
         }
-        else if (!shouldWalk && isWalking)
+        else
         {
-            isWalking = false;
-            StopWalkSFX();
+            if (isWalking)
+            {
+                isWalking = false;
+                if (footstepCoroutine != null)
+                {
+                    StopCoroutine(footstepCoroutine);
+                    footstepCoroutine = null;
+                }
+            }
         }
+
 
     }
 
@@ -357,7 +369,11 @@ public class ThirdPersonController : MonoBehaviour
 
         animationController.SetTrigger("Jump");
 
-        StopWalkSFX();
+        if (footstepCoroutine != null)
+        {
+            StopCoroutine(footstepCoroutine);
+            footstepCoroutine = null;
+        }  
         isWalking = false;
 
         audioSource.PlayOneShot(jumpSFX);
@@ -371,7 +387,11 @@ public class ThirdPersonController : MonoBehaviour
         {
             currentSpeed = 0f;
             isWalking = false;
-            StopWalkSFX();
+            if (footstepCoroutine != null)
+            {
+                StopCoroutine(footstepCoroutine);
+                footstepCoroutine = null;
+            }
         }
 
     }
@@ -671,25 +691,39 @@ public class ThirdPersonController : MonoBehaviour
     }
     //========================SOUNDS============================
 
-    private void StartWalkSFX()
+    private IEnumerator PlayWalkingSFX()
     {
-        if (audioSource.isPlaying && audioSource.clip == walkSFX)
-            return;
-
-        audioSource.clip = walkSFX;
-        audioSource.loop = true;
-        audioSource.Play();
-    }
-
-    private void StopWalkSFX()
-    {
-        if (audioSource.clip == walkSFX)
+        while (isWalking && controller.isGrounded)
         {
-            audioSource.Stop();
-            audioSource.loop = false;
-            audioSource.clip = null;
+            if (walkSFXClips.Length > 0)
+            {
+                // Pick a random clip
+                AudioClip clip = walkSFXClips[Random.Range(0, walkSFXClips.Length)];
+
+                int steps = Mathf.FloorToInt((1.2f - .8f) / 0.05f) + 1;
+
+                // Pick a random step index
+                int randomIndex = Random.Range(0, steps);
+
+                // Calculate the final pitch
+                float pitch = .8f + randomIndex * 0.05f;
+
+                audioSource.pitch = pitch;
+
+                audioSource.PlayOneShot(clip);
+                print(audioSource.pitch);
+                // Wait for the clip length before playing the next
+                yield return new WaitForSeconds(clip.length + .2f);
+            }
+            else
+            {
+                yield return null;
+            }
         }
+        audioSource.pitch = 1.0f;
+        footstepCoroutine = null;
     }
+
 
     //==========================SETTERS========================
     public void SetActiveSpawner(CloneSpawningPlatform spawner)

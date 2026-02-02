@@ -330,13 +330,25 @@ MonoBehaviour:
   controllingHourglass: 0
   isTooClose: 0
   audioSource: {fileID: 1318322612649660117}
-  jumpSFX: {fileID: 8300000, guid: 34e3d03ed7c34c142b5fa51d94c3f84c, type: 3}
+  jumpSFX: {fileID: 8300000, guid: 7a53a067b8725ea4f84b93c87c157556, type: 3}
   grabSFX: {fileID: 8300000, guid: 4c39111f16e0a7c45bfd7a80fec782a3, type: 3}
   dropSFX: {fileID: 8300000, guid: dd2ae73eb19b3b34eb532fbc269f7c4e, type: 3}
   throwSFX: {fileID: 8300000, guid: 9713c1285f9801d498abdae11b37b498, type: 3}
-  walkSFX: {fileID: 8300000, guid: 169bda36583ff304f81571fad8a72db0, type: 3}
+  walkSFXClips:
+  - {fileID: 8300000, guid: 9cd8019c5c9e86d4ea7be954d9b5fef2, type: 3}
+  - {fileID: 8300000, guid: 315c3d7049a622e4abe2d3cc76b9c49a, type: 3}
+  - {fileID: 8300000, guid: fb5b62cd8fb0b6f4fa887bbd081b7def, type: 3}
+  - {fileID: 8300000, guid: a524ebba423d4874fbf59d527e072fd4, type: 3}
+  - {fileID: 8300000, guid: 0618576bd02376f42bdb779a1c196050, type: 3}
+  - {fileID: 8300000, guid: e8f5ab06a485a3f4abb11eeb9cfe4615, type: 3}
+  - {fileID: 8300000, guid: 9e429260c4814c74d930959c0dc12e1c, type: 3}
+  - {fileID: 8300000, guid: d82729edcf06d1c408487ce20a1503e4, type: 3}
+  - {fileID: 8300000, guid: 893d74418cd44b7419ef5a0a2fcf4414, type: 3}
+  - {fileID: 8300000, guid: 84514d880c711d648bbd3822dddc9be2, type: 3}
+  - {fileID: 8300000, guid: bff6e94b69161cd4f8e466e76db53cdb, type: 3}
+  - {fileID: 8300000, guid: 69d1ef63291bea548ad0857c0149e497, type: 3}
   backToCheckpointSFX: {fileID: 8300000, guid: 14a844bd231821446b4fa0b211612ff5, type: 3}
-  dieAndStopRecordingSFX: {fileID: 8300000, guid: 5511b676b04a0dd488958a0d5713e1c8, type: 3}
+  dieAndStopRecordingSFX: {fileID: 8300000, guid: 8621adb0a31081c4291d83ad0a508d7b, type: 3}
   respawnSFX: {fileID: 8300000, guid: 14a844bd231821446b4fa0b211612ff5, type: 3}
   platformGhost: {fileID: 0}
 --- !u!114 &3613058007820986645

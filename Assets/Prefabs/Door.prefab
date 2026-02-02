@@ -141,7 +141,6 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   pressedCount: 0
-  startEnabled: 0
 --- !u!82 &5786307180967806953
 AudioSource:
   m_ObjectHideFlags: 0
@@ -428,7 +427,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30

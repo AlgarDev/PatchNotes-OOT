@@ -1,31 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Xml.Schema;
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    [SerializeField] private AudioClip UIClick;
-    //[SerializeField] private AudioSource Music;
-    [SerializeField] private AudioSource clickAudioSource;
+    public static SoundManager Instance;
+
+    [SerializeField] static private AudioClip UIClick;
+    [SerializeField] static private AudioSource clickAudioSource;
 
     private void Awake()
     {
-        if (FindObjectsOfType<SoundManager>().Length > 1)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
+        Instance = this;
         DontDestroyOnLoad(gameObject);
     }
+
     private void Start()
     {
         clickAudioSource.clip = UIClick;
     }
-    public void ClickSound()
+
+    static public void ClickSound()
     {
-        //print("gfujg");
         clickAudioSource.pitch = 1f + Random.Range(-0.2f, 0.2f);
         clickAudioSource.PlayOneShot(UIClick);
     }

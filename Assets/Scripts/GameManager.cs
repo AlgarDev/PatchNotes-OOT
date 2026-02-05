@@ -68,6 +68,8 @@ public class GameManager : MonoBehaviour
     }
     public void GoToMainMenu()
     {
+        UnpauseGame();
+        Cursor.lockState = CursorLockMode.None;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 

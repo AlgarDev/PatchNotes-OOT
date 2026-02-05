@@ -68,7 +68,7 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
         gameObject.transform.position = interactor.grabPivot.position;
         boxCollider.isTrigger = true;
         transform.SetParent(interactor.grabPivot);
-        rb.isKinematic = true;
+        rb.isKinematic = false;
         rb.interpolation = RigidbodyInterpolation.None;
         transform.rotation = Quaternion.identity;
 

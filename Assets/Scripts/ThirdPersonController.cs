@@ -668,14 +668,13 @@ public class ThirdPersonController : MonoBehaviour
     }
     public void RespawnAtCheckpoint()
     {
-        print("huiwqiehbiwq");
+        //print("huiwqiehbiwq");
         if (activeSpawner != null)
         {
-            activeSpawner.StopEarly();
             controller.enabled = false;
-            if (checkpoint != null)
-                transform.position = checkpoint.position;
+            transform.position = activeSpawner.transform.position;
             controller.enabled = true;
+            activeSpawner.StopEarly();
             GetComponent<PlayerColorManager>().ChangeColor(ColorRef.Green);
             GetComponent<PlayerColorManager>().DisableHourglassSand();
             audioSource.PlayOneShot(respawnSFX);
@@ -711,7 +710,7 @@ public class ThirdPersonController : MonoBehaviour
                 audioSource.pitch = pitch;
 
                 audioSource.PlayOneShot(clip);
-                print(audioSource.pitch);
+                //print(audioSource.pitch);
                 // Wait for the clip length before playing the next
                 yield return new WaitForSeconds(clip.length + .2f);
             }

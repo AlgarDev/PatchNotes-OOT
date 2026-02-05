@@ -50,20 +50,19 @@ public class LaserBeam : MonoBehaviour
         else
         {
             SetLine(endPoint.localPosition);
-
-            // Player / clone hit check
-            if (Physics.CapsuleCast(
-                start,
-                start + direction * 0.01f,
-                radius,
-                direction,
-                out RaycastHit hitPlayer,
-                distance,
-                ~0,
-                QueryTriggerInteraction.Ignore))
-            {
-                HandleHit(hitPlayer.collider);
-            }
+        }
+        // Player / clone hit check
+        if (Physics.CapsuleCast(
+            start,
+            start + direction * 0.01f,
+            radius,
+            direction,
+            out RaycastHit hitPlayer,
+            distance,
+            ~0,
+            QueryTriggerInteraction.Ignore))
+        {
+            HandleHit(hitPlayer.collider);
         }
     }
 

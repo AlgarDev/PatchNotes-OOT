@@ -4,8 +4,8 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance;
 
-    [SerializeField] static private AudioClip UIClick;
-    [SerializeField] static private AudioSource clickAudioSource;
+    [SerializeField] private AudioClip UIClick;
+    [SerializeField] private AudioSource clickAudioSource;
 
     private void Awake()
     {
@@ -19,12 +19,15 @@ public class SoundManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    private void Start()
+    public static void ClickSound()
     {
-        clickAudioSource.clip = UIClick;
+        if (Instance == null)
+            return;
+
+        Instance.PlayClick();
     }
 
-    static public void ClickSound()
+    private void PlayClick()
     {
         clickAudioSource.pitch = 1f + Random.Range(-0.2f, 0.2f);
         clickAudioSource.PlayOneShot(UIClick);

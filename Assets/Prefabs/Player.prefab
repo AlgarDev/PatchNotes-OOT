@@ -350,6 +350,7 @@ MonoBehaviour:
   backToCheckpointSFX: {fileID: 8300000, guid: 14a844bd231821446b4fa0b211612ff5, type: 3}
   dieAndStopRecordingSFX: {fileID: 8300000, guid: 8621adb0a31081c4291d83ad0a508d7b, type: 3}
   respawnSFX: {fileID: 8300000, guid: 14a844bd231821446b4fa0b211612ff5, type: 3}
+  jumpAndWalkSound: 0.5
   platformGhost: {fileID: 0}
 --- !u!114 &3613058007820986645
 MonoBehaviour:
@@ -405,7 +406,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 87edbcef6e22a2c44a768792c413ac2a, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.7
   m_Pitch: 1
   Loop: 0
   Mute: 0

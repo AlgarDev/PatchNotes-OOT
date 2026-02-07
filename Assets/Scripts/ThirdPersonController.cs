@@ -107,6 +107,8 @@ public class ThirdPersonController : MonoBehaviour
     [SerializeField] private AudioClip dieAndStopRecordingSFX;
     [SerializeField] private AudioClip respawnSFX;
 
+    [SerializeField] private float jumpAndWalkSound;
+    private float startVolume;
     private Coroutine footstepCoroutine;
     private bool isWalking;
 
@@ -158,6 +160,7 @@ public class ThirdPersonController : MonoBehaviour
         }
 
         longIdleCoroutine = null;
+        startVolume = audioSource.volume;
     }
 
     private void Update()
@@ -376,6 +379,7 @@ public class ThirdPersonController : MonoBehaviour
         }  
         isWalking = false;
 
+        audioSource.volume = jumpAndWalkSound;
         audioSource.PlayOneShot(jumpSFX);
     }
 
@@ -460,6 +464,7 @@ public class ThirdPersonController : MonoBehaviour
             isHolding = false;
             heldObject = null;
             print("Drop hourglass");
+            audioSource.volume = startVolume;
             audioSource.PlayOneShot(dropSFX);
 
         }
@@ -480,6 +485,7 @@ public class ThirdPersonController : MonoBehaviour
                         isHolding = true;
                         heldObject = item.gameObject;
                         animationController.SetTrigger("GrabNormal");
+                        audioSource.volume = startVolume;
                         audioSource.PlayOneShot(grabSFX);
 
                         break;
@@ -504,6 +510,7 @@ public class ThirdPersonController : MonoBehaviour
         isHolding = false;
         heldObject = null;
         isReadyToThrow = false;
+        audioSource.volume = startVolume;
         audioSource.PlayOneShot(throwSFX);
     }
 
@@ -677,6 +684,7 @@ public class ThirdPersonController : MonoBehaviour
             activeSpawner.StopEarly();
             GetComponent<PlayerColorManager>().ChangeColor(ColorRef.Green);
             GetComponent<PlayerColorManager>().DisableHourglassSand();
+            audioSource.volume = startVolume;
             audioSource.PlayOneShot(respawnSFX);
         }
         else
@@ -685,6 +693,7 @@ public class ThirdPersonController : MonoBehaviour
             if (checkpoint != null)
                 transform.position = checkpoint.position;
             controller.enabled = true;
+            audioSource.volume = startVolume;
             audioSource.PlayOneShot(respawnSFX);
         }
     }
@@ -708,6 +717,8 @@ public class ThirdPersonController : MonoBehaviour
                 float pitch = .8f + randomIndex * 0.05f;
 
                 audioSource.pitch = pitch;
+
+                audioSource.volume = jumpAndWalkSound;
 
                 audioSource.PlayOneShot(clip);
                 //print(audioSource.pitch);

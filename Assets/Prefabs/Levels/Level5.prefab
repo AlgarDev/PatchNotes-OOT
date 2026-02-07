@@ -248,7 +248,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2179
+  m_VersionIndex: 2221
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -601,7 +601,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2084
+  m_VersionIndex: 2126
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2556,7 +2556,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 5710
+  m_VersionIndex: 5752
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2980,7 +2980,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 4029
+  m_VersionIndex: 4071
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -3333,7 +3333,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3256
+  m_VersionIndex: 3298
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -3686,7 +3686,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2940
+  m_VersionIndex: 2982
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -4039,7 +4039,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2156
+  m_VersionIndex: 2198
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -4392,7 +4392,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 4548
+  m_VersionIndex: 4590
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -5465,7 +5465,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 4523
+  m_VersionIndex: 4565
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -5656,7 +5656,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6208979701194852224, guid: f7c66d06b5dae7349a3890920690e152, type: 3}
       propertyPath: m_VersionIndex
-      value: 6385
+      value: 6427
       objectReference: {fileID: 0}
     - target: {fileID: 6208979701194852224, guid: f7c66d06b5dae7349a3890920690e152, type: 3}
       propertyPath: m_SelectedEdges.Array.size
@@ -7182,7 +7182,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6208979701194852224, guid: f7c66d06b5dae7349a3890920690e152, type: 3}
       propertyPath: m_VersionIndex
-      value: 6600
+      value: 6642
       objectReference: {fileID: 0}
     - target: {fileID: 6208979701194852224, guid: f7c66d06b5dae7349a3890920690e152, type: 3}
       propertyPath: m_SelectedEdges.Array.size
@@ -15529,7 +15529,7 @@ PrefabInstance:
       objectReference: {fileID: 1517069387192740988}
     - target: {fileID: 6208979701194852224, guid: f7c66d06b5dae7349a3890920690e152, type: 3}
       propertyPath: m_VersionIndex
-      value: 6934
+      value: 6976
       objectReference: {fileID: 0}
     - target: {fileID: 6208979701194852224, guid: f7c66d06b5dae7349a3890920690e152, type: 3}
       propertyPath: m_SelectedEdges.Array.size
@@ -19335,7 +19335,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6208979701194852224, guid: f7c66d06b5dae7349a3890920690e152, type: 3}
       propertyPath: m_VersionIndex
-      value: 6624
+      value: 6666
       objectReference: {fileID: 0}
     - target: {fileID: 6208979701194852224, guid: f7c66d06b5dae7349a3890920690e152, type: 3}
       propertyPath: m_SelectedEdges.Array.size
@@ -24353,6 +24353,14 @@ PrefabInstance:
     - target: {fileID: 5930802792701852891, guid: 3d0ee883c930891419feea3bf598697c, type: 3}
       propertyPath: m_Name
       value: CheckpointSetter (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8391507297573416744, guid: 3d0ee883c930891419feea3bf598697c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.81
+      objectReference: {fileID: 0}
+    - target: {fileID: 8391507297573416744, guid: 3d0ee883c930891419feea3bf598697c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 19.31
       objectReference: {fileID: 0}
     - target: {fileID: 8391507297573416744, guid: 3d0ee883c930891419feea3bf598697c, type: 3}
       propertyPath: m_LocalPosition.x

@@ -28,7 +28,7 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
         {
             rb = rigidBody;
         }
-        boxCollider = GetComponent<Collider>();           
+        boxCollider = GetComponent<Collider>();
     }
     private void FixedUpdate()
     {
@@ -88,7 +88,7 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
         }
         else
         {
-            transform.position = interactor.grabPivot.position + interactor.transform.forward * 2.5f;
+            transform.position = interactor.grabPivot.position + interactor.transform.forward * 0f;
             print("no wall");
 
         }
@@ -129,7 +129,7 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
     }
     public void EnableControl(bool value)
     {
-        rb.isKinematic = !value;    
+        rb.isKinematic = !value;
         rb.useGravity = value;
     }
     public void SetPlatformGhost(Transform ghost)
@@ -152,4 +152,3 @@ public class InteractableBox : MonoBehaviour, IInteractable, IGrabbable
     }
 
 }
-    

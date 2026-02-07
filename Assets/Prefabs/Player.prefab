@@ -299,14 +299,14 @@ MonoBehaviour:
   <SmoothTime>k__BackingField: 0.1
   acceleration: 30
   deceleration: 100
-  turnSpeed: 360
+  turnSpeed: 720
   characterMesh: {fileID: 5412902526113506220}
   meshTiltAmount: 0
   meshTiltSpeed: 0
   <JumpGravity>k__BackingField: -6
-  <Gravity>k__BackingField: -50
-  <JumpHeight>k__BackingField: 12
-  <JumpTime>k__BackingField: 0.2
+  <Gravity>k__BackingField: -40
+  <JumpHeight>k__BackingField: 16
+  <JumpTime>k__BackingField: 0.1
   interactorSource: {fileID: 9162232954335003176}
   <grabPivot>k__BackingField: {fileID: 1354749214411511518}
   <throwPivot>k__BackingField: {fileID: 757732112512244924}

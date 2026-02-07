@@ -2371,9 +2371,9 @@ RectTransform:
   - {fileID: 1654902773}
   m_Father: {fileID: 1523965941}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 50, y: -84.06}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &372948785
@@ -3534,9 +3534,9 @@ RectTransform:
   - {fileID: 323459598}
   m_Father: {fileID: 1523965941}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 50, y: -15}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &653621427
@@ -3943,7 +3943,7 @@ Transform:
   m_GameObject: {fileID: 745858900}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -411, y: 12.162157, z: -10.419788}
+  m_LocalPosition: {x: -566.9, y: 25.7, z: -315.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9125,9 +9125,9 @@ RectTransform:
   - {fileID: 226561851}
   m_Father: {fileID: 1523965941}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 50, y: -153.12}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1727688613
@@ -10919,8 +10919,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1889300178}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.17121498, y: 0.000000005020024, z: -8.723853e-10, w: 0.9852337}
-  m_LocalPosition: {x: -411, y: 12.162157, z: -10.419788}
+  m_LocalRotation: {x: 0.17121498, y: 0, z: 0, w: 0.9852337}
+  m_LocalPosition: {x: -566.9, y: 25.7, z: -315.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12561,7 +12561,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2145481103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13064,15 +13064,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 23899336548509765, guid: 307465969ebd7134a8b6a0abe20fd947, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -411
+      value: -566.9
       objectReference: {fileID: 0}
     - target: {fileID: 23899336548509765, guid: 307465969ebd7134a8b6a0abe20fd947, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.162157
+      value: 15.7
       objectReference: {fileID: 0}
     - target: {fileID: 23899336548509765, guid: 307465969ebd7134a8b6a0abe20fd947, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 14.580212
+      value: -290.2
       objectReference: {fileID: 0}
     - target: {fileID: 23899336548509765, guid: 307465969ebd7134a8b6a0abe20fd947, type: 3}
       propertyPath: m_LocalRotation.w
@@ -13405,6 +13405,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2180879014222026544, guid: 65e00e219d0212e44949451830d7940d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -35.26
+      objectReference: {fileID: 0}
+    - target: {fileID: 2180879014222026544, guid: 65e00e219d0212e44949451830d7940d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -22.86
+      objectReference: {fileID: 0}
     - target: {fileID: 2201090827503301793, guid: 65e00e219d0212e44949451830d7940d, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -13473,6 +13481,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1796079553}
+    - target: {fileID: 4406670747307027815, guid: 65e00e219d0212e44949451830d7940d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 14.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4745772330780454812, guid: 65e00e219d0212e44949451830d7940d, type: 3}
       propertyPath: m_Mesh
       value: 

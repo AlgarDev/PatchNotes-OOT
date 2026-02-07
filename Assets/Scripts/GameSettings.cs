@@ -19,18 +19,28 @@ public class GameSettings : MonoBehaviour
     static public float volume;
     static public float sensitivity;
 
-    [SerializeField]
-    public Slider volumeSlider;
-    [SerializeField]
-    public Slider sensitivitySlider;
-    [SerializeField]
-    public Toggle musicToggle;
-    [SerializeField]
-    public Toggle invertToggle;
-
     static private bool doOnce;
+
+    //[SerializeField]
+    //public Slider volumeSlider;
+    //[SerializeField]
+    //public Slider sensitivitySlider;
+    //[SerializeField]
+    //public Toggle musicToggle;
+    //[SerializeField]
+    //public Toggle invertToggle;
+
     private void Awake()
-    {   
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
+
         if (!doOnce)
         {
             volume = 0.5f;
@@ -39,50 +49,53 @@ public class GameSettings : MonoBehaviour
             cameraInverted = false;
             doOnce = true;
         }
-        if (_instance != null && _instance != this)
-        {
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            _instance = this;
-        }
     }
     private void Start()
     {
         float clampedVolume = Mathf.Clamp(volume, 0.0001f, 1f);
         audioMixer.SetFloat("volume", Mathf.Log10(clampedVolume) * 20f);
 
-        volumeSlider.SetValueWithoutNotify(volume);
-        sensitivitySlider.SetValueWithoutNotify(sensitivity);
-        musicToggle.isOn = musicEnabled;
-        invertToggle.isOn = cameraInverted;
+        //volumeSlider.SetValueWithoutNotify(volume);
+        //sensitivitySlider.SetValueWithoutNotify(sensitivity);
+        //musicToggle.isOn = musicEnabled;
+        //invertToggle.isOn = cameraInverted;
     }
 
-    public void ChangeMusicToggle(bool checkValue)
+    public static void ChangeMusicToggle(bool checkValue)
     {
+        if (Instance == null)
+            return;
+
         musicEnabled = checkValue;
-        SetMusicVolume(musicEnabled);
+        Instance.ApplyMusic();
     }
-    public void InvertCameraToggle(bool checkValue)
+    public static void ChangeVolumeSlider(float value)
+    {
+        if (Instance == null)
+            return;
+
+        volume = value;
+        Instance.ApplyVolume();
+
+    }
+    public static void InvertCameraToggle(bool checkValue)
     {
         cameraInverted = checkValue;
         print(cameraInverted);
     }
-    public void ChangeVolumeSlider(float value)
-    {
-        volume = value;
-
-        float clampedVolume = Mathf.Clamp(volume, 0.0001f, 1f);
-        audioMixer.SetFloat("volume", Mathf.Log10(clampedVolume) * 20f);
-
-    }
-    public void ChangeSensitivitySlider(float value)
+    public static void ChangeSensitivitySlider(float value)
     {
         sensitivity = value;
     }
-    private void SetMusicVolume(bool isEnabled)
+
+    private void ApplyVolume()
     {
-        audioMixer.SetFloat("MusicVolume", isEnabled ? 0f : -80f);
+        float clamped = Mathf.Clamp(volume, 0.0001f, 1f);
+        audioMixer.SetFloat("volume", Mathf.Log10(clamped) * 20f);
+    }
+
+    private void ApplyMusic()
+    {
+        audioMixer.SetFloat("MusicVolume", musicEnabled ? 0f : -80f);
     }
 }

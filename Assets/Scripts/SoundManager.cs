@@ -31,5 +31,6 @@ public class SoundManager : MonoBehaviour
     {
         clickAudioSource.pitch = 1f + Random.Range(-0.2f, 0.2f);
         clickAudioSource.PlayOneShot(UIClick);
+        print("wnqueihqwie");
     }
 }

@@ -23,7 +23,11 @@ public class MovingPlatform : MonoBehaviour
     public List<GameObject> exposed = new List<GameObject>();
 
     private AudioSource audioSource;
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
 
+    }
     private void Start()
     {
         if (waypoints.Count == 0)
@@ -31,7 +35,6 @@ public class MovingPlatform : MonoBehaviour
             print("No waypoints");
             return;
         }
-        audioSource = GetComponent<AudioSource>();
         transform.position = waypoints[0].position;
         lastPosition = transform.position;
     }

@@ -57,9 +57,9 @@ public class GameManager : MonoBehaviour
 
 
     }
-    public void CanPause()
+    public void ChangeCanPause(bool value)
     {
-        canPause = true;
+        canPause = value;
     }
     public void FlipisPaused()
     {

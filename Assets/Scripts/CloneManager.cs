@@ -54,10 +54,10 @@ public class CloneManager : MonoBehaviour
         }
 
 
-        if (thirdPersonController.controllingHourglass == true)
-        {
-            thirdPersonController.ToggleHourglassControl();
-        }
+        //if (thirdPersonController.controllingHourglass == true)
+        //{
+        //    thirdPersonController.ToggleHourglassControl();
+        //}
 
         isRecording = false;
     }

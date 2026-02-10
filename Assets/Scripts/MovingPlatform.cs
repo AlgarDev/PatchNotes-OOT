@@ -112,17 +112,20 @@ public class MovingPlatform : MonoBehaviour
             {
                 detectedThisFrame.Add(root);
 
-                // Enter (new this frame)
+                // Enter platform
                 if (!occupants.Contains(root))
                 {
                     if (root.TryGetComponent(out ThirdPersonController player))
+                    {
                         player.SetPlatformGhost(ghostTransform);
+
+                    }
                     else if (root.TryGetComponent(out InteractableBox box))
                         box.SetPlatformGhost(ghostTransform);
                 }
             }
         }
-
+        //left platform
         foreach (var obj in occupants)
         {
             if (obj == null)

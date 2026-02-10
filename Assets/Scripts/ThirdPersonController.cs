@@ -229,9 +229,7 @@ public class ThirdPersonController : MonoBehaviour
         if (!canMove)
         {
             if (currentSpeed > 0f)
-            {
                 currentSpeed = Mathf.Max(0f, currentSpeed - deceleration * Time.deltaTime);
-            }
             return;
         }
 
@@ -243,67 +241,41 @@ public class ThirdPersonController : MonoBehaviour
         if (direction.magnitude >= 0.1f)
         {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cameraForward;
-
             float angleDifference = Mathf.DeltaAngle(transform.eulerAngles.y, targetAngle);
-            float maxRotation = turnSpeed * Time.deltaTime;
-            float rotationAmount = Mathf.Clamp(angleDifference, -maxRotation, maxRotation);
-            float angle = transform.eulerAngles.y + rotationAmount;
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+            float rotationStep = Mathf.Clamp(angleDifference, -turnSpeed * Time.deltaTime, turnSpeed * Time.deltaTime);
+
+            transform.rotation = Quaternion.Euler(0f, transform.eulerAngles.y + rotationStep, 0f);
 
             currentSpeed = Mathf.Min(topWalkSpeed, currentSpeed + acceleration * Time.deltaTime);
-
             moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
         }
-        else
+        else if (currentSpeed > 0f)
         {
-            if (currentSpeed > 0f)
-            {
-                currentSpeed = Mathf.Max(0f, currentSpeed - deceleration * Time.deltaTime);
-                moveDirection = transform.forward;
-            }
+            currentSpeed = Mathf.Max(0f, currentSpeed - deceleration * Time.deltaTime);
+            moveDirection = transform.forward;
         }
 
-        Vector3 finalMove = moveDirection.normalized * currentSpeed;
-        finalMove.y = verticalVelocity;
+        Vector3 displacement =
+            moveDirection.normalized * currentSpeed * Time.deltaTime +
+            Vector3.up * verticalVelocity * Time.deltaTime;
 
         if (platformGhost != null)
         {
             Vector3 platformDelta = platformGhost.position - lastPlatformGhostPosition;
-            finalMove += platformDelta / Time.deltaTime;
-        }
 
-        controller.Move(finalMove * Time.deltaTime);
+            // never inherit vertical motion while jumping
+            if (isJumping)
+                platformDelta.y = 0f;
 
-        if (platformGhost != null)
-        {
+            displacement.x += platformDelta.x;
+            displacement.z += platformDelta.z;
+
             lastPlatformGhostPosition = platformGhost.position;
         }
 
-        bool shouldWalk = canMove && controller.isGrounded && currentSpeed > 0.1f && currentInput.move.magnitude > 0.1f;
-
-        if (shouldWalk)
-        {
-            if (!isWalking)
-            {
-                isWalking = true;
-                footstepCoroutine ??= StartCoroutine(PlayWalkingSFX());
-            }
-        }
-        else
-        {
-            if (isWalking)
-            {
-                isWalking = false;
-                if (footstepCoroutine != null)
-                {
-                    StopCoroutine(footstepCoroutine);
-                    footstepCoroutine = null;
-                }
-            }
-        }
-
-
+        controller.Move(displacement);
     }
+
 
     public void StopMovement()
     {
@@ -343,26 +315,30 @@ public class ThirdPersonController : MonoBehaviour
 
     private void HandleGravity()
     {
-        if (controller.isGrounded && verticalVelocity < 0f)
+        if (controller.isGrounded && !isJumping)
         {
-            verticalVelocity = -2f; // small downward bias to stay grounded
+            // small bias keeps contact stable without snapping
+            verticalVelocity = -2f;
+        }
+        else
+        {
+            verticalVelocity += currentGravity * Time.deltaTime;
         }
 
         if (isJumping)
         {
             jumpTimer += Time.deltaTime;
-
             if (jumpTimer >= JumpTime)
             {
                 isJumping = false;
                 currentGravity = Gravity;
             }
         }
-        verticalVelocity += currentGravity * Time.deltaTime;
     }
+
     private void Jump()
     {
-        if (!canJump || !controller.isGrounded)
+        if (!canJump || !(controller.isGrounded || (Physics.Raycast(transform.position, -transform.up, 2f) && platformGhost != null)))
             return;
 
         verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * JumpGravity);
@@ -524,7 +500,15 @@ public class ThirdPersonController : MonoBehaviour
 
     private void AnimationHandler()
     {
-        animationController.SetBool("isGrounded", controller.isGrounded);
+        if (controller.isGrounded || (Physics.Raycast(transform.position, -transform.up, 2) && platformGhost!= null))
+        {
+            animationController.SetBool("isGrounded", true);
+
+        }
+        else
+            animationController.SetBool("isGrounded", false);
+
+        //animationController.SetBool("isGrounded", controller.isGrounded);
         animationController.SetFloat("Movement", currentSpeed);
 
     }
@@ -675,9 +659,20 @@ public class ThirdPersonController : MonoBehaviour
     }
     public void RespawnAtCheckpoint()
     {
-        //print("huiwqiehbiwq");
         if (activeSpawner != null)
         {
+            if (isHolding && heldObject != null)
+            {
+                if (heldObject.TryGetComponent(out IGrabbable grabbed))
+                {
+                    grabbed.Drop(this);
+                }
+                isHolding = false;
+                heldObject = null;
+                audioSource.volume = startVolume;
+                audioSource.PlayOneShot(dropSFX);
+
+            }
             controller.enabled = false;
             transform.position = activeSpawner.transform.position;
             controller.enabled = true;
@@ -686,15 +681,29 @@ public class ThirdPersonController : MonoBehaviour
             GetComponent<PlayerColorManager>().DisableHourglassSand();
             audioSource.volume = startVolume;
             audioSource.PlayOneShot(respawnSFX);
+
         }
         else
         {
+            if (isHolding && heldObject != null)
+            {
+                if (heldObject.TryGetComponent(out IGrabbable grabbed))
+                {
+                    grabbed.Drop(this);
+                }
+                isHolding = false;
+                heldObject = null;
+                audioSource.volume = startVolume;
+                audioSource.PlayOneShot(dropSFX);
+
+            }
             controller.enabled = false;
             if (checkpoint != null)
                 transform.position = checkpoint.position;
             controller.enabled = true;
             audioSource.volume = startVolume;
             audioSource.PlayOneShot(respawnSFX);
+
         }
     }
     //========================SOUNDS============================

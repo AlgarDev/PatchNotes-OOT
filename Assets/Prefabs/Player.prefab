@@ -380,7 +380,7 @@ MonoBehaviour:
   heldObject: {fileID: 0}
   <isHolding>k__BackingField: 0
   <isReadyToThrow>k__BackingField: 0
-  throwHoldTime: 1
+  throwHoldTime: 0.2
   interactableColliders: []
   animationController: {fileID: 0}
   minTimeToLongIdle: 5
@@ -679,6 +679,18 @@ PrefabInstance:
     - target: {fileID: 5090681168319421432, guid: c77a8bfb72d7e1a4dbfdc732db94cfb8, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5352480794525527550, guid: c77a8bfb72d7e1a4dbfdc732db94cfb8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5352480794525527550, guid: c77a8bfb72d7e1a4dbfdc732db94cfb8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5352480794525527550, guid: c77a8bfb72d7e1a4dbfdc732db94cfb8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.108
       objectReference: {fileID: 0}
     - target: {fileID: 5454587717421881481, guid: c77a8bfb72d7e1a4dbfdc732db94cfb8, type: 3}
       propertyPath: m_Enabled

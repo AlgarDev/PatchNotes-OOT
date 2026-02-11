@@ -10,9 +10,13 @@ public class SettingsInitializer : MonoBehaviour
 
     private void Start()
     {
-        volumeSlider.SetValueWithoutNotify(GameSettings.volume);
-        sensitivitySlider.SetValueWithoutNotify(GameSettings.sensitivity);
-        musicToggle.isOn = GameSettings.musicEnabled;
-        invertToggle.isOn = GameSettings.cameraInverted;
+        volumeSlider?.SetValueWithoutNotify(GameSettings.volume);
+        sensitivitySlider?.SetValueWithoutNotify(GameSettings.sensitivity);
+        if (musicToggle != null)
+            musicToggle.isOn = GameSettings.musicEnabled;
+        if (invertToggle)
+            invertToggle.isOn = GameSettings.cameraInverted;
+
+
     }
 }

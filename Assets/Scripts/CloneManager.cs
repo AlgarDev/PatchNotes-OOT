@@ -43,15 +43,19 @@ public class CloneManager : MonoBehaviour
         {
             thirdPersonController.ResetGrab();
         }
-
-        foreach (var platform in platforms)
+        else
         {
-            if (recordingPlatform != platform)
-            {
-                platform.DisableClone();
-            }
-
+            print("dick");
         }
+
+            foreach (var platform in platforms)
+            {
+                if (recordingPlatform != platform)
+                {
+                    platform.DisableClone();
+                }
+
+            }
 
 
         //if (thirdPersonController.controllingHourglass == true)

@@ -274,6 +274,29 @@ public class ThirdPersonController : MonoBehaviour
         }
 
         controller.Move(displacement);
+
+        bool shouldWalk = canMove && controller.isGrounded && currentSpeed > 0.1f && currentInput.move.magnitude > 0.1f;
+
+        if (shouldWalk)
+        {
+            if (!isWalking)
+            {
+                isWalking = true;
+                footstepCoroutine ??= StartCoroutine(PlayWalkingSFX());
+            }
+        }
+        else
+        {
+            if (isWalking)
+            {
+                isWalking = false;
+                if (footstepCoroutine != null)
+                {
+                    StopCoroutine(footstepCoroutine);
+                    footstepCoroutine = null;
+                }
+            }
+        }
     }
 
 

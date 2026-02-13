@@ -8,7 +8,7 @@ public class SettingsInitializer : MonoBehaviour
     [SerializeField] private Toggle musicToggle;
     [SerializeField] private Toggle invertToggle;
 
-    private void Start()
+    private void OnEnable()
     {
         volumeSlider?.SetValueWithoutNotify(GameSettings.volume);
         sensitivitySlider?.SetValueWithoutNotify(GameSettings.sensitivity);

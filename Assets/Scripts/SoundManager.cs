@@ -35,6 +35,6 @@ public class SoundManager : MonoBehaviour
 
         GameObject clickedObject = EventSystem.current.currentSelectedGameObject;
 
-        print("wnqueihqwie");
+        //print("wnqueihqwie");
     }
 }

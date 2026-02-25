@@ -44,8 +44,10 @@ public class LaserBeam : MonoBehaviour
         {
             Vector3 targetLocalPos =
                 lineRenderer.transform.InverseTransformPoint(hitBlocker.point);
+            Vector3 Pos = endPoint.localPosition;
+            Pos.z = targetLocalPos.z;
 
-            SetLine(targetLocalPos);
+            SetLine(Pos);
         }
         else
         {
